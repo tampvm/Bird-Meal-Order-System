@@ -1,0 +1,206 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model IEnumerable<BMOS.Models.RoutingDetailModel>;
+@{
+	Layout = "_HeaderFooter";
+	ViewData["Title"] = "Routing Detail";
+	var totalPrice = ViewData["totalPrice"];
+	var routing = ViewData["Routing"] as BMOS.Models.RoutingHomePageModel;
+}
+<div class="content">
+
+	<div class="container">
+		<div class="content__navigation">
+			<div>
+				<a href="index.html">Trang chủ</a>/
+				<a href="routing.html">Lộ trình ăn/</a>
+				<a href="#">Chi tiết bữa ăn</a>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-8 routing-list">
+				<div class="content_routing-list--product">
+					<div class="routing-list__banner" style="background: url(@routing.routingImage); height: 200px; background-size: cover">
+					</div>
+					<div class="row g-0 routing-list__item">
+						<div class="col-12 routing-list__title">
+							Thành phần và nguyên liệu:
+						</div>
+						@foreach (var item in Model)
+						{
+							@*var _priceProduct = item.getTotalProductPrice();
+							totalPrice += _priceProduct;*@
+							string url = item.image;
+							string[] delemeter = new string[] { "datnt" };
+							string[] image = url.Split(delemeter, StringSplitOptions.None);
+							<div class="row g-0 routing-list__item--list">
+								<div class="col-2 routing-item__product-img">
+									<img src="@image[0]" style="width: 100%" alt="" srcset="">
+								</div>
+								<div class="col-10 routing-item__product-desc">
+									<div class="col-12 routing-item__product-desc--title">
+										<span>Sản phẩm:</span>
+										<span>@item.productName</span>
+									</div>
+									<div class="col-12 routing-item__product-desc--title">
+										<span>Giá tiền:</span>
+										<span style="color: red">
+											@string.Format("{0:#,0}", item.productPrice)vnđ
+										</span>
+									</div>
+									<div class="edit-quantity-button">
+										<span>Quantity:</span>
+										<div class="col-md-3 col-lg-3 col-xl-2 d-flex">
+											<button type="submit"   data-id="@item.productId" class="btn btn-link px-2 decrease-prodQuantity-btn"
+													onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
+												<i class="fas fa-minus"></i>
+											</button>
+											<input data-id="@item.productId" input type="number" value="@item.productQuantity" name="cartItemQuantity"
+												   class="form-control form-control-sm product-quantity-form" />
+											<button type="submit" data-id="@item.productId" class="btn btn-link px-2 increase-prodQuantity-btn"
+													onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
+												<i class="fas fa-plus"></i>
+											</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						}
+					</div>
+				</div>
+			</div>
+			<div class="col-4 routing-info">
+				<div class="row g-0">
+					<div class="col-12 routing-info__text routing-info__status">
+						<span>Trạng thái:</span>
+						<span class="routing-info__status-text">Còn hàng</span>
+					</div>
+
+					<div class="col-12 routing-info__text routing-info__price">
+						<span>Giá:</span>
+						<span class="routing-info__price-text">
+							@string.Format("{0:#,0}", totalPrice)vnđ
+							</span>
+					</div>
+
+					<div class="col-12 view-routing-process">
+						<button type="button" class="btn btn-primary view-routing-process--button">
+							View routing
+							process
+						</button>
+					</div>
+
+
+					<div class="col-12 routing-button add-to-cart--button" style="margin-top: 10px;">
+						<a asp-controller="ShoppingCart" asp-action="AddProductInRoutingToCart">
+						<button type="button" class="btn btn-primary button-action button-action--add-cart">
+							<i class="fa-solid fa-cart-shopping"></i>
+							Thêm vào giỏ hàng
+						</button>
+						</a>
+						<i class="fa-solid fa-heart heart-icon" style="color: #d32a17;"></i>
+					</div>
+					
+
+					<div class="col-12 recommend-list">
+						<span class="recommend-list__text" style="font-size: 2rem">Danh sách blog</span>
+						<div class="row g-0 recommend-list__item">
+							<div class="col-4 recommend-product__img">
+								<img style="width: 100px; height: 100px;" src="https://firebasestorage.googleapis.com/v0/b/bmosfile.appspot.com/o/blogs%2Ferth6-1609917791358588351922.jpg?alt=media&token=09a64fb5-4986-4311-a735-6e75a48f6885datnt" alt="" srcset="">
+							</div>
+
+							<div class="col-8 recommend-product__desc">
+								<div class="recommend-product__name">
+									Phát hiện chấn động ở mặt tối Mặt Trăng: Cấu trúc y hệt ở Trái Đất
+								</div>
+								<div class="recommend-product__price">(NLĐO) - Ở phía xa của Mặt Trăng, nơi chúng ta không thể nhìn thấy từ Trái Đất, một cấu trúc đường kính 50 km có thể lật ngược toàn bộ những gì chúng ta nghĩ về thiên thể này.</div>
+
+							</div>
+
+						</div>
+						<div class="row g-0 recommend-list__item">
+							<div class="col-4 recommend-product__img">
+								<img style="width: 100px; height: 100px;" src="https://firebasestorage.googleapis.com/v0/b/bmosfile.appspot.com/o/blogs%2Fyen-mao.jpg?alt=media&token=d2745a62-76f6-4c17-b6e1-e1b7f145ba7ddatnt" alt="" srcset="">
+							</div>
+
+							<div class="col-8 recommend-product__desc">
+								<div class="recommend-product__name">
+									Không ít loài chim đang tồn tại trên danh nghĩa trong một vùng "mập mờ" của lĩnh vực bảo tồn: chúng biến mất trong một thời gian dài, nhưng không gì chứng minh rằng chúng đã tuyệt chủng.
+								</div>
+								<div class="recommend-product__price">Trong niềm hy vọng âm ỉ và sự gấp rút để cứu lấy những cá thể cuối cùng, cuộc tìm kiếm những loài chim "bị mất" bắt đầu.</div>
+
+							</div>
+
+						</div>
+						<div class="row g-0 recommend-list__item">
+							<div class="col-4 recommend-product__img">
+								<img style="width: 100px; height: 100px;" src="https://firebasestorage.googleapis.com/v0/b/bmosfile.appspot.com/o/blogs%2FAptenodytes_forsteri_-Snow_Hill_Island%2C_Antarctica_-adults_and_juvenile-8.jpg?alt=media&token=e16dfca1-367c-4008-b8a9-bbd845dfd998datnt" alt="" srcset="">
+							</div>
+
+							<div class="col-8 recommend-product__desc">
+								<div class="recommend-product__name">
+									Hai “quái vật chim cánh cụt” to gấp đôi con người xuất hiện ở châu Úc
+								</div>
+								<div class="recommend-product__price">(NLĐO) - "Trở về" từ thế giới 60 triệu năm trước, hai loài "quái vật" mang hình dáng chim cánh cụt hiện ra với 6 cá thể khác nhau, con lớn nhất ước tính nặng tới 160 kg khi còn sống.</div>
+
+							</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+@section scripts {
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+	<script>
+		$(document).ready(function () {
+
+			var totalPrice = $('input[name="totalPrice"]').val();
+			console.log("page firest: ", totalPrice);
+
+			$('.routing-info__price-text').html(totalPrice);
+
+			$('.decrease-prodQuantity-btn').click(function (e) {
+				var _id = $(this).data("id");	
+				$.ajax({
+					url: "/Routing/EditRoutingDetail",
+					data: {
+						id: _id,
+						status: "decrease",
+						productQuantity: 1,
+					},
+					type: "GET",
+					success: function (data) {
+						$(".routing-list__item").html(data);
+					},
+				});
+			});
+
+			$('.increase-prodQuantity-btn').click(function (e) {
+				var _id = $(this).data("id");
+				$.ajax({
+					url: "/Routing/EditRoutingDetail",
+					data: {
+						id: _id,
+						status: "increase",
+						productQuantity: 1,
+					},
+					type: "GET",
+					success: function (data) {
+						$(".routing-list__item").html(data)
+					},
+
+				});
+			});
+
+
+		});
+
+	</script>
+}
+
+

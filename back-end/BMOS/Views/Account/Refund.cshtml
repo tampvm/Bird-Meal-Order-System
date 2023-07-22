@@ -1,0 +1,100 @@
+﻿@model IEnumerable<BMOS.Models.RefundForm>
+
+
+@{
+    ViewData["Title"] = "UserChangePassword";
+    Layout = "_HeaderFooter";
+    int userid = ViewBag.userId;
+}
+
+
+
+<div class="container">
+    <div class="content">
+        <div class="row userprofile">
+            <div class="col-12 userprofile_title">Trang chủ/ Chỉnh sửa người dùng</div>
+        </div>
+        <div class="row userinfo">
+            <div class="col-7 userprofile_info">
+                <style>
+                    .userprofile_info_wel_history:hover {
+                        background-color: #e38a41;
+                    }
+                </style>
+                <div class="row userprofile_info_wel">
+                    <div class="col-6">
+                        <div class="userprofile_info_wel_history">
+                            <img src="~/images/history.png" alt="" srcset="">
+                            <a href="~/Account/UserHistoryOrder" style="text-decoration: none; color: black;"><h3 style="font-weight: bold; margin-top: 10px;">Lịch sử đơn hàng</h3></a>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="userprofile_info_wel_welcome">
+                            <img src="~/images/user-icon.png" alt="" srcset="">
+                            <h3 style="font-weight: bold; margin-top: 10px;">Xin chào, <Span>@ViewBag.Fullname</Span></h3>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="userprofile_info_location">
+                        <div class="col-12 userprofile_info_wel_location">
+                            
+                            <div class="refundinfo" style="font-size:2rem;">
+                                @foreach (var item in Model.OrderByDescending(x => x.date))
+                                {
+                                    <div class="col-11 userprofile_info_wel_locationinfo" style="border:2px solid black; border-radius:1rem;margin:2rem;">
+                                        <h3 style="padding-top:10px; font-weight:normal; " ><b style="font-weight:bold;">Mã đơn hàng: </b> @item.orderId</h3>
+
+                                        @{
+                                            if (item.status == true)
+                                            {
+                                                <h3 style="color:green; font-weight:normal;"><b style=" color:black; font-weight:bold;">Trạng thái: </b> Đơn hoàn trả đã được xác nhận</h3>
+                                            }
+                                            else
+                                            {
+                                                <h3 style="color:red; font-weight:normal;"><b style="color:black;font-weight:bold;">Trạng thái: </b>Đơn hoàn trả không được xác nhận</h3>
+                                            }
+                                        }
+                                        <h3 style="padding-bottom:10px;font-weight:normal;"><b style="font-weight:bold;">Lý do hoàn trả: </b> @item.content</h3>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-5">
+                <div class="userprofile_bar">
+                    <div class="userprofile_bar_profile">
+                        <img src="~/images/user-icon.png" alt="" srcset="">
+                        <a href="~/Account/UserProfile" target="" >Hồ sơ</a>
+                    </div>
+                    <div class="userprofile_bar_profile">
+                        <img src="~/images/locationmanege.png" alt="" srcset="">
+                        <a href="~/Account/UserLocation" target="">Cài đặt địa chỉ</a>
+                    </div>
+                    <div class="userprofile_bar_profile">
+                        <img src="~/images/reset-password.png" alt="" srcset="">
+                        <a href="~/Account/UserChangePassword" target="">Đổi mật khẩu</a>
+                    </div>
+                    <div class="userprofile_bar_profile">
+                        <img src="~/images/logout.png" alt="" srcset="">
+                        <a href="~/Account/Refund" target="" style="color: #e38a41; font-weight: bold;">Hoàn trả sản phẩm</a>
+                    </div>
+                    <div class="userprofile_bar_profile">
+                        <img src="~/images/logout.png" alt="" srcset="">
+                        <a href="~/Account/Logout" target="">Đăng xuất</a>
+                    </div>
+                    
+                </div>
+            </div>
+
+
+
+        </div>
+    </div>
+</div>
+

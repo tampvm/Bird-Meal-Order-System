@@ -1,0 +1,60 @@
+﻿@model BMOS.Models.RefundsInfoModel
+
+@{
+    Layout = "_ManagePage";
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Chỉnh sửa trả hàng</h1>
+
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="RefundId" />
+            <div class="form-group">
+                <label asp-for="UserName" class="control-label">Tên người dùng</label>
+                <input asp-for="UserName" class="form-control" readonly />
+                <span asp-validation-for="UserName" class="text-danger"></span>
+            </div>          
+            <div class="form-group">
+                <label asp-for="OrderId" class="control-label">Mã đơn hàng</label>
+                <input asp-for="OrderId" class="form-control" readonly/>
+                <span asp-validation-for="OrderId" class="text-danger"></span>
+            </div>
+            <input asp-for="UserId" type="hidden" class="form-control" />
+            <div class="form-group">
+                <label asp-for="Description" class="control-label">Nội dung hoàn trả</label>
+                <input asp-for="Description" class="form-control" readonly/>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Date" class="control-label">Thời gian</label>
+                <input asp-for="Date" class="form-control" readonly/>
+                <span asp-validation-for="Date" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IsConfirm" class="control-label">Xác nhận đơn hàng</label>
+                <select asp-for="IsConfirm" class="form-control" >
+                    <option selected="@(Model.IsConfirm == false)" value="False">Chưa xác nhận đơn hàng</option>
+                    <option selected="@(Model.IsConfirm == true)" value="True">Xác nhận đơn hàng</option>
+
+                </select>
+                <span asp-validation-for="IsConfirm" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

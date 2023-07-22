@@ -1,0 +1,67 @@
+﻿@model BMOS.Models.Entities.TblVoucherCode
+
+@{
+    Layout = "_ManagePage";
+    ViewData["Title"] = "Voucher Edit";
+}
+
+<script src="~/lib/ckeditor/ckeditor.js"></script>
+<link href="~/css/create_edit.css" rel="stylesheet" />
+
+
+<h1>Chỉnh sửa blog</h1>
+
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit" enctype="multipart/form-data">
+            <div class="form-group">
+                <label asp-for="VoucherId" class="control-label"></label>
+                <input asp-for="VoucherId" class="form-control" readonly />
+                <span asp-validation-for="VoucherId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="VoucherCode" class="control-label"></label>
+                <input asp-for="VoucherCode" class="form-control" />
+                <span asp-validation-for="VoucherCode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Value" class="control-label"></label>
+                <input asp-for="Value" class="form-control" />
+                <span asp-validation-for="Value" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Quantity" class="control-label"></label>
+                <input asp-for="Quantity" class="form-control" />
+                <span asp-validation-for="Quantity" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Used" class="control-label"></label>
+                <input asp-for="Used" class="form-control" readonly />
+                <span asp-validation-for="Used" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Status" class="control-label"></label>
+                <input asp-for="Status" class="form-control" />
+                <span asp-validation-for="Status" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Edit" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="VoucherManager">Back to List</a>
+</div>
+
+@section Scripts {
+    <script src="~/ckeditor/ckeditor.js"></script>
+    <script>
+        CKEDITOR.replace('Description');
+    </script>
+    }

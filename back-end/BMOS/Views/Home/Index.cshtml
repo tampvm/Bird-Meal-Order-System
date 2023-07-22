@@ -1,0 +1,138 @@
+﻿@model IEnumerable<dynamic>
+
+@{
+	Layout = "_HeaderFooter";
+	ViewData["Title"] = "BMOS";
+	bool isConfirm = ViewBag.isConfirmOrder;
+}
+@if(isConfirm)
+{
+	<input type="hidden" name="confirmStatus" value="true">
+}
+<div class="content">
+	<div class="container">
+		<div class="banner banner-warpper">
+			@*<img src="https://cdn.shopify.com/s/files/1/1111/3280/files/HomepageBanner2F_2021_2500x.progressive.jpg?v=1635904976"
+			alt="">
+			<img src="https://cdn.shopify.com/s/files/1/0521/5784/1585/collections/the_pet_shop_banner_1378_x_288.jpg?v=1653636527"
+			alt="">*@
+			<img src="https://api.petzone.com/pub/media/catalog/category/Bird-food.gif"
+				 alt="">
+		</div>
+		<div class="product-container">
+			<div class="row product-list">
+				<div class="col-12 product-list__title">Thức ăn cho chim</div>
+				<div class="row product-row g-0">
+					<div class="col-3 product-img-banner">
+						<img src="https://media.istockphoto.com/id/1133903983/photo/many-multicolor-wavy-parrots-sit-in-cage-pet-shop-birds-in-captivity.jpg?s=612x612&w=0&k=20&c=y1uszPyckHPkQMguUtOds4QON1AwjoPFGoc-KgPTqjc=" alt="Product Imgage" srcset="">
+					</div>
+					<div class="row col-9">
+						<div class="product-warpper">
+							<!-- <div class="routing-warpper"> -->
+							@{
+								int itemnumber = 0;
+							}
+							@foreach (var item in Model)
+							{
+								<div class="product-item">
+									<div class="product-content product-border">
+										@{
+											itemnumber++;
+											string url = item.productImage;
+											string[] delemeter = new string[] { "datnt" };
+											string[] image = url.Split(delemeter, StringSplitOptions.None);
+											<a class="controller-to-cart-link" style="text-decoration:none" href="/products/product/@item.productId">
+												<div class="product-img-item" style="background-image: url('@image[0]')"></div>
+											</a>
+										}
+										<div class="product-desc">
+											<div class="product-desc__title">@item.productName</div>
+											<div class="product-desc__price">@string.Format("{0:#,0}", @item.productPrice)vnđ</div>
+											<button id="@itemnumber" data-id="@item.productId" type="button" class="ajax-add-to-cart btn btn-outline-warning add-to-cart-btn">Thêm vào giỏ hàng</button>
+										</div>
+									</div>
+								</div>
+							}
+						</div>
+						<div class="col-12 watch-more__button">
+							<button asp-controller="Products" asp-action="ListProduct" type="button" class="btn btn-warning btn-lg watch-more--button">Xem thêm</button>
+						</div>
+					</div>
+				</div>
+
+			</div>
+			<div class="row product-list">
+				<div class="col-12 product-list__title">Lộ trình cho chim</div>
+				<div class="row routing-row g-0">
+					@await Html.PartialAsync("Routing")
+				</div>
+			</div>
+		</div>
+		<!-- Blog warper -->
+		@await Html.PartialAsync("Blog")
+	</div>
+</div>
+
+@section scripts {
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+	<script>
+
+
+		$(document).ready(function () {
+
+			var confirmStatus = $('input[name="confirmStatus"]');
+			console.log(confirmStatus);
+			if(confirmStatus.length !=  0) {
+				Swal.fire({
+					imageUrl: 'https://firebasestorage.googleapis.com/v0/b/bmosfile.appspot.com/o/Notify%2FFM1.jpeg?alt=media&token=6b9dae82-0e7e-4889-b066-a7830ca8e9c0',
+					imageWidth: 600,
+					imageHeight: 400,
+					imageAlt: 'Custom image',
+					position: 'center',
+					title: 'Cảm ơn bạn đã xác nhận đơn hàng',
+					width: '50%',
+					height: '50%',
+					showConfirmButton: false,
+					timer: 3000
+				});
+			}
+
+			$('.ajax-add-to-cart').click(function (e) {
+				var _id = $(this).data("id");
+				e.stopPropagation();
+				$.ajax({
+					url: "/ShoppingCart/AddToCart",
+					data: {
+						id: _id,
+						productQuantity: 1,
+						type: "ajax"
+					},
+
+					success: function (data) {
+						console.log(data);
+						if (data.loginStatus) {
+							Swal.fire({
+								imageUrl: 'https://firebasestorage.googleapis.com/v0/b/bmosfile.appspot.com/o/Notify%2FcHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIyLTExL2pvYjE0MjgtZWxlbWVudC0xMDctdi5qcGc.jpg?alt=media&token=d8fc7f12-7174-46a0-9ec6-109a1036c9b2',
+								imageWidth: 200,
+								imageHeight: 200,
+								height: '50%',
+								imageAlt: 'Custom image',
+								position: 'center',
+								title: 'Sản phẩm đã được thêm vào giỏ hàng!',
+								showConfirmButton: false,
+								timer: 1500
+							});
+							$(".cart-quantity").html(data.productQuantity);
+						} else {
+							window.location.replace('/Account/Login');
+						}
+					},
+					error: function () {
+
+					}
+				});
+			});
+		});
+
+	</script>
+	}

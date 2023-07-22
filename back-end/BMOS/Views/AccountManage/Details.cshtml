@@ -1,0 +1,135 @@
+﻿@model BMOS.Models.Entities.TblUser
+
+@{
+    Layout = "_ManagePage";
+    ViewData["Title"] = "Account Manage";
+}
+
+
+<h1>Chi tiết tài khoản</h1>
+
+<div>
+
+    <hr />
+    <dl class="row" style="margin-left:300px;">
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.UserId)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.UserId)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Username)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Username)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Password)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Password)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.IsConfirm)
+        </dt>
+        <dd class="col-sm-9">
+            @{
+                if ((Model.IsConfirm) == true)
+                {
+                    <p style="color:green; border-radius: 25px; background-color: lightgreen; inline-size: 50%;text-align:center;">Đã xác nhận </p>
+
+                }
+                else
+                {
+                    <p style="color:black; border-radius: 25px; background-color: orangered; inline-size: 50%;text-align:center; ">Chưa xác nhận </p>
+                }
+            }
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Firstname)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Firstname)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Lastname)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Lastname)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Numberphone)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Numberphone)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Address)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Address)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.DateCreate)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.DateCreate)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.LastActivitty)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.LastActivitty)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Point)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Point)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Status)
+        </dt>
+        <dd class="col-sm-9">
+            @{
+                if ((Model.Status) == true)
+                {
+                    <p style="color:green; border-radius: 25px; background-color: lightgreen; inline-size: 50%;text-align:center; ">Hoạt động </p>
+
+                }
+                else
+                {
+                    <p style="color:black; border-radius: 25px; background-color: orangered; inline-size: 50%;text-align:center; ">Không hoạt động </p>
+                }
+            }
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.UserRoleId)
+        </dt>
+        <dd class="col-sm-9">
+                @{
+                    if ((Model.UserRoleId) == 1)
+                    {
+                    <p style="color:darkblue; border-radius: 25px; background-color: cornflowerblue; inline-size: 50%;text-align:center;">Quản lý </p>
+                    }
+                    else if ((Model.UserRoleId) == 2)
+                    {
+                    <p style="color:black; border-radius: 25px; background-color: hotpink; inline-size: 50%;text-align:center;">Staff </p>
+                    }
+                    else if ((Model.UserRoleId) == 3)
+                    {
+                    <p style="color:black; border-radius: 25px; background-color: blanchedalmond; inline-size: 50%;text-align:center;">Khách hàng </p>
+                    }
+                    else
+                    {
+                    <p style="color:black; border-radius: 25px; background-color: orangered; inline-size: 50%;text-align:center;">Không có chức vụ </p>
+                    }
+                }
+        </dd>
+    </dl>
+</div>
+<div>
+
+    <a asp-action="Index">Back to List</a>
+</div>

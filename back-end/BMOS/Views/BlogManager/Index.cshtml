@@ -1,0 +1,82 @@
+﻿@model X.PagedList.IPagedList<BMOS.Models.BlogInfoModel>
+@using X.PagedList.Mvc;
+@using X.PagedList.Mvc.Core;
+@using X.PagedList.Web.Common;
+@{
+	Layout = "_ManagePage";
+	ViewData["Title"] = "Blog Manage";
+}
+
+<ul style="font-size:1rem;list-style:none; display:flex;">
+	<span>Sắp xếp:</span>
+	<li style="padding-left: 5px;">
+		<a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]" asp-route-searchString="@ViewData["SearchParameter"]">A-Z</a> |
+	</li>
+	<li style="padding-left: 5px;">
+		<a asp-action="Index" asp-route-sortOrder="@ViewData["NameDescSortParm"]" asp-route-searchString="@ViewData["SearchParameter"]">Z-A</a> |
+	</li>
+	<li style="padding-left: 5px;">
+		<a asp-action="Index" asp-route-sortOrder="@ViewData["DateSortParm"]" asp-route-searchString="@ViewData["SearchParameter"]">Cũ nhất</a> |
+	</li>
+	<li style="padding-left: 5px;">
+		<a asp-action="Index" asp-route-sortOrder="@ViewData["DateDescSortParm"]" asp-route-searchString="@ViewData["SearchParameter"]">Mới nhất</a>
+	</li>
+	<li>
+		<a style="font-size: 1rem; text-decoration: none;margin-left:47rem;" asp-controller="BlogManager" asp-action="Index">Xóa tìm kiếm</a>
+	</li>
+</ul>
+<h1>Quản lý blog</h1>
+
+<p>
+	<a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+	<thead>
+		<tr>
+			<th>Ảnh blog</th>
+			<th>Tên Blog</th>
+			<th>Ngày tạo</th>
+			<th>Trạng Thái</th>
+			<th></th>
+
+
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in Model)
+		{
+			<tr>
+				<td>
+					<img src="@item.blogImage" style="width: 100px; height: 100px"/>
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.blogName)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Date)
+				</td>
+
+				<td>
+					<a asp-action="Edit" asp-route-id="@item.blogId">Edit</a> |
+					<a asp-action="Details" asp-route-id="@item.blogId">Details</a> |
+					<a asp-action="Delete" asp-route-id="@item.blogId">Delete</a>
+				</td>
+
+			</tr>
+		}
+
+	</tbody>
+
+
+</table>
+<div style="font-size:2rem; margin-bottom:2rem; margin-left:1rem;">
+	Trang @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) trên @Model.PageCount
+</div>
+<div style="font-size:1rem; margin-bottom:2rem; margin-left:1rem;">
+	@Html.PagedListPager(Model, page => Url.Action("Index",
+	new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }),
+	new PagedListRenderOptions {
+	LiElementClasses = new string[] { "page-item" },
+	PageClasses = new string[] { "page-link" }
+	})
+</div>

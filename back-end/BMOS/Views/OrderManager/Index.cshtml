@@ -1,0 +1,93 @@
+﻿@model X.PagedList.IPagedList<BMOS.Models.OrderInfo>
+@using X.PagedList.Mvc;
+@using X.PagedList.Mvc.Core;
+@using X.PagedList.Web.Common;
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_ManagePage.cshtml";
+}
+
+<h1>Quản lý đơn hàng</h1>
+<a style="text-decoration:none;color:darkorange" asp-controller="OrderManager" asp-action="Index">
+    <button type="button" class="btn btn-warning">Làm mới</button>
+</a>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Mã đơn hàng
+            </th>
+            <th>
+                Tên tài khoản
+            </th>
+            <th>
+                Trạng thái đơn hàng
+            </th>
+            <th>
+                <a style="text-decoration:none; color:darkorange" asp-action="Index" asp-route-sortOrder="@ViewData["PriceSortParm"]" asp-route-searchString="@ViewData["SearchParameter"]">Tổng tiền</a>
+            </th>
+            <th>
+                Thời gian
+            </th>
+            <th>
+                Hành động
+            </th>
+            
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.orderID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserName)
+                </td>
+                <td>
+                    @{
+                        if ((item.IsConfirm) == true)
+                        {
+                            <p style="color:green; border-radius: 25px; background-color: lightgreen; inline-size: 100%;text-align:center;">Đơn hàng đã giao </p>
+
+                        }
+                        else
+                        {
+                            <p style="color:black; border-radius: 25px; background-color: orangered; inline-size: 100%;text-align:center; ">Đơn hàng chưa giao </p>
+                        }
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.total)vnd
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.date)
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.orderID">
+                        <button type="button" class="btn btn-info" >Chi Tiết</button>
+                    </a>
+                    
+                    
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<br />
+<br />
+<div style="font-size:2rem; margin-bottom:2rem; margin-left:1rem;">
+    Trang @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) tren @Model.PageCount
+</div>
+
+<div style="font-size:1rem; margin-bottom:2rem; margin-left:1rem;">
+    @Html.PagedListPager(Model, page => Url.Action("Index",
+    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }),
+    new PagedListRenderOptions {
+    LiElementClasses = new string[] { "page-item" },
+    PageClasses = new string[] { "page-link" }
+    })
+
+</div>

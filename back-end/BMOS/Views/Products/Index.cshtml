@@ -1,0 +1,176 @@
+﻿@model X.PagedList.IPagedList<BMOS.Models.ProductInfoModel>
+@using X.PagedList.Mvc;
+@using X.PagedList.Mvc.Core;
+@using X.PagedList.Web.Common;
+
+
+@{
+    ViewData["Title"] = "ProductList";
+    Layout = "_HeaderFooter";
+}
+
+<div class="content">
+    <div class="container">
+        <div class="content__navigation">
+            <div>
+                <a href="index.html">Trang chủ</a>/
+                <a href="routing.html">Lộ trình ăn</a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-3 content__sidebar">
+                <div class="container-sidebar__titile">
+                    Lộ trình ăn cho chim
+                </div>
+                <div class="container-sidebar__list">
+                    <div class="col-12 sidebar__list-category--title">Category</div>
+                    <ul class="col-12 container-sidebar__list--category">
+                        <li class="sidebar__list--category-item">
+                            <a asp-area="" asp-controller="Products" asp-action="ThucAnHat">Thức ăn hạt</a>
+                        </li>
+                        <li class="sidebar__list--category-item">
+                            <a asp-area="" asp-controller="Products" asp-action="ThucAnTuNhien">Thức ăn tự nhiên</a>
+                        </li>
+                        <li class="sidebar__list--category-item">
+                            <a asp-area="" asp-controller="Products" asp-action="ThucAnKho">Thức ăn khô</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="container-sidebar__list">
+                    <div class="col-12 sidebar__list-category--title">Lộ trình</div>
+                    <ul class="col-12 container-sidebar__list--category">
+                        <li class="sidebar__list--category-item">
+                            <a href="#"
+                               class="sidebar__list--category-link">Cải thiện cân nặng</a>
+                        </li>
+                        <li class="sidebar__list--category-item">
+                            <a href="#"
+                               class="sidebar__list--category-link">Cải thiện sức khỏe</a>
+                        </li>
+                        <li class="sidebar__list--category-item">
+                            <a href="#"
+                               class="sidebar__list--category-link">Cải thiện màu lông</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="container-sidebar__list">
+                    <div class="col-12 sidebar__list-category--title">Blog</div>
+                    <ul class="col-12 container-sidebar__list--category">
+                        <li class="sidebar__list--category-item sidebar__blog-item">
+                            <a href="#" class="sidebar__list--category-link">
+                                <div class="blog-sidebar__img">
+                                    <img src="images/blog.png" alt="" srcset="">
+                                </div>
+                                <div class="blog-sidebar__text">
+                                    Tràm chim nơi xuất hiện nhiều loại chim quý hiếm, có nhiều loài đang nằm trong sách Đỏ Việt Nam.
+                                </div>
+
+                            </a>
+                        </li>
+                        <li class="sidebar__list--category-item sidebar__blog-item">
+                            <a href="#" class="sidebar__list--category-link">
+                                <div class="blog-sidebar__img">
+                                    <img src="images/blog.png" alt="" srcset="">
+                                </div>
+                                <div class="blog-sidebar__text">
+                                    Tràm chim nơi xuất hiện nhiều loại chim quý hiếm, có nhiều loài đang nằm trong sách Đỏ Việt Nam.
+                                </div>
+
+                            </a>
+                        </li>
+                        <li class="sidebar__list--category-item sidebar__blog-item">
+                            <a href="#" class="sidebar__list--category-link">
+                                <div class="blog-sidebar__img">
+                                    <img src="images/blog.png" alt="" srcset="">
+                                </div>
+                                <div class="blog-sidebar__text">
+                                    Tràm chim nơi xuất hiện nhiều loại chim quý hiếm, có nhiều loài đang nằm trong sách Đỏ Việt Nam.
+                                </div>
+
+                            </a>
+                        </li>
+                        <li class="sidebar__list--category-item sidebar__blog-item">
+                            <a href="#" class="sidebar__list--category-link">
+                                <div class="blog-sidebar__img">
+                                    <img src="images/blog.png" alt="" srcset="">
+                                </div>
+                                <div class="blog-sidebar__text">
+                                    Tràm chim nơi xuất hiện nhiều loại chim quý hiếm, có nhiều loài đang nằm trong sách Đỏ Việt Nam.
+                                </div>
+
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+            <div class="col-9 content__routing-list content_product-list">
+                <div class="content__filter">
+                    <ul class="content__fitler-list">
+                        <span>Sắp xếp:</span>
+                        <li>
+                            <a asp-action="ListProduct" asp-route-sortOrder="@ViewData["NameSortParm"]" asp-route-searchString="@ViewData["SearchParameter"]">A-Z</a>
+                        </li>
+                        <li>
+                            <a asp-action="ListProduct" asp-route-sortOrder="@ViewData["NameDescSortParm"]" asp-route-searchString="@ViewData["SearchParameter"]">Z-A</a>
+                        </li>
+                        <li class="content__filter-item">
+                            <a asp-action="ListProduct" asp-route-sortOrder="@ViewData["PriceSortParm"]" asp-route-searchString="@ViewData["SearchParameter"]">Giá tăng dần</a>
+                        </li>
+                        <li class="content__filter-item">
+                            <a asp-action="ListProduct" asp-route-sortOrder="@ViewData["PriceDescSortParm"]" asp-route-searchString="@ViewData["SearchParameter"]">Giá giảm dần</a>
+                        </li>
+                        <li>
+                            <a style="font-size: 1.5rem; text-decoration: none;margin-left:40rem;" asp-controller="Products" asp-action="ListProduct">Xóa tìm kiếm</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="content_product-list">
+                    <div style="font-size:2rem;"> @ViewBag.Message </div>
+                    <div class="row g-0 product-list">
+                        @foreach (var item in Model)
+                        {
+                            <a class="col-3 product-item" asp-controller="Products" asp-action="Product" asp-route-id="@item.ProductId" style="text-decoration: none">
+                                <div class="product-content product-border">
+                                    @{
+                                        string url = item.UrlImage;
+                                        string[] delemeter = new string[] { "datnt" };
+                                        string[] image = url.Split(delemeter, StringSplitOptions.None);
+
+
+                                        <div class="product-img-item" style="background-image: url('@image[0]');"> </div>
+                                    }
+                                    <div class="product-desc">
+                                        <div class="product-desc__title">@Html.DisplayFor(modelItem => item.Name)</div>
+                                        <div class="product-desc__price">@string.Format("{0:#,0}", item.Price)vnd</div>
+                                    </div>
+                                </div>
+                            </a>
+                        }
+                    </div>
+
+                </div>
+
+                <br />
+                <br />
+                <div style="font-size:2rem; margin-bottom:2rem; margin-left:1rem;">
+                    Trang @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) tren @Model.PageCount
+                </div>
+
+                <div style="font-size:2rem; margin-bottom:2rem; margin-left:1rem;">
+                    @Html.PagedListPager(Model, page => Url.Action("ListProduct",
+                    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }),
+                    new PagedListRenderOptions {
+                    LiElementClasses = new string[] { "page-item" },
+                    PageClasses = new string[] { "page-link" }
+                    })
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>           

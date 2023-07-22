@@ -1,0 +1,60 @@
+﻿@model BMOS.Models.Entities.TblRouting;
+
+@{
+    Layout = "_ManagePage";
+}
+<h4>Thêm sản phẩm mới</h4>
+<hr />
+<div class="row">
+    <form asp-action="Create" enctype="multipart/form-data">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="RoutingId" class="control-label"></label>
+            <input asp-for="RoutingId" class="form-control" readonly value="@Guid.NewGuid().ToString()" />
+            <span asp-validation-for="RoutingId" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Chọn sản phẩm</label> 
+            <select multiple class="form-select product-choose" asp-items="@Model.listProduct" asp-for="listProductId"></select>
+        </div>
+        <div class="form-group">
+            <label asp-for="Name" class="control-label"> Tên</label>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Description" class="control-label">Thông tin</label>
+            <textarea asp-for="Description" class="form-control"></textarea>
+            <span asp-validation-for="Description" class="text-danger"></span>  
+        </div>
+        <div class="form-group">
+            <label asp-for="Quantity" class="control-label">Số Lượng</label>
+            <input asp-for="Quantity" class="form-control" />
+            <span asp-validation-for="Quantity" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Status" class="control-label"> Trạng Thái</label>
+            <select asp-for="Status" class="form-control">
+                <option value="true">Còn hàng</option>
+                <option value="false">Hết hàng</option>
+            </select>
+            <span asp-validation-for="Status" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <span>Hình Ảnh</span>
+            <input type="file" name="files" class="form-control" accept="image/*" required multiple />
+        </div>
+    </form>
+</div>
+<div style="margin-top:10px;">
+    <input type="submit" value="Create" class="btn btn-primary" />
+    <a asp-action="Index" class="btn btn-secondary">Trở lại</a>
+</div>
+
+@section scripts{
+        <script>
+            CKEDITOR.replace('Description')
+            $('.product-choose').chosen();
+        </script>
+}
+

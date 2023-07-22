@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <style>
+                        .btn-back {
+                            width: 20%;
+                            font-weight: bold;
+                            font-size: 2rem;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            text-decoration: none;
+                            color: black;
+                            background-color: orange;          
+                            height: 5rem;
+                            border-radius: 10px;                                                        
+                        }
+
+                            .btn-back:hover {
+                                color: #b48010;
+                            }
+
+                            th, td {
+                                border: 1px solid black;
+                            }
+                    </style>
+
+                <div class="row" style="width: 1000px; border: 1px solid black; display: flex; justify-content: center; align-items: center;">
+                        <div class="col-12 user_history" style="padding: 1% 0;">
+                            <div class="order-detail-header" style="background-color: rgba(197, 123, 38, 0.822); display: flex; padding-left: 10px; border-top: 1px solid
+                            black; border-left: 1px solid black; border-right: 1px solid black;">
+                                <h2 style ="font-weight: bold; font-size: 2rem; padding-left: 2%;">Chi tết đơn hàng</h2>
+                            </div>
+                            <div style="border: 1px solid black; display: flex; align-items: center; justify-content: center; padding: 0 2%;">
+                                <div class="order-detail-body">
+                                    <div class="body-head" style="display: flex; align-items: center; justify-content: space-between;">
+                                        <h3 style="font-weight: bold; font-size: 2rem;  margin: 10px 0;"><b>Mã đơn hàng: </b>10102</h3>
+                                        <h3 style="font-weight: bold; font-size: 2rem;  margin: 10px 0;"><b>Ngày đặt: </b>1/1/2024</h3>
+                                    </div>
+                                    <div class="body-content" style="margin: 0 0 10px;">
+                                        <table class="table" style="text-align: center; border: none; font-size: 2rem;  border-collapse: collapse;">
+                                            <thead>
+                                                <tr>
+                                                    <th>
+                                                        <h4>Mã sản phẩm</h4>
+                                                    </th>
+                                                    <th>
+                                                        <h4>Tên sản phẩm</h4>
+                                                    </th>
+                                                    <th>
+                                                        <h4>Ảnh</h4>
+                                                    </th>
+                                                    <th>
+                                                        <h4>Số lượng</h4>
+                                                    </th>
+                                                    <th>
+                                                        <h4>Giá</h4>
+                                                    </th>                                                
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <!-- @foreach (var item in Model)
+                                                { -->
+                                                    <tr>
+                                                        <td>
+                                                            1
+                                                        </td>
+                                                        <td>
+                                                            No
+                                                        </td>
+                                                        <td>
+                                                            No
+                                                        </td>
+                                                        <td>
+                                                            1
+                                                        </td>
+                                                        <td>
+                                                            100000
+                                                        </td>
+                                              
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            2
+                                                        </td>
+                                                        <td>
+                                                            No
+                                                        </td>
+                                                        <td>
+                                                            No
+                                                        </td>
+                                                        <td>
+                                                            12
+                                                        </td>
+                                                        <td>
+                                                            100000
+                                                        </td>
+                                              
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            3
+                                                        </td>
+                                                        <td>
+                                                            No
+                                                        </td>
+                                                        <td>
+                                                            No
+                                                        </td>
+                                                        <td>
+                                                            4
+                                                        </td>
+                                                        <td>
+                                                            100000
+                                                        </td>
+                                              
+                                                    </tr>
+                                                <!-- } -->
+                                                <tr>
+                                                    <td colspan="4" style="text-align: left; padding-left: 10px;">
+                                                        <b>Tổng tiền: </b> 
+                                                    </td>
+                                                    <td>
+                                                        100 000
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="user-infor">
+                                        <h3 style="font-weight: bold; font-size: 2rem; margin: 30px 0 10px;">Thông tin người nhận</h3>
+                                    </div>
+                                    <div style="border: 1px solid black; padding: 10px; margin-bottom: 20px;">
+                                        <div>
+                                            <span>
+                                                <b>Người nhận: </b>Tâm
+                                            </span>
+                                        </div>
+                                        <div>
+                                            <span>
+                                                <b>Địa chỉ: </b>dawd
+                                            </span>
+                                        </div>
+                                        <div>
+                                            <span>
+                                                <b>Số điện thoại: </b>0397652607
+                                            </span>
+                                        </div>
+                                        <div>
+                                            <span>
+                                                <b>Email: </b>m@dad
+                                            </span>
+                                        </div>
+                                        
+                                        
+                                        
+                                        
+                                    </div>
+                                </div>
+
+                                
+                            </div>
+                            
+                            
+
+                            <div class="body-footer" style=" display:flex; align-items:center; justify-content: space-between; margin-top: 10px;">
+                                <a href="~/Account/UserHistoryOrder" class="btn-back">Trở lại</a>                        
+                            </div>
+                            
+
+                        </div>
+                    </div>
+
+                    
+</body>
+</html>

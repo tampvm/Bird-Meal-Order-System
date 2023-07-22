@@ -1,0 +1,24 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model List<BMOS.Models.RelatedProductModel>;
+
+<span class="recommend-list__text">Sản phẩm liên quan</span>
+@foreach (var item in Model)
+{
+	string url = item._image;
+	string[] delemeter = new string[] { "datnt" };
+	string[] image = url.Split(delemeter, StringSplitOptions.None);
+	<div class="row g-0 recommend-list__item">
+		<a asp-controller="Products" asp-action="Product" asp-route-id="@item._id" class="col-4 recommend-product__img">
+			<img src="@image[0]" alt="" srcset="">
+		</a>
+
+		<div class="col-8 recommend-product__desc" style="padding-left: 10px">
+			<div class="recommend-product__name">@item._prodName</div>
+			<div class="recommend-product__price">
+				@string.Format("{0:#,0}", @item._prodPrice)vnđ
+			</div>
+		</div>
+		</div>
+}

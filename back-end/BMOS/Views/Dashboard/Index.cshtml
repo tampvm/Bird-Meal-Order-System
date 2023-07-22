@@ -1,0 +1,93 @@
+﻿@model IEnumerable<BMOS.Models.top3final>
+@{
+	ViewData["Title"] = "Index";
+	Layout = "~/Views/Shared/_ManagePage.cshtml";
+}
+
+
+<div class="dashboard" style="overflow-x: hidden">
+	<div class="row mb-4">
+		<div class="col-md-4">
+			<div class="d-flex flex-row widget income">
+				<div class="d-flex flex-column justify-content-center p-5 iconnn">
+					<i class="fa-solid fa-money-check-dollar" style="color: #5893f9; font-size:2rem;"></i>
+				</div>
+				<div class="d-flex flex-column m-auto py-3">
+					<span class="lead" style="text-align:center;">Total Price </span>
+					<h1 class="display 6 fw-bold">@string.Format("{0:#,0}", @ViewBag.TotalPrice)đ</h1>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-4">
+			<div class="d-flex flex-row widget income">
+				<div class="d-flex flex-column justify-content-center p-5 iconnn">
+					<i class="fa-solid fa-cart-shopping" style="color: #66ff7f; font-size:2rem;"></i>
+				</div>
+				<div class="d-flex flex-column m-auto py-3">
+					<span class="lead" style="text-align:center;">Total Order </span>
+					<h1 class="display 6 fw-bold">@string.Format("{0:#,0}", @ViewBag.Totalorder) Đơn</h1>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-4">
+			<div class="d-flex flex-row widget income">
+				<div class="d-flex flex-column justify-content-center p-5 iconnn">
+					<i class="fa-solid fa-clipboard" style="color: #ff3705; font-size:2rem;"></i>
+				</div>
+				<div class="d-flex flex-column m-auto py-3">
+					<span class="lead" style="text-align:center;">Total Refund </span>
+					<h1 class="display 6 fw-bold">@string.Format("{0:#,0}", @ViewBag.Totalrefund) Đơn</h1>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+
+		<div class="col-8">
+			<div class="row mb-8">
+				<div class="widget chart">
+					<div class="p-Ц">
+						<h5 class="fw-bold">Biểu đồ doanh thu</h5>
+					</div>
+					<ejs-chart id="spline" background="#1a222b">
+						<e-chart-primaryxaxis valueType="DateTime"></e-chart-primaryxaxis>
+						<e-chart-primaryyaxis valueType="Double"></e-chart-primaryyaxis>
+						<e-series-collection>
+							<e-series dataSource="@ViewBag.chartt" opacity=0.8 width=2 xName="day" yName="price" name="Price"
+									  type="@Syncfusion.EJ2.Charts.ChartSeriesType.SplineArea">
+								<e-series-border width="2"></e-series-border>
+								<e-series-marker visible="true" height="6" width="6" isFilled="true" shape="@Syncfusion.EJ2.Charts.ChartShape.Circle"></e-series-marker>
+							</e-series>
+
+						</e-series-collection>
+
+						<e-chart-tooltipsettings enable="true"></e-chart-tooltipsettings>
+						<e-chart-legendsettings enableHighlight="true"></e-chart-legendsettings>
+					</ejs-chart>
+				</div>
+
+			</div>
+		</div>
+
+		<div class="col-4">
+			<div class="p-Ц">
+				<h5 class="fw-bold">Top 3 sản phẩm bán chạy nhất</h5>
+			</div>
+			<ul class="list-group list-group-light">
+				@foreach (var item in Model)
+				{
+					<li class="list-group-item d-flex justify-content-between align-items-center">
+						<div>
+							<div class="fw-bold">@Html.DisplayFor(modelItem => item.name)</div>
+							<div class="text-muted">@string.Format("{0:#,0}", item.price)vnd</div>
+						</div>
+						<span class="1" style="padding-top:45px; width:5rem;">@Html.DisplayFor(modelItem => item.quantity) Sold</span>
+					</li>
+				}
+
+			</ul>
+		</div>
+
+	</div>
+</div>

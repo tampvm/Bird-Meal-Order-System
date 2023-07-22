@@ -1,0 +1,74 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Firebase.Auth" Version="1.0.0" />
+    <PackageReference Include="FirebaseStorage.net" Version="1.0.3" />
+    <PackageReference Include="Google.Apis.Oauth2.v2" Version="1.61.0.1869" />
+    <PackageReference Include="Google.Apis.PeopleService.v1" Version="1.61.0.3093" />
+    <PackageReference Include="MailKit" Version="4.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="6.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.7" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.7">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration" Version="6.0.14" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.14" />
+    <PackageReference Include="NUnit" Version="3.13.3" />
+    <PackageReference Include="Selenium.WebDriver" Version="4.10.0" />
+    <PackageReference Include="Syncfusion.EJ2.AspNet.Core" Version="22.1.39" />
+    <PackageReference Include="X.PagedList.Mvc.Core" Version="8.4.7" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Controllers\AccountController.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
+    <Compile Update="Models\Entities\TblUser.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Views\Account\ChangePassword.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Views\Account\Login.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\css\changepassword.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\css\login.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\js\site.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Areas\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Views\Account\ChangePassword.cshtml" />
+    <None Include="Views\Account\ForgotPassword.cshtml" />
+    <None Include="Views\Account\Login.cshtml" />
+    <None Include="Views\Account\Register.cshtml" />
+    <None Include="Views\Account\UserChangePassword.cshtml" />
+    <None Include="Views\Account\UserHistoryOrder.cshtml" />
+    <None Include="Views\Account\UserLocation.cshtml" />
+    <None Include="Views\Account\UserProfile.cshtml" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,349 @@
+﻿@model IEnumerable<CartModel>;
+@{
+	ViewData["Title"] = "Cart";
+	var totalPrice = ViewData["total"];
+	var bonusPoint = ViewData["bonusPoint"];
+	var userPoint = ViewData["userPoint"];
+	Layout = "_HeaderFooter";
+
+}
+<input type="hidden" id="cart-item-quantity" value="@Model.Count()" />
+@if (@Model.Count() == 0)
+{
+	<div style="background-image: url('images/empty_cart.svg'); background-size: contain; width: 800px; height: 50vh; background-repeat: no-repeat; background-position:center; margin: 0 auto;">
+		<div class="pt-5">
+			<h6 class="mb-0">
+				<a asp-controller="Home" asp-action="Index" class="text-body">
+					<i class="fas fa-long-arrow-alt-left me-2"></i>Nhấn vào đây để trở lại mua hàng
+				</a>
+			</h6>
+		</div>
+	</div>
+}
+else
+{
+	<body>
+		<div class="cart-wrapper">
+			<div class="row d-flex justify-content-center align-items-center">
+				<div class="col-12" style="padding: 0 100px">
+					<div class="card card-registration card-registration-2" style="border-radius: 15px;">
+						<div class="card-body p-0">
+							<div class="row g-0">
+								<div class="col-lg-8">
+									<div class="p-5">
+										<div class="d-flex justify-content-between align-items-center mb-5">
+											<h1 class="fw-bold mb-0 text-black">Giỏ Hàng</h1>
+											<h6 class="mb-0 text-muted selinum-item-quantity-test">@Model.Count() items</h6>
+										</div>
+										<div class="row mb-4 d-flex justify-content-between align-items-center">
+											<div class="col-xl-2">
+												Ảnh sản phẩm
+											</div>
+											<div class="col-xl-3">
+												Tên sản phẩm
+											</div>
+
+											<div class="col-xl-2 ">
+												Giá sản phẩm
+											</div>
+											<div class="col-xl-2" style="text-align: center">
+												Số lượng
+											</div>
+											<div class="col-xl-2 ">
+												Thành Tiền
+											</div>
+											<div class="col-xl-1 ">
+											</div>
+										</div>
+										<hr class="my-4">
+										@foreach (var item in Model)
+										{
+											var _priceProduct = item._getTotalPrice();
+											<div class="row mb-4 d-flex justify-content-between align-items-center">
+												<div class="col-xl-2">
+													<img src="@Html.DisplayFor(modelItem => item._productImage)" style="width: 100px; height: 100px" />
+												</div>
+												<div class="col-xl-3">
+													<h6 class="text-muted">@Html.DisplayFor(xx => item._productName)</h6>
+												</div>
+												<div class="col-xl-2">
+													@string.Format("{0:#,0}", item._price)vnđ
+												</div>
+												<div class="col-xl-2 d-flex">
+													<button data-id="@item._productId" class="btn btn-link px-2 decrease-prodQuantity-btn"
+															onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
+														<i class="fas fa-minus"></i>
+													</button>
+
+													<input data-id="@item._productId" input type="number" value="@item._quantity" name="cartItemQuantity"
+														   class="form-control form-control-sm product-quantity-form" />
+
+													<button data-id="@item._productId" class="btn btn-link px-2 increase-prodQuantity-btn"
+															onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
+														<i class="fas fa-plus"></i>
+													</button>
+												</div>
+												<div class="col-xl-2">
+													<h6 class="mb-0">
+														@string.Format("{0:#,0}", _priceProduct)vnđ
+												</div>
+												<div data-id="@item._productId" class="ajax-remove-item col-xl-1 text-end">
+													<a href="#!" class="text-muted"><i class="fas fa-times"></i></a>
+												</div>
+											</div>
+										}
+
+										<hr class="my-4">
+
+										<div class="pt-5">
+											<h6 class="mb-0">
+												<a href="#!" class="text-body">
+													<i class="fas fa-long-arrow-alt-left me-2"></i>Trở lại trang chủ
+												</a>
+											</h6>
+										</div>
+									</div>
+								</div>
+								<div class="col-lg-4 bg-grey">
+									<div class="p-5">
+										<h3 class="fw-bold mb-5 mt-2 pt-1">Thanh toán</h3>
+										<hr class="my-4">
+
+										<div class="d-flex justify-content-between mb-4">
+											<h5 class="text-uppercase">TỔNG</h5>
+											<h5 style="font-size: 2rem">
+												@string.Format("{0:#,0}", @totalPrice)vnđ
+											</h5>
+
+										</div>
+
+										<div class="d-flex justify-content-between mb-4">
+											<h5 class="text-uppercase">Điểm nhận được</h5>
+											<h5 style="font-size: 2rem">
+												@{
+													var point = (double?)totalPrice / 1000;
+													var resultPoint = Math.Round((decimal)point, MidpointRounding.AwayFromZero);
+												} @resultPoint điểm
+											</h5>
+										</div>
+
+
+										<hr class="my-4">
+
+										<div class="d-flex justify-content-between mb-4">
+											<h5 class="text-uppercase">Điểm tích lũy của bạn</h5>
+											@{
+												var userPointPrice = (double?)userPoint * 10;
+											}
+											<h5 style="font-size: 2rem">@userPoint điểm (@string.Format("{0:#,0}", @userPointPrice)vnđ)</h5>
+										</div>
+										<hr class="my-4">
+										<div class="mb-5">
+											<div class="form-outline discount-type-option">
+												<label class="form-label" for="form3Examplea2">Bạn có muốn giảm giá bằng:</label>
+												<div class="discount-type-wrapper">
+													<button type="button" class="btn btn-success usepoint-btn"
+															data-mdb-ripple-color="blue">
+														Điểm tích lũy
+													</button>
+													<button type="button" class="btn btn-info usecode-btn"
+															data-mdb-ripple-color="green">
+														Code
+													</button>
+												</div>
+											</div>
+										</div>
+										<div class="mb-5 usepoint-input">
+											<div class="form-outline" style="position: relative">
+												<label class="form-label" for="form3Examplea2">Sử dụng điểm tích lũy</label>
+												<label style="font-size: 1.3rem; color: #6c757d!important;" class="form-label" for="form3Examplea2">Áp dụng cho đơn hàng 100.000vnđ trở lên, 100 điểm sẽ được giảm 1.000vnđ</label>
+												<input style="padding: 10px" type="text" id="form3Examplea2" name="usePoint" class="form-control form-control-lg" />
+												<button type="button" class="btn btn-warning point-discount-btn">Áp dụng</button>
+											</div>
+										</div>
+
+										<div class="mb-5 usecode-input">
+											<div class="form-outline" style="position: relative">
+												<label class="form-label" for="form3Examplea2">Code giảm giá</label>
+												<label style="font-size: 1.3rem ;color: #6c757d!important;" class="form-label" for="form3Examplea2">Áp dụng cho đơn hàng 100.000vnđ trở lên, 100 điểm sẽ được giảm 1.000vnđ</label>
+												<input style="padding: 10px" type="text" id="form3Examplea2" name="useVoucher" class="form-control form-control-lg" />
+												<button type="button" class="btn btn-warning voucher-discount-btn">Áp dụng</button>
+											</div>
+										</div>
+
+
+
+										<hr class="my-4">
+
+										<div class="d-flex justify-content-between mb-5">
+											<h5 class="text-uppercase">Tổng Cộng</h5>
+											<h5 style="color: red; font-size: 2rem">
+												@string.Format("{0:#,0}", @totalPrice)vnđ
+											</h5>
+										</div>
+
+										<a asp-controller="ShoppingCart" asp-action="Checkout">
+											<button style="font-weight: bold" type="button" class="btn btn-warning checkout-btn btn-block btn-lg"
+													data-mdb-ripple-color="dark">
+												Thanh Toán
+											</button>
+										</a>
+
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+}
+
+@section scripts {
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+	<script>
+		$(document).ready(function () {
+			var usePointBtn = $('.point-discount-btn');
+			var useVoucherBtn = $('.voucher-discount-btn');
+
+			var usepointInput = $(".usepoint-input");
+			var usecodeInput = $(".usecode-input");
+
+			var usepointBtn = $(".usepoint-btn");
+			var usecodeBtn = $(".usecode-btn");
+			var discountType = false;
+			chooseType();
+			console.log("tpye ", discountType);
+
+			usepointBtn.click(function () {
+				discountType = false;
+				chooseType();
+			});
+
+			usecodeBtn.click(function () {
+				discountType = true;
+				chooseType();
+			});
+
+			function chooseType() {
+				if (discountType == false) {
+					usepointInput.css("display", "block");
+					usecodeInput.css("display", "none");
+
+				} else {
+					usecodeInput.css("display", "block");
+					usepointInput.css("display", "none");
+				}
+			}
+
+
+
+
+			var inputPoint = $('input[name="usePoint"]');
+			var inputVoucher = $('input[name="useVoucher"]')
+
+			useVoucherBtn.click(function (e) {
+				$.ajax({
+					url: "/ShoppingCart/useBonusCode",
+					data: {
+						code: inputVoucher.val(),
+					},
+					type: "GET",
+					success: function (data) {
+						$(".cart-wrapper").html(data)
+					},
+				})
+			});
+
+			usePointBtn.click(function (e) {
+				$.ajax({
+					url: "/ShoppingCart/useBonusPoint",
+					data: {
+						point: inputPoint.val(),
+					},
+					type: "GET",
+					success: function (data) {
+						$(".cart-wrapper").html(data)
+					},
+				})
+			});
+
+
+			$('.ajax-remove-item').click(function (e) {
+				var _id = $(this).data("id");
+				$.ajax({
+					url: "/ShoppingCart/RemoveItem",
+					data: {
+						id: _id,
+					},
+					type: "GET",
+					success: function (data) {
+						$(".cart-wrapper").html(data)
+					},
+				})
+			});
+
+			//continue fix.........!!
+			//var inputQuantity = $("input[name='cartItemQuantity']");
+
+			//item.change(function () {
+			//	item.blur(function () {
+			//		var _id = $(this).data("id");
+			//		var quantity = inputQuantity.val();
+			//		console.log("Quantiy ", quantity);
+			//		$.ajax({
+			//			url: "/ShoppingCart/UpdateCart",
+			//			data: {
+			//				id: _id,
+			//				productQuantity: quantity,
+			//				status: "input"
+			//			},
+			//			type: "GET",
+			//			success: function (data) {
+			//				$(".cart-wrapper").html(data);
+			//				$(".cart-quantity").html(quantity);
+			//			},
+			//		});
+			//	})
+			//});
+
+			//		//continue fix.........!!
+			var quantity = $("#cart-item-quantity").val();
+
+			$('.decrease-prodQuantity-btn').click(function (e) {
+				var _id = $(this).data("id");
+				$.ajax({
+					url: "/ShoppingCart/UpdateCart",
+					data: {
+						id: _id,
+						productQuantity: 1,
+						status: "decrease"
+					},
+					type: "GET",
+					success: function (data) {
+						$(".cart-wrapper").html(data);
+					},
+				});
+			});
+
+			$('.increase-prodQuantity-btn').click(function (e) {
+				var _id = $(this).data("id");
+				$.ajax({
+					url: "/ShoppingCart/UpdateCart",
+					data: {
+						id: _id,
+						productQuantity: 1,
+						status: "increase"
+					},
+					type: "GET",
+					success: function (data) {
+						$(".cart-wrapper").html(data)
+					},
+
+				});
+			});
+		});
+
+	</script>
+}

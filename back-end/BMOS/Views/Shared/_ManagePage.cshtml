@@ -1,0 +1,343 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+	<!doctype html>
+	<html lang="en">
+	<head>
+		<script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.jquery.min.js" integrity="sha512-rMGGF4wg1R73ehtnxXBt5mbUfN9JUJwbk21KMlnLZDJh7BkPmeovBuddZCENJddHYYMkCh9hPFnPmS9sspki8g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.min.css" integrity="sha512-yVvxUQV0QESBt1SyZbNJMAwyKvFTLMyXSyBHDO4BG5t7k/Lw34tyqlSDlKIrIENIzCl+RVUNjmCPG+V/GMesRw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="description" content="">
+		<meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+		<meta name="generator" content="Hugo 0.84.0">
+		<title>manage account</title>
+		<link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/sidebars/">
+		<link rel="stylesheet" href="~/css/manage_page.css" asp-append-version="true" />
+		<script src="https://cdn.syncfusion.com/ej2/22.1.34/dist/ej2.min.js"></script>
+		<link rel="stylesheet" href="https://cdn.syncfusion.com/ej2/22.1.34/material.css" />
+
+		<!-- Bootstrap core CSS -->
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+		<style>
+			.bd-placeholder-img {
+				font-size: 1.125rem;
+				text-anchor: middle;
+				-webkit-user-select: none;
+				-moz-user-select: none;
+				user-select: none;
+			}
+
+			```
+			/* Set up some basic styles for the page */
+			* {
+				box-sizing: border-box;
+			}
+
+			body {
+				margin: 0;
+				font-family: Arial, sans-serif;
+			}
+
+			/* Style the sidebar */
+
+			.sidebar {
+				position: fixed;
+				top: 0;
+				left: 0;
+				bottom: 0;
+				width: 250px;
+				background-color: #2c3e50;
+				color: #fff;
+				padding: 20px;
+				overflow-y: auto;
+			}
+
+			/* Style the logo */
+
+			.logo {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				font-size: 1.5rem;
+				font-weight: bold;
+				text-transform: uppercase;
+				letter-spacing: 2px;
+				margin-bottom: 30px;
+			}
+
+				.logo i {
+					margin-right: 10px;
+				}
+
+			/* Style the menu */
+
+			.menu ul {
+				list-style: none;
+				padding: 0;
+				margin: 0;
+			}
+
+			.menu li {
+				margin-bottom: 10px;
+			}
+
+			.menu a {
+				display: flex;
+				align-items: center;
+				color: #fff;
+				text-decoration: none;
+				padding: 10px;
+				border-radius: 5px;
+				transition: all 0.3s ease;
+			}
+
+				.menu a:hover {
+					background-color: #34495e;
+				}
+
+				.menu a.active {
+					background-color: #2980b9;
+				}
+
+			.menu i {
+				margin-right: 10px;
+			}
+
+			/* Style the user dropdown */
+
+			.user-dropdown {
+				margin-top: 50px;
+			}
+
+			.user-icon {
+				display: flex;
+				align-items: center;
+				color: #fff;
+				text-decoration: none;
+				padding: 10px;
+				border-radius: 5px;
+				transition: all 0.3s ease;
+			}
+
+				.user-icon:hover {
+					background-color: #34495e;
+				}
+
+			.dropdown-menu {
+				position: absolute;
+				top: 40px;
+				right: 0;
+				background-color: #fff;
+				box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+				border-radius: 5px;
+				padding: 10px;
+				display: none;
+			}
+
+			.user-dropdown:hover .dropdown-menu {
+				display: block;
+			}
+
+			.dropdown-menu a {
+				display: block;
+				color: #333;
+				padding: 5px 10px;
+				margin-bottom: 5px;
+				border-radius: 5px;
+				transition: all 0.3s ease;
+			}
+
+				.dropdown-menu a:hover {
+					background-color: #f5f5f5;
+				}
+
+			.dropdown-menu hr {
+				margin: 5px 0;
+				border: none;
+				border-top: 1px solid #ccc;
+			}
+
+			/* Style the content area */
+
+			.content {
+				margin-left: 250px;
+				padding: 20px;
+			}
+
+			.search-bar {
+				display: flex;
+				align-items: center;
+				margin-bottom: 20px;
+			}
+
+				.search-bar input[type="text"] {
+					flex: 1;
+					padding: 10px;
+					border: none;
+					border-radius: 5px;
+					font-size: 1rem;
+				}
+
+				.search-bar button {
+					background-color: #2980b9;
+					color: #fff;
+					border: none;
+					border-radius: 5px;
+					padding: 10px 15px;
+					margin-left: 10px;
+					cursor: pointer;
+					transition: all 0.3s ease;
+				}
+
+					.search-bar button:hover {
+						background-color: #34495e;
+					}
+
+			.table {
+				overflow-x: auto;
+			}
+
+			table {
+				width: 100%;
+				border-collapse: collapse;
+				margin: 20px 0;
+			}
+
+				table thead {
+					background-color: #2980b9;
+					color: #fff;
+				}
+
+				table th,
+				table td {
+					padding: 10px;
+					text-align: left;
+					border: 1px solid #ccc;
+				}
+
+				table tr:nth-child(even) {
+					background-color: #f5f5f5;
+				}
+
+			```
+		</style>
+
+		<!-- Custom styles for this template -->
+		<link href="sidebars.css" rel="stylesheet">
+	</head>
+	<body>
+
+
+		<main>
+			<div class="sidebar">
+				<a href="/" class="logo">
+					<i class="fa-solid fa-bars"></i>
+					<span>Bảng điều khiển</span>
+				</a>
+				<nav class="menu">
+					<ul>
+						<li>
+							<a asp-controller="Dashboard" asp-action="Index">
+								<i class="fa-solid fa-chart-line"></i>
+								<span>Dashboard</span>
+							</a>
+						</li>
+						<li>
+							<a asp-controller="AccountManage" asp-action="Index">
+								<i class="fa-solid fa-users-gear"></i>
+								<span>Quản lý tài khoản</span>
+							</a>
+						</li>
+						<li>
+							<a asp-controller="ProductManager" asp-action="Index">
+								<i class="fa-solid fa-cookie-bite"></i>
+								<span>Quản lý sản phẩm</span>
+							</a>
+						</li>
+						<li>
+							<a asp-controller="OrderManager" asp-action="Index">
+								<i class="fa-solid fa-file-lines"></i>
+								<span>Quản lý đơn hàng</span>
+							</a>
+						</li>
+						<li>
+							<a asp-controller="BlogManager" asp-action="Index">
+								<i class="fa-solid fa-blog"></i>
+								<span>Quản lý Blog</span>
+							</a>
+						</li>
+						<li>
+							<a asp-controller="FeedbackManager" asp-action="Index">
+								<i class="fa-solid fa-message"></i>
+								<span>Quản lý đánh giá</span>
+							</a>
+						</li>
+						<li>
+							<a asp-controller="RefundsManage" asp-action="Index">
+								<i class="fa-solid fa-phone-volume"></i>
+								<span>Quản lý trả hàng</span>
+							</a>
+						</li>
+						<li>
+							<a asp-controller="RoutingManager" asp-action="Index">
+								<i class="fa-solid fa-phone-volume"></i>
+								<span>Quản lý lộ trình ăn</span>
+							</a>
+						</li>
+						<li>
+							<a asp-controller="VoucherCodes" asp-action="VoucherManager">
+								<i class="fa-solid fa-phone-volume"></i>
+								<span>Quản lý Voucher</span>
+							</a>
+						</li>
+					</ul>
+				</nav>
+				<div class="dropdown" style="margin-top: 60px" ;>
+					<a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+						<i class="fa-regular fa-user" style="font-size: 32px;" class="rounded-circle me-2"></i>
+						<strong style="padding-left: 10px;">User</strong>
+					</a>
+					<ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
+						<li><a class="dropdown-item" href="#">Settings</a></li>
+						<li><a asp-controller="Account" asp-action="UserProfile" class="dropdown-item" >Profile</a></li>
+						<li><hr class="dropdown-divider"></li>
+						<li><a class="dropdown-item" asp-controller="Account" asp-action="Logout">Sign out</a></li>
+					</ul>
+				</div>
+			</div>
+
+			<div class="content">
+				<div class="search-bar">
+					<form style=" display:flex;" class="col-9 header-searchform">
+						<div class="header-searchform--input">
+							<input class="header-search__form--input-field" style="margin-left:32px; width:70rem;" name="searchString" value="@ViewData["CurrentFilter"]" placeholder="Gõ từ khóa bạn muốn tìm kiếm...">
+						</div>
+						<button class="header-search_form--button" style="padding-left:10px; background-color: rgba(0,0,0,0);outline: none;border: none;">
+							<i class="fa-solid fa-magnifying-glass"></i>
+						</button>
+					</form>
+				</div>
+				<div class="table">
+					<table>
+						<thead class="bg-light">
+							@RenderBody()
+					</table>
+				</div>
+			</div>
+		</main>
+
+		<script src="https://kit.fontawesome.com/e553a39b7e.js" crossorigin="anonymous"></script>
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+		<script src="~/ckeditor/ckeditor.js"></script>
+		<script src="sidebars.js"></script>
+		<ejs-scripts></ejs-scripts>
+		@RenderSection("scripts", false)
+		<ejs-scripts></ejs-scripts>
+	</body>
+	</html>
+
+}

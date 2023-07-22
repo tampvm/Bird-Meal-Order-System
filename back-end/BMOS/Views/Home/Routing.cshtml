@@ -1,0 +1,23 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+	var routingList = ViewData["Routing"] as List<BMOS.Models.RoutingHomePageModel>;
+}
+<div class="row col-12">
+	<div class="meal-wrapper">
+		<!-- <div class="routing-warpper"> -->
+		@foreach (var item in routingList)
+		{
+			<div class="routing-item">
+				<div class="routing-content product-border">
+					<a asp-controller="Routing" asp-action="RoutingDetail" asp-route-id="@item.routingId" style="display: flex; text-decoration: none">
+						<div class="routing-img-item__banner" style="background: url(@item.routingImage); width: 100%; height: 300px; background-size:cover"></div>
+					</a>
+				</div>
+			</div>
+		}
+
+	</div>
+	
+</div>

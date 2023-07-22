@@ -1,0 +1,78 @@
+﻿@model BMOS.Models.Entities.TblUser
+
+@{
+    Layout = "_ManagePage";
+    ViewData["Title"] = "Account Manage";
+}
+
+
+
+
+<h1>Tạo tài khoản</h1>
+
+
+<hr />
+<div class="row" style="margin-left:300px;">
+    <div class="col-md-16">
+        <form asp-action="Create" enctype="multipart/form-data">
+            <div class="form-group">
+                <label asp-for="Username" class="control-label"></label>
+                <input  asp-for="Username" class="form-control" />
+                <span asp-validation-for="Username" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password" class="control-label"></label>
+                <input type="password" asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            
+                <input asp-for="IsConfirm" type="hidden" value="true" class="form-control" />
+                
+            <div class="form-group">
+                <label asp-for="Firstname" class="control-label"></label>
+                <input asp-for="Firstname" class="form-control" />
+                <span asp-validation-for="Firstname" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Lastname" class="control-label"></label>
+                <input asp-for="Lastname" class="form-control" />
+                <span asp-validation-for="Lastname" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Numberphone" class="control-label"></label>
+                <input asp-for="Numberphone" class="form-control" />
+                <span asp-validation-for="Numberphone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Address" class="control-label"></label>
+                <input asp-for="Address" class="form-control" />
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+              
+                <input asp-for="DateCreate" type="hidden" value="@DateTime.Now" class="form-control" />
+            
+           
+                <input asp-for="LastActivitty" type="hidden" value="@DateTime.Now" class="form-control" />
+            
+                <input asp-for="Point" value="0" class="form-control" type="hidden"/>
+            
+            <div class="form-group">
+                <label asp-for="Status" class="control-label"></label>
+                <input asp-for="Status" class="form-control" />
+                <span asp-validation-for="Status" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UserRoleId" class="control-label"></label>
+                <input asp-for="UserRoleId" min="1" max="3" class="form-control" />
+                <span asp-validation-for="UserRoleId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>

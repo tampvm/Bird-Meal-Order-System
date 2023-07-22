@@ -1,0 +1,74 @@
+﻿@model BMOS.Models.OrderInfo
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_ManagePage.cshtml";
+}
+
+<h1>Thông tin chi tiết</h1>
+
+<div style="padding:0px 10px;">
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-3">
+            Mã đơn hàng: 
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.orderID)
+        </dd>
+        <dt class="col-sm-3">
+            Tên tài khoản:
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.UserName)
+        </dd>
+        <dt class="col-sm-3">
+            Trạng thái đơn hàng:
+        </dt>
+        <dd class="col-sm-9" style="padding-right: 40rem;">
+            @{
+                if ((Model.IsConfirm) == true)
+                {
+                    <p style="color:green; border-radius: 25px; background-color: lightgreen; inline-size: 50%;text-align:center;">Đơn hàng đã giao </p>
+
+                }
+                else
+                {
+                    <p style="color:black; border-radius: 25px; background-color: orangered; inline-size: 50%;text-align:center; ">Đơn hàng chưa giao </p>
+                }
+            }
+        </dd>
+        <dt class="col-sm-3">
+            Số lượng:
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Quantity)
+        </dd>  
+        <dt class="col-sm-12">
+            Thông tin chi tiêt sản phẩm:
+        </dt>
+        <dd>
+            @await Html.PartialAsync("Orderdetails")
+        </dd>
+        <div style="display:flex">
+            <dt class="col-sm-3">
+                Tổng tiền:
+            </dt>
+            <dd class="col-sm-9">
+                @string.Format("{0:#,0}", Model.total)vnđ
+            </dd>
+        </div>
+        <div style="display:flex">
+            <dt class="col-sm-3">
+                Thời gian:
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.date)
+            </dd>
+        </div>       
+        
+    </dl>
+</div>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>

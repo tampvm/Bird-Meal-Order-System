@@ -1,0 +1,82 @@
+﻿@model BMOS.Models.Entities.TblUser
+
+@{
+    Layout = "_Layout";
+    var id = ViewBag.ID;
+}
+
+    <div class="container">
+        <div class="content">
+            <div class="row userprofile">
+                <div class="col-12 userprofile_title" style="font-weight: bold;">Trang chủ/ Chỉnh sửa người dùng</div>
+            </div>
+            <div class="row userinfo">
+                <div class="col-7 userprofile_info">
+                    <div class="row userprofile_info_wel">
+                        <div class="col-6">
+                            <style>
+                                .userprofile_info_wel_history:hover {
+                                    background-color: #e38a41;
+                                }
+                            </style>
+                            <div class="userprofile_info_wel_history">
+                                <img src="~/images/history.png" alt="" srcset="">
+                                <a href="~/Account/UserHistoryOrder" style="text-decoration: none; color: black;"><h3 style="font-weight: bold; margin-top: 10px;">Lịch sử đơn hàng</h3></a>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="userprofile_info_wel_welcome">
+                                <img src="~/images/user-icon.png" alt="" srcset="">
+                                <h3 style="font-weight: bold; margin-top: 10px;">Xin chào, <Span>@ViewBag.Fullname</Span></h3>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="userprofile_info_wel_profile">
+                        <h3 style="color: rgb(247, 157, 40);"><b>Thông tin</b></h3>
+                        <div class="userprofile" style="display: flex;">
+                            <div class="col-11 userprofile_info_wel_profile_i">
+                                <h4>Họ và tên: <span style="font-weight: bold;">@ViewBag.Fullname</span><br></h4>
+                                <h4 style="margin-top: 7px">Số điện thoại: <span style="font-weight: bold;">@Model.Numberphone</span><br></h4>
+                                <h4 style="margin-top: 7px">Email: <span style="font-weight: bold;">@Model.Username</span><br></h4>                      
+                            </div>
+                            <div class="col-1 userprofile_info_profile_i" style="align-self: flex-end; margin-bottom: 10px;">
+                                <a style="color: black" asp-controller="Account" asp-action="EditUserProfile"><i class="fa-solid fa-pen-to-square editicon"></i></a>
+                            </div>
+                        </div>
+                        
+
+                    </div>
+                </div>
+
+
+
+                <div class="col-5">
+                    <div class="userprofile_bar">
+                        <div class="userprofile_bar_profile">
+                            <img src="~/images/user-icon.png" alt="" srcset="">
+                            <a href="~/Account/UserProfile" target="" style="color: #e38a41; font-weight: bold;">Hồ sơ</a>
+                        </div>
+                        <div class="userprofile_bar_profile">
+                            <img src="~/images/locationmanege.png" alt="" srcset="">
+                            <a href="~/Account/UserLocation" target="">Cài đặt địa chỉ</a>
+                        </div>
+                        <div class="userprofile_bar_profile">
+                            <img src="~/images/reset-password.png" alt="" srcset="">
+                            <a href="~/Account/UserChangePassword" target="">Đổi mật khẩu</a>
+                        </div>
+                        <div class="userprofile_bar_profile">
+                            <img src="~/images/logout.png" alt="" srcset="">
+                            <a href="~/Account/Refund" target="">Hoàn trả sản phẩm</a>
+                        </div>
+                        <div class="userprofile_bar_profile">
+                            <img src="~/images/logout.png" alt="" srcset="">
+                            <a href="~/Account/Logout" target="">Đăng xuất</a>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+

@@ -1,0 +1,317 @@
+﻿@using Microsoft.EntityFrameworkCore;
+@model BMOS.Models.ProductInfoModel
+@{
+	Layout = "_HeaderFooter";
+	ViewData["Title"] = "Index";
+	var averageStart = ViewData["AverageStartFeedback"] as double?;
+	var feedbackQuantity = ViewData["FeedbackQuantity"];
+	var id = ViewBag.ID;
+
+}
+
+<div class="content">
+	<div class="container">
+		<div class="row">
+			<div class="col-8 product-detail">
+				<div class="content__navigation">
+					<div>
+						<a href="index.html">Trang chủ</a>/
+						<a href="routing.html">Lộ trình ăn/</a>
+						<a href="#">Chi tiết bữa ăn</a>
+					</div>
+				</div>
+				<div class="product-detail__title">
+					@Model.Name
+				</div>
+				<div class="row g-0 product-detail__content">
+					<div class="col-6 product-detail__content--img">
+						<div class="card">
+							<!-- card left -->
+							<div class="product-detail-image">
+								<div class="img-display">
+									<div class="img-showcase">
+										@{
+											string url = @Model.UrlImage;
+											string[] delemeter = new string[] { "datnt" };
+											string[] image = url.Split(delemeter, StringSplitOptions.None);
+
+											for (var i = 0; i < image.Length - 1; i++)
+											{
+												<img src="@image[i]" alt="bird image">
+											}
+										}
+									</div>
+								</div>
+								<div class="img-select">
+									@{
+										var count = 1;
+									}
+									@for (var i = 0; i < image.Length - 1; i++)
+									{
+										<div class="img-item">
+											<a href="#" data-id="@count">
+												<img src="@image[i]" alt="bird image">
+											</a>
+										</div>
+										count++;
+									}
+
+								</div>
+							</div>
+
+						</div>
+					</div>
+					<div class="col-6 product-detail__content-desc">
+						<div class="product-detail__content--title product-detail--status product-info">
+							<div class="info-product">Số sao: @averageStart <i class="fa-solid fa-star star-icon" style="color: #f4ec10; font-size: 2.4rem"></i></div>
+							<div class="info-product">@feedbackQuantity đánh giá</div>
+							<div class="info-product">Đã bán: @Model.SoldQuantity</div>
+						</div>
+						
+						@*<div class="product-detail__content--title product-detail--status">
+						<span>Trạng thái:</span>
+						@if((bool)Model.Status) {
+						<div class="product-detail--status_value">Còn hàng</div>
+						} else
+						{
+						<div class="product-detail--status_value">Hết hàng</div>
+						}
+						</div>*@
+						<div class="product-detail__content--title product-detail--price">
+							<span>Giá:</span>
+							<div class="product-detail--price_value">
+								@string.Format("{0:#,0}", @Model.Price)vnđ
+							</div>
+						</div>
+						<div class="product-detail__content--title product-detail--weight">
+							<span>Trọng lượng:</span>
+							<div class="product-detail--weight_value">@{
+									@Model.Weight
+								}g</div>
+						</div>
+						<form>
+							<div class="product-detail__content--title product-detail--status product-info">
+								<div class="info-product">Sản phầm tồn kho: @Model.SoldQuantity</i></div>
+							</div>
+							<div class="product-detail__content edit-quantity-button">
+								<span>Số lượng:</span>
+
+								<img src="/images/minus-icon.png" alt="" class="value-button minus" id="decrease" onclick="decreaseValue()"
+									 value="Decrease Value">
+								<input name="productQuantity" type="number" id="number" value="1" min="1" max="@Model.SoldQuantity" />
+								<img src="/images/plus-icon.png" alt="" class="value-button plus" id="increase" onclick="increaseValue()"
+									 value="Decrease Value">
+
+							</div>
+
+
+
+
+							<div class="col-12 product-detail__content routing-button add-to-cart--button" style="margin-top: 10px">
+								<button data-id="@Model.ProductId" class="ajax-add-to-cart btn btn-primary button-action button-action--add-cart">
+									<i class="fa-solid fa-cart-shopping"></i>
+									Thêm vào giỏ hàng
+								</button>
+								@{
+									bool love = (Model.IsLoved) ?? false;
+								}
+
+								@{
+									if (Model.IsLoved == true)
+									{
+										<img class="btn-active" data-id="@Model.ProductId" src="~/images/activeheart.png" />
+									}
+									if (Model.IsLoved == false)
+									{
+										<img class="btn-active" data-id="@Model.ProductId" src="~/images/heart.png" />
+									}
+								}
+
+							</div>
+
+
+						</form>
+					</div>
+				</div>
+			</div>
+			<div class="col-4 recommend-list">
+				@{
+					<partial name="_RelatedProduct" model="@Model.relatedProductModels" />
+				}
+			</div>
+
+		</div>
+		<div class="row product-detail__description">
+			<div class="col-12 product-detail__description--title">
+				Thông tin sản phẩm
+			</div>
+			<div class="col-12 product-detail__description--content">
+				@*@Model.Description*@
+				<div class="product-detail__description--content-partition">
+					<span>Thành phần</span>
+					<span>
+						Trứng gà, đậu xanh, đậu tương, đậu đỏ, ngũ cốc, gạo lút, muỗi nước, kỳ tử, phấn hoa,
+						mật ong, đường đào, Vitamin, khoáng tổng hợp.
+						HƯỚNG DẦN SỬ DỤNG
+					</span>
+				</div>
+				<div class="product-detail__description--content-partition">
+					<span>Thành phần</span>
+					<span>
+						Trứng gà, đậu xanh, đậu tương, đậu đỏ, ngũ cốc, gạo lút, muỗi nước, kỳ tử, phấn hoa,
+						mật ong, đường đào, Vitamin, khoáng tổng hợp.
+						HƯỚNG DẦN SỬ DỤNG
+					</span>
+				</div>
+				<div class="product-detail__description--content-partition">
+					<span>Thành phần</span>
+					<span>
+						Hàm lượng đạm cao hơn + đường + muối + chất xơ + canxi + khoáng chất + vitamin tổng
+						hợp cao dùng cho chim đã thay xong lông, giúp chim hót tốt, căng lửa ổn định. CÁCH
+						CHUYỂN CÁM Trộn cám đang dùng cùng cám mới ăn 2, 3 ngày rồi cho ăn thẳng. CÔNG DỤNG Là
+						thức ăn hoàn chỉnh có đầy đủ các chất dinh dưỡng. Thức ăn tạo cho chim khỏe mạnh, lông
+						mỏ bóng mượt, hót hay. BẢO QUẢN Để nơi khô ráo thoáng mát, tránh ánh nắng mặt trời. Buộc
+						kín túi sau khi sử dụng. KLT: 200g Hạn dùng: 1 năm kể từ ngày SX
+					</span>
+				</div>
+			</div>
+		</div>
+
+
+		<div class="row g-0 feedback">
+			@if (id != null)
+			{
+
+				<form asp-controller="Products" asp-action="Comment">
+					<div class="col-12 feedback_title">
+						<div class="feedback_title--text">Phản hồi</div>
+						<div class="text-warning col-12 product-detail__content rating-buy-star">
+							<span>
+								<i class="ratingstar fa-regular fa-star star-icon" data-value="1"></i>
+								<i class="ratingstar fa-regular fa-star star-icon" data-value="2"></i>
+								<i class="ratingstar fa-regular fa-star star-icon" data-value="3"></i>
+								<i class="ratingstar fa-regular fa-star star-icon" data-value="4"></i>
+								<i class="ratingstar fa-regular fa-star star-icon" data-value="5"></i>
+							</span>
+							<input type="hidden" name="starvalue" id="rating" />
+						</div>
+					</div>
+					<div class="row g-0 user_feedback align-items-center">
+						<div class="col-1 user_feedback_avt">
+							<i class="fa-sharp fa-solid fa-user"></i>
+						</div>
+
+
+
+						<div class="col-11 user_feedback_input">
+							<input type="text" name="textcontent" placeholder="Ý kiến của bạn về sản phẩm">
+							<input type="hidden" name="id" value="@Model.ProductId">
+						</div>
+						<button type="submit" class="btn btn-outline-warning" style="margin-top: 10px; font-size: 1.8rem;">Gửi phản hồi</button>
+
+
+					</div>
+
+				</form>
+			}
+			else
+			{
+				<div class="col-12 product-detail__description--title">Bạn cần đăng nhập để có thể phản hồi sản phẩm</div>
+			}
+
+
+			@await Html.PartialAsync("Feedback")
+
+
+		</div>
+	</div>
+</div>
+@section scripts {
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+	<script>
+
+		$(".ratingstar").hover(function () {
+			$(".ratingstar").addClass("fa-regular").removeClass("fa-solid");
+			$(this).addClass("fa-solid").removeClass("fa-regular");
+			$(this).prevAll(".ratingstar").addClass("fa-solid").removeClass("fa-regular");
+		});
+
+		$(".ratingstar").click(function () {
+			var starValue = $(this).attr("data-value");
+			$("#rating").val(starValue);
+		});
+
+		$(document).ready(function () {
+			$('.ajax-add-to-cart').click(function (e) {
+				var _id = $(this).data("id");
+				e.preventDefault();
+				var quantity = $('input[name="productQuantity"]').val();
+				console.log(quantity);
+				$.ajax({
+					url: "/ShoppingCart/AddToCart",
+					data: {
+						id: _id,
+						productQuantity: quantity,
+						type: "ajax"
+					},
+					success: function (data) {
+						console.log(data);
+						if (data.loginStatus) {
+							Swal.fire({
+								position: 'center',
+								icon: 'success',
+								title: 'Sản phẩm đã được thêm vào giỏ hàng!',
+								showConfirmButton: false,
+								timer: 1500
+							});
+							$(".cart-quantity").html(data.productQuantity);
+						} else {
+							window.location.replace('/Account/Login');
+						}
+					},
+					error: function () {
+
+					}
+				});
+			});
+		});
+		$('.btn-active').click(function (e) {
+			e.preventDefault();
+			btn = $(this);
+			var id = btn.data("id");
+			e.preventDefault();
+			console.log("Click o button");
+
+			$.ajax({
+				url: "/Products/ChangeLove",
+				data: { id: id, type: "ajax" },
+				success: function (response) {
+					console.log(response)
+					if (response.love == true) {
+						Swal.fire({
+							position: 'center',
+							icon: 'success',
+							title: 'Bạn đã thêm sản phẩm này vào danh sách yêu thích!',
+							showConfirmButton: false,
+							timer: 1500
+						});
+						btn.attr('src', '/images/activeheart.png');
+					}
+					else {
+						Swal.fire({
+							position: 'center',
+							icon: 'success',
+							title: 'Bạn loại sản phẩm này vào danh sách yêu thích!',
+							showConfirmButton: false,
+							timer: 1500
+						});
+						btn.attr('src', '/images/heart.png');
+					}
+				}
+			});
+		});
+
+
+	</script>
+	}
+

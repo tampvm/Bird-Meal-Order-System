@@ -1,0 +1,59 @@
+﻿@model BMOS.Models.Entities.TblBlog
+
+@{
+    Layout = "_ManagePage";
+    ViewData["Title"] = "Create";
+}
+
+<link href="~/css/create_edit.css" rel="stylesheet" />
+
+<h1>Tạo blog</h1>
+
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create" enctype="multipart/form-data">
+            
+                <input asp-for="BlogId" type="hidden" class="form-control" value="@Guid.NewGuid().ToString()" readonly="readonly" />
+               
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <textarea asp-for="Description" class="form-control"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Date" class="control-label"></label>
+                <input  placeholder="dd-mm-yyyy" type="hidden" value="@DateTime.Now" asp-for="Date" class="form-control" />
+                <span asp-validation-for="Date" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Status" class="control-label"></label>
+                <input asp-for="Status" class="form-control" />
+                <span asp-validation-for="Status" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <span>Image</span>
+                <input type="file" name="files" class="form-control" accept="image/*" required multiple />
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    <script>
+        CKEDITOR.replace('Description');
+    </script>
+    }

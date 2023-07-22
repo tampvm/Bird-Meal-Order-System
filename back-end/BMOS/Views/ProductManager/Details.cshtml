@@ -1,0 +1,83 @@
+﻿@model BMOS.Models.Entities.TblProduct
+
+@{
+    Layout = "_ManagePage";
+    ViewData["Title"] = "Details";
+}
+
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Details</title>
+</head>
+<body>
+
+    <div style="margin-left:1rem">
+        <h4>Chi tiết sản phẩm</h4>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-2">
+                Tên
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Name)
+            </dd>
+            <dt class="col-sm-2">
+                Số lượng
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Quantity)
+            </dd>
+            <dt class="col-sm-2">
+                Đã bán
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.SoldQuantity)
+            </dd>
+            <dt class="col-sm-2">
+                Thông tin
+            </dt>
+            <dd class="col-sm-10">
+                @Html.Raw(Model.Description)
+            </dd>
+            <dt class="col-sm-2">
+                Cân nặng
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Weight)g
+            </dd>
+            <dt class="col-sm-2">
+                Trạng thái
+            </dt>
+            <dd class="col-sm-10">
+                @{
+                    if ((Model.Status) == true)
+                    {
+                        <p style="color:green; border-radius: 25px; background-color: lightgreen; inline-size: 120px;text-align:center;">Còn Hàng </p>
+
+                    }
+                    else
+                    {
+                        <p style="color:black; border-radius: 25px; background-color: orangered; inline-size: 120px;text-align:center; ">Hết Hàng </p>
+                    }
+                }
+            </dd>
+            <dt class="col-sm-2">
+                Giá tiền
+            </dt>
+            <dd class="col-sm-10">
+                @string.Format("{0:#,0}", Model.Price)vnđ
+            </dd>
+        </dl>
+    </div>
+    <div>
+        <form asp-action="Edit" asp-route-id="@Model?.ProductId">
+            <button type="submit" class="btn btn-primary">Edit</button>
+        </form>
+        <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+    </div>
+</body>
+</html>

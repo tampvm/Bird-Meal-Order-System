@@ -1,0 +1,70 @@
+﻿@model BMOS.Models.FeedbackInfo
+
+@{
+    Layout = "_ManagePage";
+    ViewData["Title"] = "Details";
+}
+
+
+<h1>Thông tin chi tiết</h1>
+
+<div>
+    <hr />
+    <dl class="row" style="padding:0px 10px;">
+        <dt class = "col-sm-2">
+            Tên sản phẩm
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class = "col-sm-2">
+            Nội dung đánh giá
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Content)
+        </dd>
+        <dt class="col-sm-2">
+            Tên tài khoản
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.userName)
+        </dd>
+        <dt class = "col-sm-2">
+            Số sao
+        </dt>
+        <dd class="col-sm-10" style="padding-right:50rem;">
+            @{
+                if ((Model.Star) == 5)
+                {
+                    <p style="color:whitesmoke; border-radius: 25px; background-color: #57e32c; inline-size: 100%;text-align:center;">5/5</p>
+
+                }
+                if ((Model.Star) == 4)
+                {
+                    <p style="color:whitesmoke; border-radius: 25px; background-color: #b7dd29; inline-size: 100%;text-align:center; ">4/5</p>
+                }
+                if ((Model.Star) == 3)
+                {
+                    <p style="color:whitesmoke; border-radius: 25px; background-color: #ffe234; inline-size: 100%;text-align:center; ">3/5</p>
+                }
+                if ((Model.Star) == 2)
+                {
+                    <p style="color:whitesmoke; border-radius: 25px; background-color: #ffa534; inline-size: 100%;text-align:center; ">2/5</p>
+                }
+                if ((Model.Star) == 1)
+                {
+                    <p style="color:whitesmoke; border-radius: 25px; background-color: #ff4545; inline-size: 100%;text-align:center; ">1/5</p>
+                }
+            }
+        </dd>
+        <dt class = "col-sm-2">
+            Thời gian
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.date)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>

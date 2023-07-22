@@ -1,0 +1,157 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model X.PagedList.IPagedList<BMOS.Models.BlogInfoModel>
+@using X.PagedList.Mvc;
+@using X.PagedList.Mvc.Core;
+@using X.PagedList.Web.Common;
+@{
+	Layout = "_HeaderFooter";
+}
+
+<body>
+	<div class="wrapper">
+
+		<!-- Navbar -->
+		<div class="content">
+			<div class="container">
+				<div class="content__navigation">
+					<div>
+						<a href="index.html">Trang chủ</a>/
+						<a asp-action="Blog">Blog</a>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-3 content__sidebar">
+						<div class="container-sidebar__titile">
+							Blog
+						</div>
+						<div class="container-sidebar__list">
+							<div class="col-12 sidebar__list-category--title">Category</div>
+							<ul class="col-12 container-sidebar__list--category">
+								<li class="sidebar__list--category-item">
+									<a href="#"
+									   class="sidebar__list--category-link">Thức ăn hạt</a>
+								</li>
+								<li class="sidebar__list--category-item">
+									<a href="#"
+									   class="sidebar__list--category-link">Thức ăn tự nhiên</a>
+								</li>
+								<li class="sidebar__list--category-item">
+									<a href="#"
+									   class="sidebar__list--category-link">Thức ăn khô</a>
+								</li>
+								<li class="sidebar__list--category-item">
+									<a href="#"
+									   class="sidebar__list--category-link">Thức ăn mềm</a>
+								</li>
+							</ul>
+						</div>
+						<div class="container-sidebar__list">
+							<div class="col-12 sidebar__list-category--title">Lộ trình</div>
+							<ul class="col-12 container-sidebar__list--category">
+								<li class="sidebar__list--category-item">
+									<a href="#"
+									   class="sidebar__list--category-link">Cải thiện cân nặng</a>
+								</li>
+								<li class="sidebar__list--category-item">
+									<a href="#"
+									   class="sidebar__list--category-link">Cải thiện sức khỏe</a>
+								</li>
+								<li class="sidebar__list--category-item">
+									<a href="#"
+									   class="sidebar__list--category-link">Cải thiện màu lông</a>
+								</li>
+							</ul>
+						</div>
+						@*<div class="container-sidebar__list">
+							<div class="col-12 sidebar__list-category--title">Blog</div>
+							<ul class="col-12 container-sidebar__list--category">
+								@foreach (var item in Model)
+									{
+								<li class="sidebar__list--category-item sidebar__blog-item">
+									
+
+										<a asp-controller="Blog" asp-action="BlogDetail" asp-route-id="@item.blogId" class="sidebar__list--category-link">
+											<div class="blog-sidebar__img" style="background-image: url('@item.blogImage')"></div>
+										<div class="blog-sidebar__text">
+												@Html.DisplayFor(modelItem => item.blogName)
+										</div>
+
+									</a>
+									
+								</li>
+									}
+							</ul>
+						</div>*@
+
+					</div>
+					<div class="col-9 content__routing-list">
+						<div class="content__filter">
+							<ul class="content__fitler-list">
+								<span>Sắp xếp:</span>
+								<li>
+									<a asp-action="Blog" asp-route-sortOrder="@ViewData["NameSortParm"]" asp-route-searchString="@ViewData["SearchParameter"]">A-Z</a> |
+								</li>
+								<li>
+									<a asp-action="Blog" asp-route-sortOrder="@ViewData["NameDescSortParm"]" asp-route-searchString="@ViewData["SearchParameter"]">Z-A</a> |
+								</li>
+								<li class="content__filter-item">
+									<a asp-action="Blog" asp-route-sortOrder="@ViewData["DateSortParm"]" asp-route-searchString="@ViewData["SearchParameter"]">Cũ nhất</a> |
+								</li>
+								<li class="content__filter-item">
+									<a asp-action="Blog" asp-route-sortOrder="@ViewData["DateDescSortParm"]" asp-route-searchString="@ViewData["SearchParameter"]">Mới nhất</a>
+								</li>
+								<li>
+									<a style="font-size: 1.5rem; text-decoration: none;margin-left:40rem;" asp-controller="Blog" asp-action="Blog">Xóa tìm kiếm</a>
+								</li>
+							</ul>
+						</div>
+						<div class="content_blog-list">
+							<div style="font-size:2rem;"> @ViewBag.Message </div>
+							<div class="row g-0 blog-list__item">
+								
+									@foreach (var item in Model)
+									{
+									<a class="col-3 bloglist-item" asp-controller="Blog" asp-action="BlogDetail" asp-route-id="@item.blogId">
+										<div class="bloglist-content blog-border" >
+												<div>
+												<div class="blog-img-item" style="background-image: url('@item.blogImage')"></div>
+												</div>
+											<div class="blog-desc">
+												<div class="blog-desc__title">
+														@Html.DisplayFor(modelItem => item.blogName)
+												</div>
+
+											</div>
+										</div>
+									</a>
+
+									}
+							</div>
+
+							<div style="font-size:2rem; margin-bottom:2rem; margin-left:1rem;">
+								Trang @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) trên @Model.PageCount
+							</div>
+
+							<div style="font-size:2rem; margin-bottom:2rem; margin-left:1rem;">
+								@Html.PagedListPager(Model, page => Url.Action("Blog",
+								new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }),
+								new PagedListRenderOptions {
+								LiElementClasses = new string[] { "page-item" },
+								PageClasses = new string[] { "page-link" }
+								})
+
+							</div>
+							
+						</div>
+					</div>
+				</div>
+
+			</div>
+
+		</div>
+
+</body>
+
+</html>

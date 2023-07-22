@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="wrapper">
+        
+    </div>
+
+
+    <style>
+        .closebtn {
+            margin-left: 15px;
+            color: black;
+            font-weight: bold;
+            float: right;
+            font-size: 1.4rem;
+            line-height: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .closebtn:hover {
+            color: white;
+        }
+
+        .form-select {
+            height: 40px;
+            width: 100%;
+            margin: 10px 0;
+        }
+    </style>
+    <div id="add_address" class="form" style="height: 100vh;width: 100%;background-color: rgba(47, 46, 46, 0.5);position: fixed;top: 0;left: 0;">
+        <div class="modal-form" style="width: 50%; position: relative;left: 50%;transform: translateX(-50%); background-color: #ffff;">
+            <div class="modal-content" style="border: 2px solid black; padding: 10px; border-radius: 5px; margin-top: 10%;">
+                <div class="modal-header" style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid black; margin-bottom: 5px;">
+                    <h2 class="font-weight-bold modal-title">
+                        Thêm địa chỉ
+                    </h2>
+                    <span class="closebtn">&times;</span>                   
+                </div>
+
+                <div class="modal-body">
+                    <form method="post" action="" id="customer_address">
+                    <div class="pop_bottom">
+                        <div>
+                            <div class="form-group" style="margin-top: 10px;">
+                                <label>Địa chỉ</label></br>
+                                <input type="text" class="form-select" name="Address1" value="" style="width: 99%;">
+                            </div>
+                            <div class="form-group" style="margin-top: 10px;">
+                                <label>Tỉnh/Thành Phố</label></br>
+                                <select class="form-select form-select-sm mb-3" id="city" aria-label=".form-select-sm">
+                                    <option value="" selected>---</option>           
+                                </select></br>
+                                <label>Quận/huyện</label></br>            
+                                <select class="form-select form-select-sm mb-3" id="district" aria-label=".form-select-sm">
+                                    <option value="" selected>---</option>
+                                </select></br>
+                                    <label>Phường/xã</label></br>     
+                                    <select class="form-select form-select-sm" id="ward" aria-label=".form-select-sm">
+                                    <option value="" selected>---</option>
+                                    </select></br>
+                            </div>                            
+                        </div>   
+
+                        <div class="checkbox" style="margin-top: 10px;">
+                            <label class="c-input c-checkbox">
+                                <input type="checkbox" id="address_default_address_" name="IsDefault" value="true">
+                                <span class="c-indicator">Đặt làm địa chỉ mặc định</span> 
+                            </label>
+                        </div>	
+                        <div class="btn-row" style="margin-top: 10px; display: flex; align-items: center; justify-content: space-between;">
+                            <button class="btn btn-submit" id="addnew" type="submit">Thêm địa chỉ</button>	
+                            <button type="button" class="btn btn-remove" data-dismiss="modal" aria-label="Close">Huỷ</button>                                                   
+                        </div>
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+    <script>
+	var citis = document.getElementById("city");
+var districts = document.getElementById("district");
+var wards = document.getElementById("ward");
+var Parameter = {
+  url: "https://raw.githubusercontent.com/kenzouno1/DiaGioiHanhChinhVN/master/data.json", 
+  method: "GET", 
+  responseType: "application/json", 
+};
+var promise = axios(Parameter);
+promise.then(function (result) {
+  renderCity(result.data);
+});
+
+function renderCity(data) {
+  for (const x of data) {
+    citis.options[citis.options.length] = new Option(x.Name, x.Id);
+  }
+  citis.onchange = function () {
+    district.length = 1;
+    ward.length = 1;
+    if(this.value != ""){
+      const result = data.filter(n => n.Id === this.value);
+
+      for (const k of result[0].Districts) {
+        district.options[district.options.length] = new Option(k.Name, k.Id);
+      }
+    }
+  };
+  district.onchange = function () {
+    ward.length = 1;
+    const dataCity = data.filter((n) => n.Id === citis.value);
+    if (this.value != "") {
+      const dataWards = dataCity[0].Districts.filter(n => n.Id === this.value)[0].Wards;
+
+      for (const w of dataWards) {
+        wards.options[wards.options.length] = new Option(w.Name, w.Id);
+      }
+    }
+  };
+}
+	</script>
+</body>
+</html>

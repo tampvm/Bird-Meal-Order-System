@@ -1,0 +1,275 @@
+﻿@model List<BMOS.Models.OrderDetailInfoModel>
+@{
+	ViewData["Title"] = "OrderDetail";
+	Layout = "_Layout";
+	var id = ViewBag.ID;
+}
+
+
+<div class="container">
+	<div class="content">
+		<div class="row userprofile">
+			<div class="col-12 userprofile_title">Trang chủ/ Chỉnh sửa người dùng</div>
+		</div>
+		<div class="row userinfo">
+			<div class="col-7 userprofile_info">
+				<div class="row userprofile_info_wel">
+					<div class="col-6">
+						<div class="userprofile_info_wel_history" style="background-color: #e38a41;">
+							<img src="~/images/history.png" alt="" srcset="">
+							<a href="~/Account/UserHistoryOrder" style="text-decoration: none; color: black;"><h3 style="font-weight: bold; margin-top: 10px;">Lịch sử đơn hàng</h3></a>
+						</div>
+					</div>
+					<div class="col-6">
+						<div class="userprofile_info_wel_welcome">
+							<img src="~/images/user-icon.png" alt="" srcset="">
+							<h3 style="font-weight: bold; margin-top: 10px;">Xin chào, <Span>@ViewBag.Fullname</Span></h3>
+						</div>
+					</div>
+				</div>
+				<style>
+					.btn-back {
+						width: 20%;
+						font-weight: bold;
+						font-size: 2rem;
+						display: flex;
+						align-items: center;
+						justify-content: center;
+						text-decoration: none;
+						color: black;
+						background-color: orange;
+						height: 5rem;
+						border-radius: 10px;
+					}
+
+						.btn-back:hover {
+							color: #b48010;
+						}
+
+					th, td {
+						border: 1px solid black;
+					}
+				</style>
+
+				<div class="row">
+					<div class="col-12 user_history" style="padding: 3% 5%;">
+						<div class="order-detail-header" style="background-color: rgba(197, 123, 38, 0.822); display: flex; border-top: 1px solid
+                            black; border-left: 1px solid black; border-right: 1px solid black; height: 15%; justify-content:left; align-items:center;">
+							<h2 style="font-weight: bold; font-size: 2.5rem;  padding-left: 3%;">Chi tết đơn hàng</h2>
+						</div>
+						<div style="border: 1px solid black; display: flex; align-items: center; justify-content: center;">
+							<div class="order-detail-body" style="width: 95%">
+								<div class="body-head" style="display: flex; align-items: center; justify-content: space-between;">
+									<h3 style="font-size: 2rem;  margin: 10px 0;"><b>Mã đơn hàng: </b>@ViewBag.OrderID</h3>
+									<h3 style="font-size: 2rem;  margin: 10px 0;"><b>Ngày đặt: </b>@ViewBag.Date</h3>
+								</div>
+								<div class="body-content" style="margin: 0 0 10px;">
+									<table class="table" style="text-align: center; border: none; font-size: 2rem;  border-collapse: collapse;">
+										<thead>
+											<tr>
+												<th>
+													<h4>Tên sản phẩm</h4>
+												</th>
+												<th>
+													<h4>Ảnh</h4>
+												</th>
+												<th>
+													<h4>Số lượng</h4>
+												</th>
+												<th>
+													<h4>Giá</h4>
+												</th>
+											</tr>
+										</thead>
+										<tbody>
+											@foreach (var item in Model)
+											{
+												<tr>
+													<td>
+														@item.productName
+													</td>
+													<td>
+														<img src="@item.image" style="width: 100px; height: 100px" />
+													</td>
+													<td>
+														@Html.DisplayFor(modelItem => item.Quantity)
+													</td>
+													<td>
+														@string.Format("{0:#,0}", item.Price) VND
+													</td>
+												</tr>
+											}
+											<tr>
+												<td colspan="3" style="text-align: left; padding-left: 10px;">
+													<b>Tổng tiền: </b>
+												</td>
+												<td>
+													@ViewBag.TotalPrice VND
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+								<div class="user-infor">
+									<h3 style="font-weight: bold; font-size: 2rem; margin: 30px 0 10px;">Thông tin người nhận</h3>
+								</div>
+								<div style="border: 1px solid black; padding: 10px; margin-bottom: 20px;">
+									<div>
+										<span style="font-size: 1.5rem">
+											<b>Người nhận: </b>@ViewBag.Fullname
+										</span>
+									</div>
+									<div>
+										<span style="font-size: 1.5rem">
+											<b>Địa chỉ: </b>@ViewBag.Address
+										</span>
+									</div>
+									<div>
+										<span style="font-size: 1.5rem">
+											<b>Số điện thoại: </b>@ViewBag.Phone
+										</span>
+									</div>
+									<div>
+										<span style="font-size: 1.5rem">
+											<b>Email: </b>@ViewBag.Email
+										</span>
+									</div>
+								</div>
+							</div>
+
+
+						</div>
+
+						<div class="body-footer" style=" display:flex; align-items:center; justify-content: space-between; margin: 2% 0 5%;">
+							<a href="~/Account/UserHistoryOrder" class="btn-back">Trở lại</a>
+
+
+							@{
+								DateTime date = DateTime.Today.AddDays(-2);
+							}
+							@if (@ViewBag.Date >= date)
+							{
+								<button class="btn-back" asp-action="AddRefund" asp-controller="Account" data-bs-toggle="modal" data-bs-target="#refund">
+									Hoàn trả
+								</button>
+								<div class="modal" tabindex="-1" id="refund">
+									<div class="modal-dialog modal-xl modal-dialog-centered" style="margin-top:10rem;">
+										<div class="modal-content">
+											<div class="modal-header">
+												<h5 class="modal-title fw-bold" style="font-size:3rem;">Hoàn trả</h5>
+												<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="close"></button>
+											</div>
+											@*<form method="post" asp-action="addrefund" asp-controller="account">*@
+											<input type="hidden" class="form-control" name="userid" value="" required />
+											<div class="form-group" style="padding:0px 5rem;">
+												<label for="recipient-name" class="col-form-label fw-bold" style="font-size:3rem;">Mã đơn hàng</label>
+												<input type="text" class="form-control" style="font-size:2rem;" value="@ViewBag.OrderID" name="orderid" readonly />
+											</div>
+											<input type="hidden" class="form-control" name="userid" value="@id" required />
+											<div class="form-group" style="padding:0px 5rem;">
+												<label for="recipient-name" class="col-form-label fw-bold" style="font-size:3rem;">Lý do hoàn trả</label>
+												<textarea id="note" class="form-control" style="font-size:2rem;" required></textarea>
+											</div>
+
+											<div class="modal-footer">
+												<button type="submit" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+												<button type="submit" class="btn btn-primary ajax-submit-form-refund">Gửi đơn</button>
+											</div>
+											@*</form>*@
+										</div>
+									</div>
+								</div>
+							}
+							else
+							{
+
+							}
+
+						</div>
+					</div>
+
+
+
+
+
+
+
+
+				</div>
+			</div>
+
+			<div class="col-5">
+				<div class="userprofile_bar">
+					<div class="userprofile_bar_profile">
+						<img src="~/images/user-icon.png" alt="" srcset="">
+						<a href="~/Account/UserProfile" target="" style="color: #e38a41; font-weight: bold;">Hồ sơ</a>
+					</div>
+					<div class="userprofile_bar_profile">
+						<img src="~/images/locationmanege.png" alt="" srcset="">
+						<a href="~/Account/UserLocation" target="">Cài đặt địa chỉ</a>
+					</div>
+					<div class="userprofile_bar_profile">
+						<img src="~/images/reset-password.png" alt="" srcset="">
+						<a href="~/Account/UserChangePassword" target="">Đổi mật khẩu</a>
+					</div>
+					<div class="userprofile_bar_profile">
+						<img src="~/images/logout.png" alt="" srcset="">
+						<a href="~/Account/Refund" target="">Hoàn trả sản phẩm</a>
+					</div>
+					<div class="userprofile_bar_profile">
+						<img src="~/images/logout.png" alt="" srcset="">
+						<a href="~/Account/Logout" target="">Đăng xuất</a>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<script>
+	$(document).ready(function () {
+		var submitBtn = $('.ajax-submit-form-refund');
+		var orderId = $('input[name="orderid"]').val();
+
+		submitBtn.click(function () {
+			var descrip = $('#note').val();
+
+			$.ajax({
+				url: "/Account/AddRefund",
+				data: {
+					orderid: orderId,
+					note: descrip
+				},
+				success: function (data) {
+					if (data.messge != null) {
+						Swal.fire({
+							icon: 'error',
+							title: 'Oops...',
+							width: '50%',
+							height: '50%',
+							text: 'Bạn đã có đơn hàng này trong hệ thống!',
+						});
+					} else {
+
+						Swal.fire({
+							title: 'Cảm ơn bạn đã phản hồi, chúng tôi sẽ xem xét trường hợp của bạn!',
+							imageUrl: 'https://firebasestorage.googleapis.com/v0/b/bmosfile.appspot.com/o/Notify%2Fproduct-refund-australia-726x412.png?alt=media&token=baac39f4-7d7c-4b72-88de-d015880b8e43',
+							imageWidth: 400,
+							imageHeight: 200,
+							imageAlt: 'Custom image',
+							width: '50%',
+							height: '50%',
+							confirmButtonText: '<a href="/Account/Refund" style="color:white;text-decoration:none;">OK</a>',
+						});
+
+					}
+				}
+			});
+		});
+	});
+</script>

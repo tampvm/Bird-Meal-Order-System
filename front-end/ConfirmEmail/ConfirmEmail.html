@@ -1,0 +1,67 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="vn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--<link rel="stylesheet" href="css/reset.css">-->
+    <link rel="stylesheet" href="~/css/confirm.css">
+    <title>Xác thực tài khoản</title>
+</head>
+
+<body>
+    <div id="wrapper">
+        @if (ViewBag.Confirmed != null)
+        {   
+            <style>
+                .alert {
+                    width: 40%;
+                    margin: 10px auto;
+                    padding: 20px;
+                    background-color: green;
+                    color: white;
+                    text-align: center;
+                }
+
+                .closebtn {
+                    margin-left: 15px;
+                    color: white;
+                    font-weight: bold;
+                    float: right;
+                    font-size: 1.4rem;
+                    line-height: 20px;
+                    cursor: pointer;
+                    transition: 0.3s;
+                }              
+
+                .closebtn:hover {
+                    color: black;
+                }
+            </style>
+
+            <div class="alert success">
+                <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>  
+                <strong>@ViewBag.Confirmed </strong> 
+            </div>
+        }
+
+    
+        <div class="others">
+            <div class="others-button">             
+                <a href="~/Home/Index" class="btn btn-name"><b>Trang chủ</b></a>
+                <a href="~/Account/Login" class="btn btn-name"><b>Đăng nhập</b></a>
+                <a href="~/Account/Register" class="btn btn-name"><b>Tạo tài khoản mới</b></a>
+            </div>
+        </div>
+    </div>
+
+
+</body>
+
+</html>

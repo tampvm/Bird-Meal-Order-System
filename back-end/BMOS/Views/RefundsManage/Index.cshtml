@@ -1,0 +1,95 @@
+﻿@model X.PagedList.IPagedList<BMOS.Models.RefundsInfoModel>
+@using X.PagedList.Mvc;
+@using X.PagedList.Mvc.Core;
+@using X.PagedList.Web.Common;
+@{
+    Layout = "_ManagePage";
+    ViewData["Title"] = "Index";
+}
+
+<h1>Quản lý trả hàng</h1>
+<a style="text-decoration:none;color:darkorange" asp-controller="RefundsManage" asp-action="Index">
+    <button type="button" class="btn btn-warning">Làm mới</button>
+</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Tên người dùng
+            </th>
+            <th class="col-4">
+                Thông tin hoàn trả
+            </th>
+            <th>
+                Mã đơn hàng
+            </th>
+            
+            <th>
+                <a style="text-decoration:none; color:darkorange" asp-action="Index" asp-route-sortOrder="@ViewData["DateSortParm"]" asp-route-searchString="@ViewData["SearchParameter"]">Thời gian</a>
+            </th>
+            <th>
+                Xác nhận của Staff
+            </th>
+            <th>
+                Hành động
+                
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserName)
+                </td>
+            <td >
+                <div style="display:-webkit-box;-webkit-box-orient: vertical;
+                            -webkit-line-clamp: 2;overflow:hidden;">
+                        @Html.DisplayFor(modelItem => item.Description)
+                </div>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrderId)
+            </td>
+            
+            <td>
+                @Html.DisplayFor(modelItem => item.Date)
+            </td>
+                <td>
+                    @{
+                        if ((item.IsConfirm) == true)
+                        {
+                            <p style="color:green; border-radius: 25px; background-color: lightgreen; inline-size: 100%;text-align:center;">Đã phê duyệt </p>
+
+                        }
+                        else
+                        {
+                            <p style="color:black; border-radius: 25px; background-color: orangered; inline-size: 100%;text-align:center; ">Chưa phê duyệt </p>
+                        }
+                    }
+                </td>
+            <td>
+                <a style="text-decoration:none;" asp-action="Edit" asp-route-id="@item.RefundId">
+                        <button type="button" class="btn btn-primary" >Chỉnh sửa</button>
+                </a> 
+                <a style="text-decoration:none;" asp-action="Details" asp-route-id="@item.RefundId">
+                        <button type="button" class="btn btn-info" >Chi tiết</button>
+                </a> 
+
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+<div style="font-size:0.8rem; margin-bottom:2rem; margin-left:1rem;">
+    Trang @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) trên @Model.PageCount
+</div>
+<div style="font-size:1rem; margin-bottom:2rem; margin-left:1rem;">
+    @Html.PagedListPager(Model, page => Url.Action("Index",
+    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }),
+    new PagedListRenderOptions {
+    LiElementClasses = new string[] { "page-item" },
+    PageClasses = new string[] { "page-link" }
+    })
+</div>

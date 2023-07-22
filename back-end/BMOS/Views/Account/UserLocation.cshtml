@@ -1,0 +1,575 @@
+﻿@model IEnumerable<BMOS.Models.Entities.TblAddress>
+@{
+	Layout = "_Layout";
+	var id = ViewBag.ID;
+}
+
+
+	<div class="container">
+		<div class="content">
+			<div class="row userprofile">
+				<div class="col-12 userprofile_title" style="font-weight: bold;">Trang chủ/ Chỉnh sửa người dùng</div>
+			</div>
+			<div class="row userinfo">
+				<div class="col-7 userprofile_info">
+					<div class="row userprofile_info_wel">
+						<div class="col-6">
+							<style>
+								.userprofile_info_wel_history:hover {
+									background-color: #e38a41;
+								}
+							</style>
+							<div class="userprofile_info_wel_history">
+								<img src="~/images/history.png" alt="" srcset="">
+								<a href="~/Account/UserHistoryOrder" style="text-decoration: none; color: black;"><h3 style="font-weight: bold; margin-top: 10px;">Lịch sử đơn hàng</h3></a>
+							</div>
+						</div>
+						<div class="col-6">
+							<div class="userprofile_info_wel_welcome">
+								<img src="~/images/user-icon.png" alt="" srcset="">
+								<h3 style="font-weight: bold; margin-top: 10px;">Xin chào, <Span>@ViewBag.Fullname</Span></h3>
+							</div>
+						</div>
+					</div>
+
+
+
+
+					<div class="row">
+						<div class="userprofile_info_location">
+							<div class="col-12 userprofile_info_wel_location">
+								<button class="userprofile_info_wel_location1_icon" id="btn-open" type="button" onclick="addfunction()">
+									<img src="~/images/location-icon.png" alt="" srcset="">
+									<h3>Thêm địa chỉ</h3>
+								</button>
+
+								<style>
+									.closebtn {
+										margin-left: 15px;
+										color: black;
+										font-weight: bold;
+										float: right;
+										font-size: 1.4rem;
+										line-height: 20px;
+										cursor: pointer;
+										transition: 0.3s;
+									}
+
+										.closebtn:hover {
+											color: white;
+										}
+
+									.form-select {
+										height: 40px;
+										width: 100%;
+										margin: 10px 0;
+									}
+
+									#add_address {
+										height: 100vh;
+										width: 100%;
+										background-color: rgba(47, 46, 46, 0.5);
+										position: fixed;
+										top: 0;
+										left: 0;
+										opacity: 0;
+										pointer-events: none;
+										transition: all 0.3s ease-in-out;
+									}
+
+									#edit_address {
+										height: 100vh;
+										width: 100%;
+										background-color: rgba(47, 46, 46, 0.5);
+										position: fixed;
+										top: 0;
+										left: 0;
+										opacity: 0;
+										pointer-events: none;
+										transition: all 0.3s ease-in-out;
+									}
+
+									.modal_form {
+										width: 50%;
+										position: relative;
+										left: 50%;
+										transform: translateX(-50%);
+										background-color: #ffff;
+										top: 0;
+										transition: all 0.3s ease-in-out;
+										border: 2px solid black;
+										padding: 10px;
+										border-radius: 5px;
+									}
+
+									#add_address.show {
+										opacity: 1;
+										pointer-events: all;
+									}
+
+										#add_address.show .modal_form {
+											top: 5%;
+										}
+
+									#edit_address.show {
+										opacity: 1;
+										pointer-events: all;
+									}
+
+										#edit_address.show .modal_form {
+											top: 5%;
+										}
+
+									#checkbox1.hide {
+										display: none;
+									}
+								</style>
+
+								<div id="add_address">
+									<div class="modal_form" id="modal_form">
+
+										<div class="modal-header" style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid black; margin-bottom: 5px;">
+											<h3 class="font-weight-bold modal-title">
+												Thêm địa chỉ
+											</h3>
+											<span class="closebtn" id="btn-close">&times;</span>
+										</div>
+
+										<div class="modal-body">
+											<form method="post" action="~/Account/AddLocation" id="customer_address">
+												<div class="pop_bottom">
+													<div>
+														<div class="form-group" style="margin: 0; height: 0;">
+															<label for="userid"></label>
+															<input type="hidden" name="userid" value="@ViewBag.UserID">
+														</div>
+														<div class="form-group" style="margin-top: 10px;">
+															<label for="address">Địa chỉ</label><br>
+															<input type="text" name="address" class="form-select" value="" style="width: 99%;" required>
+														</div>
+														<div class="form-group" style="margin-top: 10px;">
+															<label>Tỉnh/Thành Phố</label><br>
+															<select class="form-select form-select-sm mb-3" id="city" aria-label=".form-select-sm" required>
+																<option value="" selected>---</option>
+															</select><br>
+															<input type="hidden" name="cityprovince" id="cityprovince" value="">
+
+															<label>Quận/huyện</label><br>
+															<select class="form-select form-select-sm mb-3" id="district" aria-label=".form-select-sm" required>
+																<option value="" selected>---</option>
+															</select><br>
+															<input type="hidden" name="district" id="districts" value="">
+
+															<label>Phường/xã</label><br>
+															<select class="form-select form-select-sm" id="ward" aria-label=".form-select-sm" required>
+																<option value="" selected>---</option>
+															</select><br>
+															<input type="hidden" name="blockvillage" id="blockvillage" value="">
+
+														</div>
+													</div>
+
+													<div class="checkbox" style="margin-top: 10px;">
+														<label class="c-input c-checkbox">
+															<input type="checkbox" id="address_default_address_" name="IsDefault" value="true" style="width:10%; height:10%;">
+															<span class="c-indicator">Đặt làm địa chỉ mặc định</span>
+														</label>
+													</div>
+
+													<div class="btn-row" style="margin-top: 10px; display: flex; align-items: center; justify-content: space-between;">
+														<button class="btn btn-submit" onclick="setValue()" type="submit">Thêm địa chỉ</button>
+														<button type="button" class="btn btn-remove" id="btn-cancel">Huỷ</button>
+													</div>
+												</div>
+											</form>
+										</div>
+									</div>
+								</div>
+
+								<div id="edit_address">
+									<div class="modal_form" id="modal_form_edit">
+
+										<div class="modal-header" style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid black; margin-bottom: 5px;">
+											<h3 class="font-weight-bold modal-title">
+												Chỉnh sửa địa chỉ
+											</h3>
+											<span class="closebtn" id="btn-close-edit">&times;</span>
+										</div>
+
+										<div class="modal-body">
+											<form method="post" action="~/Account/EditLocation" id="customer_address">
+												<div class="pop_bottom">
+													<div>
+														<div class="form-group" style="margin: 0; height: 0;">
+															<label for="addressid"></label>
+															<input type="hidden" name="addressid" id="addressidedit" value="">
+														</div>
+														<div class="form-group" style="margin: 0; height: 0;">
+															<label for="userid"></label>
+															<input type="hidden" name="userid" value="@ViewBag.UserID">
+														</div>
+														<div class="form-group" style="margin-top: 10px;">
+															<label for="address">Địa chỉ</label><br>
+															<input type="text" id="addressname" name="address" class="form-select" value="" style="width: 99%;" required>
+														</div>
+														<div class="form-group" style="margin-top: 10px;">
+															<label>Tỉnh/Thành Phố</label><br>
+															<select class="form-select form-select-sm mb-3" id="city1" aria-label=".form-select-sm" value="" required>
+																<option value="">---</option>
+															</select><br>
+															<input type="hidden" name="cityprovince" id="cityprovince1" value="">
+
+															<label>Quận/huyện</label><br>
+															<select class="form-select form-select-sm mb-3" id="district1" aria-label=".form-select-sm" required>
+																<option value="" selected>---</option>
+															</select><br>
+															<input type="hidden" name="district" id="districts1" value="">
+
+															<label>Phường/xã</label><br>
+															<select class="form-select form-select-sm" id="ward1" aria-label=".form-select-sm" required>
+																<option value="" selected>---</option>
+															</select><br>
+															<input type="hidden" name="blockvillage" id="blockvillage1" value="">
+
+														</div>
+													</div>
+
+													<div id="checkbox1" style="margin-top: 10px;">
+														<label class="c-input c-checkbox">
+															<input type="checkbox" id="address_chkbox" name="IsDefault" value="true" style="width:10%; height:10%;">
+															<span class="c-indicator">Đặt làm địa chỉ mặc định</span>
+														</label>
+													</div>
+
+													<div class="btn-row" style="margin-top: 10px; display: flex; align-items: center; justify-content: space-between;">
+														<button class="btn btn-submit" onclick="setValueEdit()" type="submit">Cập nhật địa chỉ</button>
+														<button type="button" class="btn btn-remove" id="btn-cancel-edit">Huỷ</button>
+													</div>
+												</div>
+											</form>
+										</div>
+									</div>
+								</div>
+
+
+								<div style="display: flex; justify-content: center; align-items: center;">
+									<div class="userprofile_info_wel_locationh3" style="width: 95%;">
+										@if (ViewBag.DefaultAdd != null)
+										{
+											<form action="~/Account/RemoveLocation" method="post">
+												<div class="col-12 userprofile_info_wel_location2" style="border: 1px solid black;  border-radius: 20px; display:flex; align-items:center; justify-content:center; margin: 10px 0; padding: 5px 0;">
+													<div class="col-11 userprofile_info_wel_locationinfo">
+														<h3><b>Họ và tên: </b>@ViewBag.Fullname <span style="color: forestgreen; font-size: 1.5rem;">(Địa chỉ mặc định)</span></h3>
+														<input type="hidden" name="addressid" value="@ViewBag.AddressID">
+														<h3><b>Địa chỉ: </b>@ViewBag.DefaultAdd<span>, </span>@ViewBag.DefaultBlock<span>, </span>@ViewBag.DefaultDis<span>, </span>@ViewBag.DefaultCity</h3>
+														<input type="hidden" id="address_name" value="@ViewBag.DefaultAdd">
+														<input type="hidden" id="block_name" value="@ViewBag.DefaultBlock">
+														<input type="hidden" id="district_name" value="@ViewBag.DefaultDis">
+														<input type="hidden" id="city_name" value="@ViewBag.DefaultCity">
+														<input type="hidden" id="chkbox" value="@ViewBag.Checkbox">
+														<h3><b>Số điện thoại: </b>@ViewBag.Phone</h3>
+													</div>
+													<div class="col-1 userprofile_info_location_edit">
+														<button type="button" id="btn-open-edit" value="@ViewBag.AddressID" onclick="editfunction()" style="background: none; border:none;"><i class="fa-solid fa-pen-to-square editicon"></i></button>
+														<button type="submit" style="background: none; border:none;">
+															<i class="fa-solid fa-trash removeicon"></i>
+														</button>
+													</div>
+												</div>
+											</form>
+										}
+										@foreach (var item in Model)
+										{
+											<form action="~/Account/RemoveLocation" method="post">
+												<div class="col-12 userprofile_info_wel_location2" style="border: 1px solid black;  border-radius: 20px; display:flex; align-items:center; justify-content:center; margin: 10px 0; padding: 5px 0;">
+
+													<div class="col-11 userprofile_info_wel_locationinfo">
+														<h3><b>Họ và tên: </b>@ViewBag.Fullname </h3>
+														<input type="hidden" name="addressid" value="@item.AddressId">
+														<h3><b>Địa chỉ: </b>@item.Address, @item.BlockVillage, @item.District, @item.CityProvince</h3>
+														<input type="hidden" class="address_name" value="@item.Address">
+
+														<input type="hidden" class="block_name" value="@item.BlockVillage">
+														<input type="hidden" class="district_name" value="@item.District">
+														<input type="hidden" class="city_name" value="@item.CityProvince">
+														<h3><b>Số điện thoại: </b>@ViewBag.Phone</h3>
+
+													</div>
+													<div class="col-1 userprofile_info_location_edit">
+														<button type="button" class="btn-open-edit" onclick="editfunction()" value="@item.AddressId" style="background: none; border:none;"><i class="fa-solid fa-pen-to-square editicon"></i></button>
+														<button type="submit" style="background: none; border:none;"><i class="fa-solid fa-trash removeicon"></i></button>
+													</div>
+
+												</div>
+											</form>
+										}
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+				<div class="col-5">
+					<div class="userprofile_bar">
+						<div class="userprofile_bar_profile">
+							<img src="~/images/user-icon.png" alt="" srcset="">
+							<a href="~/Account/UserProfile" target="">Hồ sơ</a>
+						</div>
+						<div class="userprofile_bar_profile">
+							<img src="~/images/locationmanege.png" alt="" srcset="">
+							<a href="~/Account/UserLocation" target="" style="color: #e38a41; font-weight: bold;">Cài đặt địa chỉ</a>
+						</div>
+						<div class="userprofile_bar_profile">
+							<img src="~/images/reset-password.png" alt="" srcset="">
+							<a href="~/Account/UserChangePassword" target="">Đổi mật khẩu</a>
+						</div>
+						<div class="userprofile_bar_profile">
+							<img src="~/images/logout.png" alt="" srcset="">
+							<a href="~/Account/Refund" target="">Hoàn trả sản phẩm</a>
+						</div>
+						<div class="userprofile_bar_profile">
+							<img src="~/images/logout.png" alt="" srcset="">
+							<a href="~/Account/Logout" target="">Đăng xuất</a>
+						</div>
+
+					</div>
+				</div>
+
+
+			</div>
+		</div>
+	</div>
+
+
+<script>
+	const btn_open = document.getElementById('btn-open');
+	const btn_close = document.getElementById('btn-close');
+	const btn_cancel = document.getElementById('btn-cancel');
+	const add_address = document.getElementById('add_address');
+	const modal_form = document.getElementById('modal_form');
+	btn_open.addEventListener('click', () => {
+		add_address.classList.add('show');
+	});
+	btn_close.addEventListener('click', () => {
+		add_address.classList.remove('show');
+	});
+	btn_cancel.addEventListener('click', () => {
+		add_address.classList.remove('show');
+	});
+
+	add_address.addEventListener('click', (e) => {
+		if (!modal_form.contains(e.target)) {
+			btn_close.click();
+		}
+	})
+
+	let x = document.getElementsByClassName('btn-open-edit');
+	let add_name = document.getElementsByClassName('address_name');
+	let city_name = document.getElementsByClassName('city_name');
+	let district_name = document.getElementsByClassName('district_name');
+	let block_name = document.getElementsByClassName('block_name');
+
+	const checked = document.getElementById('checkbox1');
+	const btn_open_edit = document.getElementById('btn-open-edit');
+	const btn_close_edit = document.getElementById('btn-close-edit');
+	const btn_cancel_edit = document.getElementById('btn-cancel-edit');
+	const edit_address = document.getElementById('edit_address');
+	const modal_form_edit = document.getElementById('modal_form_edit');
+	for (let i = 0; i < x.length; i++) {
+
+		x[i].addEventListener('click', () => {
+			edit_address.classList.add('show');
+			let n = x[i].value;
+			document.getElementById('addressidedit').setAttribute('value', n);
+
+			let addrs = add_name[i].value;
+			document.getElementById('addressname').setAttribute('value', addrs);
+
+
+			let ctyn = city_name[i].value;
+			citii.options[citii.selectedIndex].text = ctyn;
+			document.getElementById('cityprovince1').setAttribute('value', ctyn);
+			let disn = district_name[i].value;
+			districtt.options[districtt.selectedIndex].text = disn;
+			document.getElementById('districts1').setAttribute('value', disn);
+			let bln = block_name[i].value;
+			wardd.options[wardd.selectedIndex].text = bln;
+			document.getElementById('blockvillage1').setAttribute('value', bln);
+		});
+		btn_close_edit.addEventListener('click', () => {
+			edit_address.classList.remove('show');
+		});
+		btn_cancel_edit.addEventListener('click', () => {
+			edit_address.classList.remove('show');
+		});
+
+		edit_address.addEventListener('click', (e) => {
+			if (!modal_form_edit.contains(e.target)) {
+				btn_close_edit.click();
+			}
+		})
+	}
+
+	btn_open_edit.addEventListener('click', () => {
+		edit_address.classList.add('show');
+		checked.classList.add('hide');
+
+		let get_default_id = btn_open_edit.value;
+		document.getElementById('addressidedit').setAttribute('value', get_default_id);
+
+		let addrs_defaultn = document.getElementById('address_name').value;
+		document.getElementById('addressname').setAttribute('value', addrs_defaultn);
+
+		let city_defaultn = document.getElementById('city_name').value;
+
+		//citii.options[citii.options.length] = new Option(city_defaultn, '01');
+		citii.options[citii.selectedIndex].text = city_defaultn;
+		//citii.options[citii.selectedIndex].value = '01';
+
+		let district_defaultn = document.getElementById('district_name').value;
+		districtt.options[districtt.selectedIndex].text = district_defaultn;
+
+		let block_defaultn = document.getElementById('block_name').value;
+		wardd.options[wardd.selectedIndex].text = block_defaultn;
+
+		document.getElementById('address_chkbox').setAttribute('checked', checked);
+	});
+	btn_close_edit.addEventListener('click', () => {
+		edit_address.classList.remove('show');
+		checked.classList.remove('hide');
+	});
+	btn_cancel_edit.addEventListener('click', () => {
+		edit_address.classList.remove('show');
+		checked.classList.remove('hide');
+	});
+
+	edit_address.addEventListener('click', (e) => {
+		if (!modal_form_edit.contains(e.target)) {
+			btn_close_edit.click();
+		}
+	})
+
+
+
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+<script>
+	var citis = document.getElementById('city');
+	var districts = document.getElementById('district');
+	var wards = document.getElementById('ward');
+	function addfunction() {
+		var Parameter = {
+			url: "https://raw.githubusercontent.com/kenzouno1/DiaGioiHanhChinhVN/master/data.json",
+			method: "GET",
+			responseType: "application/json",
+		};
+		var promise = axios(Parameter);
+		promise.then(function (result) {
+			renderCity(result.data);
+		});
+
+		function renderCity(data) {
+			for (const x of data) {
+				citis.options[citis.options.length] = new Option(x.Name, x.Id);
+			}
+			citis.onchange = function () {
+				district.length = 1;
+				ward.length = 1;
+				if (this.value != "") {
+					const result = data.filter(n => n.Id === this.value);
+
+					for (const k of result[0].Districts) {
+						district.options[district.options.length] = new Option(k.Name, k.Id);
+					}
+				}
+			};
+			district.onchange = function () {
+				ward.length = 1;
+				const dataCity = data.filter((n) => n.Id === citis.value);
+				if (this.value != "") {
+					const dataWards = dataCity[0].Districts.filter(n => n.Id === this.value)[0].Wards;
+
+					for (const w of dataWards) {
+						wards.options[wards.options.length] = new Option(w.Name, w.Id);
+					}
+				}
+			};
+		}
+	}
+
+
+	function setValue() {
+		var city = citis.options[citis.selectedIndex].text;
+		document.getElementById('cityprovince').setAttribute('value', city);
+
+		var district = districts.options[districts.selectedIndex].text;
+		document.getElementById('districts').setAttribute('value', district);
+
+		var ward = wards.options[wards.selectedIndex].text;
+		document.getElementById('blockvillage').setAttribute('value', ward);
+	}
+</script>
+
+
+<script>
+	var citii = document.getElementById('city1');
+	var districtt = document.getElementById('district1');
+	var wardd = document.getElementById('ward1');
+
+
+	function editfunction() {
+		var Parameter = {
+			url: "https://raw.githubusercontent.com/kenzouno1/DiaGioiHanhChinhVN/master/data.json",
+			method: "GET",
+			responseType: "application/json",
+		};
+		var promise = axios(Parameter);
+		promise.then(function (result) {
+			renderCity(result.data);
+		});
+
+		function renderCity(data) {
+			for (const x of data) {
+				citii.options[citii.options.length] = new Option(x.Name, x.Id);
+			}
+			citii.onchange = function () {
+				district1.length = 1;
+				ward1.length = 1;
+				if (this.value != "") {
+					const result = data.filter(n => n.Id === this.value);
+
+					for (const k of result[0].Districts) {
+						district1.options[district1.options.length] = new Option(k.Name, k.Id);
+					}
+				}
+			};
+			district1.onchange = function () {
+				ward1.length = 1;
+				const dataCity = data.filter((n) => n.Id === citii.value);
+				if (this.value != "") {
+					const dataWards = dataCity[0].Districts.filter(n => n.Id === this.value)[0].Wards;
+
+					for (const w of dataWards) {
+						wardd.options[wardd.options.length] = new Option(w.Name, w.Id);
+					}
+				}
+			};
+		}
+	}
+	function setValueEdit() {
+
+
+
+		var city1 = citii.options[citii.selectedIndex].text;
+		document.getElementById('cityprovince1').setAttribute('value', city1);
+
+		var district1 = districtt.options[districtt.selectedIndex].text;
+		document.getElementById('districts1').setAttribute('value', district1);
+
+		var ward1 = wardd.options[wardd.selectedIndex].text;
+		document.getElementById('blockvillage1').setAttribute('value', ward1);
+	}
+
+</script>

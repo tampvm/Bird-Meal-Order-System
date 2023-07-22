@@ -1,0 +1,112 @@
+﻿@model X.PagedList.IPagedList<BMOS.Models.FeedbackInfo>
+@using X.PagedList.Mvc;
+@using X.PagedList.Mvc.Core;
+@using X.PagedList.Web.Common;
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_ManagePage.cshtml";
+}
+
+<h1>Quản lý đánh giá</h1>
+<a style="text-decoration:none;color:darkorange" asp-controller="FeedbackManager" asp-action="Index">
+    <button type="button" class="btn btn-warning">Làm mới</button>
+</a>
+<table class="table">
+    <thead>
+        <tr>        
+            <th>
+                Ảnh sản phẩm
+            </th>
+            <th>
+                Tên sản phẩm
+            </th>
+            <th class="col-4">
+                Nội dung đánh giá
+            </th>
+            <th class="col-2">
+                Tên tài khoản
+            </th>
+            <th class="col-1">
+                <a style="text-decoration:none;color:darkorange" asp-action="Index" asp-route-sortOrder="@ViewData["PriceSortParm"]" asp-route-searchString="@ViewData["SearchParameter"]">Số Sao</a>
+            </th>
+            <th>
+                <a style="text-decoration:none; color:darkorange" asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]" asp-route-searchString="@ViewData["SearchParameter"]">Thời gian</a>
+            </th>
+            <th class="col-2">
+                Hành động
+            </th>
+            
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>    
+                <td>
+                    <img src="@item.urlImage" style="width: 100px; height: 100px" />
+                </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Content)
+            </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.userName)
+                </td>
+            <td>
+                    @{
+                        if ((item.Star) == 5)
+                        {
+                            <p style="color:whitesmoke; border-radius: 25px; background-color: #57e32c; inline-size: 100%;text-align:center;">5/5</p>
+
+                        }
+                        if ((item.Star) == 4)
+                        {
+                            <p style="color:whitesmoke; border-radius: 25px; background-color: #b7dd29; inline-size: 100%;text-align:center; ">4/5</p>
+                        }
+                        if ((item.Star) == 3)
+                        {
+                            <p style="color:whitesmoke; border-radius: 25px; background-color: #ffe234; inline-size: 100%;text-align:center; ">3/5</p>
+                        }
+                        if ((item.Star) == 2)
+                        {
+                            <p style="color:whitesmoke; border-radius: 25px; background-color: #ffa534; inline-size: 100%;text-align:center; ">2/5</p>
+                        }
+                        if ((item.Star) == 1)
+                        {
+                            <p style="color:whitesmoke; border-radius: 25px; background-color: #ff4545; inline-size: 100%;text-align:center; ">1/5</p>
+                        }
+                    }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.date)
+            </td>
+            <td>
+                <a style="text-decoration:none;" asp-action="Details" asp-route-id="@item.FeedbackId">
+                        <button type="button" class="btn btn-info">Chi tiết</button>
+                </a>
+                    <a style="text-decoration:none;" asp-action="Details" asp-route-id="@item.FeedbackId">
+                        <button type="button" class="btn btn-danger">Delete</button>
+                    </a> 
+                            
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+<br />
+<br />
+<div style="font-size:2rem; margin-bottom:2rem; margin-left:1rem;">
+    Trang @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) tren @Model.PageCount
+</div>
+
+<div style="font-size:0.8rem; margin-bottom:2rem; margin-left:1rem;">
+    @Html.PagedListPager(Model, page => Url.Action("Index",
+    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }),
+    new PagedListRenderOptions {
+    LiElementClasses = new string[] { "page-item" },
+    PageClasses = new string[] { "page-link" }
+    })
+
+</div>

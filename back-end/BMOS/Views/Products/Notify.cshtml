@@ -1,0 +1,41 @@
+﻿@model IEnumerable<BMOS.Models.Entities.TblNotify>
+@{
+	Layout = "_HeaderFooter";
+	ViewData["Title"] = "Index";
+
+
+}
+<div class="content">
+	<div class="container">
+		<div class="row">
+			<div class="col-8 product-detail">
+				<div class="content__navigation">
+					<div>
+						<a href="index.html">Trang chủ</a>/
+						<a asp-action="Notify" asp-controller="Products">Thông báo</a>
+					</div>
+					<div class="Notify_content" style="padding-top:50px; padding-left:100px; font-size:large; font-weight:bold;">
+						<div>@ViewBag.message </div>
+						@foreach (var item in Model)
+						{
+							<tr>
+								<td>
+									@Html.DisplayFor(modelItem => item.Date)
+									<br></br>
+								</td>
+								<td>
+									@Html.DisplayFor(modelItem => item.Message)
+									<br></br>
+									<br></br>
+								</td>
+							</tr>
+						}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+

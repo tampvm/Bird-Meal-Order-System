@@ -1,0 +1,33 @@
+﻿@{
+	var feedbackList = ViewData["Feedback"] as List<BMOS.Models.FeedbackInfoModel>;
+}
+
+@foreach (var item in feedbackList)
+{
+	
+	<div class="row g-0 user_feedbacked">
+		<div class="col-1 user_feedbacked_avt">
+			<i class="fa-sharp fa-solid fa-user"></i>
+		</div>
+		<div class="col-11 user_feedbacked__content">
+			<div class="user_feedbacked__info">
+				<div class="user_feedbacked__name"> @item.fullName</div>
+				<div class="user_feedbacked__star">
+					@for( var i = 1; i<= @item.Star; i++ ) {
+					<i class="fa-solid fa-star star-icon" style="color: #f4ec10;"></i>
+					}
+				</div>
+				<div class="user_feedback__date">
+					@item.date
+				</div>
+			</div>
+			@*<div class="user_feedbacked__like">
+		<div class="liked-quantity">32</div>
+		<i class="fa-solid fa-heart heart-icon" style="color: #d32a17;"></i>
+		</div>*@
+		</div>
+		<div class="col-12 user_feedback__input">
+			<input type="text" readonly value="@item.Content">
+		</div>
+	</div>
+}

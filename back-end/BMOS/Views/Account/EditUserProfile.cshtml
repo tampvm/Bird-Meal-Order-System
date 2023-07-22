@@ -1,0 +1,127 @@
+﻿@model BMOS.Models.Entities.TblUser
+@{
+    Layout = "_Layout";
+    var id = ViewBag.ID;
+}
+
+    <div class="container">
+        <div class="content">
+            <div class="row userprofile">
+                <div class="col-12 userprofile_title" style="font-weight: bold;">Trang chủ/ Chỉnh sửa người dùng</div>
+            </div>
+            <div class="row userinfo">
+                <div class="col-7 userprofile_info">
+                    <div class="row userprofile_info_wel">
+                        <div class="col-6">
+                            <style>
+                                .userprofile_info_wel_history:hover {
+                                    background-color: #e38a41;
+                                }
+                            </style>
+                            <div class="userprofile_info_wel_history">
+                                <img src="~/images/history.png" alt="" srcset="">
+                                <a href="~/Account/UserHistoryOrder" style="text-decoration: none; color: black;"><h3 style="font-weight: bold; margin-top: 10px;">Lịch sử đơn hàng</h3></a>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="userprofile_info_wel_welcome">
+                                <img src="~/images/user-icon.png" alt="" srcset="">
+                                <h3 style="font-weight: bold; margin-top: 10px;">Xin chào, <Span>@ViewBag.Fullname</Span></h3>
+                            </div>
+                        </div>
+                    </div>
+
+                    <style>
+                        .input-text {
+                            font-weight: bold;
+                            border-radius: 5px;
+                            padding: 0 10px;
+                            width: 30%;
+                            border: solid 2px black;
+                        }
+
+                        .action {
+                            display: flex;
+                            justify-content: space-between;
+                            margin-top: 10px;
+                        }
+
+                        .btn-change {
+                            width: 20%;
+                            height: 3rem;
+                            border-radius: 5px;
+                            border: none;
+                            background-color: orange;
+                            font-weight: bold;
+                            font-size: 1.5rem;
+                        }
+
+                        .btn-forgot {
+                            width: 20%;
+                            font-weight: bold;
+                            font-size: 1.5rem;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            text-decoration: none;
+                            color: black;
+                        }
+
+                            .btn-forgot:hover {
+                                color: #b48010;
+                            }
+                    </style>
+                    <div class="userprofile_info_wel_profile">
+                        <h3 style="color: rgb(247, 157, 40);"><b>Thông tin</b></h3>
+                        <form action="~/Account/EditUserProfile" method="post">
+                            <div class="userprofile_info_wel_profile_i">
+                                
+                                <h4 style="margin-top: 5px">Họ: <input type="text" value="@Model.Firstname" name="firstname" class="input-text" required></h4>
+                                <h4 style="margin-top: 5px">Tên: <input type="text" value="@Model.Lastname" name="lastname" class="input-text" required></h4>
+                                <h4 style="margin-top: 5px">Số điện thoại: <input type="text" id="phone" name="numberphone" value="@Model.Numberphone" class="input-text" required></h4>
+                                <h4 style="margin-top: 5px">Email: <span style="font-weight: bold;">@Model.Username</span><br></h4>
+                                <div class="action">
+                                    <button type="submit" id="submit" class="btn btn-change">Cập nhật</button>
+                                    <a href="~/Account/UserProfile" class="btn btn-forgot">Trở lại</a>
+                                </div>
+                            </div>
+
+                        </form>
+                            
+                            
+                        
+                    </div>
+                </div>
+
+
+
+                <div class="col-5">
+                    <div class="userprofile_bar">
+                        <div class="userprofile_bar_profile">
+                            <img src="~/images/user-icon.png" alt="" srcset="">
+                            <a href="~/Account/UserProfile" target="" style="color: #e38a41; font-weight: bold;">Hồ sơ</a>
+                        </div>
+                        <div class="userprofile_bar_profile">
+                            <img src="~/images/locationmanege.png" alt="" srcset="">
+                            <a href="~/Account/UserLocation" target="">Cài đặt địa chỉ</a>
+                        </div>
+                        <div class="userprofile_bar_profile">
+                            <img src="~/images/reset-password.png" alt="" srcset="">
+                            <a href="~/Account/UserChangePassword" target="">Đổi mật khẩu</a>
+                        </div>
+                        <div class="userprofile_bar_profile">
+                            <img src="~/images/logout.png" alt="" srcset="">
+                            <a href="~/Account/Refund" target="">Hoàn trả sản phẩm</a>
+                        </div>
+                        <div class="userprofile_bar_profile">
+                            <img src="~/images/logout.png" alt="" srcset="">
+                            <a href="~/Account/Logout" target="">Đăng xuất</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="~/js/site.js"></script>
+

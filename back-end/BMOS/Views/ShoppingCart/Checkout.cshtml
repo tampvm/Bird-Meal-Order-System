@@ -1,0 +1,507 @@
+﻿@model BMOS.Models.Entities.TblUser;
+@{
+	ViewData["Title"] = "Checkout";
+	var address = ViewData["Address"] as BMOS.Models.Entities.TblAddress;
+	var toltalPrice = ViewData["totalPrice"];
+	var bonuspoint = ViewData["bonusPoint"];
+	var totalPriceBeforeUseDiscount = ViewData["totalPriceBeforeUseDiscount"];
+	var discountPrice = ViewData["discountPrice"];
+	var Cart = ViewData["Cart"] as List<CartModel>;
+	int? totalItem = Cart.Count();
+}
+
+<html class="floating-labels no-touch">
+
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no" />
+	<meta content="Thanh toán đơn hàng" />
+	<title>BMOS - Thanh toán đơn hàng</title>
+	<link rel="stylesheet" href="~/css/checkout.css" />
+
+
+</head>
+
+
+<body>
+	<div id="preloader"></div>
+	<input type="hidden" name="bonuspoint" value="@bonuspoint" />
+	<button class="order-summary-toggle">
+		<span class="wrap">
+			<span class="order-summary-toggle__inner">
+				<span class="order-summary-toggle__text expandable">
+					Đơn hàng (@totalItem sản phẩm)
+				</span>
+				<span class="order-summary-toggle__total-recap">@toltalPrice.000₫</span>
+			</span>
+		</span>
+	</button>
+
+	<div class="content">
+		<form method="post">
+			<input type="hidden" value="patch" />
+			<div class="wrap">
+				<main class="main">
+					<header class="main__header">
+						<div class="logo logo--center">
+							<a href="/">
+								<img class="logo__image logo__image--medium" alt="PetFood - Math Imex" src="/images/Logo.png" />
+							</a>
+						</div>
+					</header>
+					<div class="main__content">
+						<article class="animate-floating-labels row">
+							<div class="col col--two">
+								<section class="section">
+									<div class="section__header">
+										<div class="layout-flex">
+											<h2 class="section__title layout-flex__item layout-flex__item--stretch">
+												<i class="fa fa-id-card-o fa-lg section__title--icon hide-on-desktop"></i>
+												Thông tin nhận hàng
+											</h2>
+
+											<a href="/account/logout?returnUrl=/checkout/e5fcc7aaf4564a638ea5dd02f8d500a4">
+												<i class="fa fa-sign-out fa-lg"></i>
+												<span>Đăng xuất</span>
+											</a>
+										</div>
+									</div>
+									<div class="section__content">
+										<div class="fieldset">
+											@*		<div class="field field--show-floating-label">
+											<div class="field__input-wrapper">
+											<label for="customer-address" class="field__label">Địa chỉ nhận hàng</label>
+											<select size="1" class="field__input field__input--select">
+											</select>
+											<div class="field__caret">
+											<i class="fa fa-caret-down"></i>
+											</div>
+											</div>
+											</div>*@
+											<div class="field field--show-floating-label">
+												<div class="field__input-wrapper field__input-wrapper--connected">
+													<label for="billingPhone" class="field__label">
+														Địa chỉ nhận hàng
+													</label>
+													@if (@address != null)
+													{
+														<input type="text" name="location" class="field__input" value="@address.Address" />
+													}
+													else
+													{
+														<input type="text" name="location" class="field__input" value="" />
+													}
+													<div class="field__input-phone-region-wrapper">
+														<select class="field__input select-phone-region select2-hidden-accessible" tabindex="-1"
+																aria-hidden="true">
+															<option value="VN">
+																Vietnam (+84)
+															</option>
+														</select><span class="select2 select2-container select2-container--default" dir="ltr"
+																	   style="width: 56px">
+															<span class="selection">
+																<span class="select2-selection select2-selection--single select2-phone-region"
+																	  role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0"
+																	  aria-disabled="false" aria-labelledby="select2-billingPhoneRegion-99-container">
+																	<span class="select2-selection__rendered" role="textbox" aria-readonly="true"
+																		  title="Vietnam (+84)"><span class="fi fi-vn"></span></span><span class="select2-selection__arrow" role="presentation">
+																		<b role="presentation"></b>
+																	</span>
+																</span>
+															</span><span class="dropdown-wrapper"
+																		 aria-hidden="true"></span>
+														</span>
+													</div>
+												</div>
+											</div>
+											<div class="field field--show-floating-label">
+												<div class="field__input-wrapper">
+													<label for="email" class="field__label">
+														Email
+													</label>
+													<input name="userEmail" type="email" class="field__input" value="@Model.Username" />
+												</div>
+											</div>
+
+											<div class="field field--show-floating-label">
+												<div class="field__input-wrapper">
+													<label for="billingName" class="field__label">Họ và tên</label>
+													<input name="userName" type="text" class="field__input" value="@Model.Lastname" />
+												</div>
+											</div>
+
+											<div class="field field--show-floating-label">
+												<div class="field__input-wrapper field__input-wrapper--connected">
+													<label for="billingPhone" class="field__label">
+														Số điện thoại (tùy chọn)
+													</label>
+													<input name="userPhone" type="tel" class="field__input" value="@Model.Numberphone" />
+													<div class="field__input-phone-region-wrapper">
+														<select class="field__input select-phone-region select2-hidden-accessible" tabindex="-1"
+																aria-hidden="true">
+															<option value="VN">
+																Vietnam (+84)
+															</option>
+														</select><span class="select2 select2-container select2-container--default" dir="ltr"
+																	   style="width: 56px">
+															<span class="selection">
+																<span class="select2-selection select2-selection--single select2-phone-region"
+																	  role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0"
+																	  aria-disabled="false" aria-labelledby="select2-billingPhoneRegion-99-container">
+																	<span class="select2-selection__rendered" role="textbox" aria-readonly="true"
+																		  title="Vietnam (+84)"><span class="fi fi-vn"></span></span><span class="select2-selection__arrow" role="presentation">
+																		<b role="presentation"></b>
+																	</span>
+																</span>
+															</span><span class="dropdown-wrapper"
+																		 aria-hidden="true"></span>
+														</span>
+													</div>
+												</div>
+											</div>
+
+											<div class="field field--show-floating-label">
+												<div class="field__input-wrapper">
+													<label for="billingAddress" class="field__label">
+														Địa chỉ (tùy chọn)
+													</label>
+													<input type="text" class="field__input" value="" />
+												</div>
+											</div>
+
+											<div class="field field--show-floating-label">
+												<div class="field__input-wrapper field__input-wrapper--select2">
+												</div>
+											</div>
+
+											<div class="field field--show-floating-label">
+												<div class="field__input-wrapper field__input-wrapper--select2">
+												</div>
+											</div>
+
+											<div class="field field--show-floating-label">
+												<div class="section__title layout-flex__item layout-flex__item--stretch">
+													Ghi chú cho đơn hàng của bạn
+												</div>
+											</div>
+										</div>
+									</div>
+								</section>
+								<div class="fieldset">
+									<h3 class="visually-hidden">Ghi chú</h3>
+									<div class="field">
+										<div class="field__input-wrapper">
+											<textarea id="noteOrder" class="field__input"></textarea>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col col--two">
+								<section class="section">
+									<div class="section__header">
+										<div class="layout-flex">
+											<h2 class="section__title layout-flex__item layout-flex__item--stretch">
+												<i class="fa fa-truck fa-lg section__title--icon hide-on-desktop"></i>
+												Vận chuyển
+											</h2>
+										</div>
+									</div>
+									<div class="section__content">
+										<div class="alert alert--loader spinner spinner--active hide">
+										</div>
+
+										<div class="alert alert-retry alert--danger hide">
+											>
+											<i class="fa fa-refresh"></i>
+										</div>
+
+										<div class="content-box" style="margin-top: 8px">
+											<div class="content-box__row">
+												<div class="radio-wrapper">
+													<div class="radio__input">
+														<input type="radio" class="input-radio" value="688153_0,40.000 VND" checked />
+													</div>
+													<label for="shippingMethod-688153_0" class="radio__label">
+														<span class="radio__label__primary">
+															<span>Giao hàng tận nơi</span>
+														</span>
+														<span class="radio__label__accessory">
+															<span class="content-box__emphasis price">
+																20.000₫
+															</span>
+														</span>
+													</label>
+												</div>
+											</div>
+										</div>
+
+
+									</div>
+								</section>
+
+								<section class="section">
+									<div class="section__header">
+										<div class="layout-flex">
+											<h2 class="section__title layout-flex__item layout-flex__item--stretch">
+												<i class="fa fa-credit-card fa-lg section__title--icon hide-on-desktop"></i>
+												Thanh toán
+											</h2>
+										</div>
+									</div>
+									<div class="section__content">
+
+										<div class="content-box">
+											<div class="content-box__row">
+												<div class="radio-wrapper">
+													<div class="radio__input">
+														<input id="codpayment" type="radio" class="input-radio" name="paymentType" value="COD" checked />
+													</div>
+													<label for="codpayment" class="radio__label">
+														<span class="radio__label__primary">Thanh toán khi giao hàng (COD)</span>
+														<span class="radio__label__accessory">
+															<span class="radio__label__icon">
+																<i class="fa-light fa-money-bill"></i>
+															</span>
+														</span>
+													</label>
+												</div>
+
+											</div>
+										</div>
+
+										<div class="content-box" style="margin-top: 10px">
+											<div class="content-box__row">
+												<div class="radio-wrapper">
+													<div class="radio__input">
+														<input id="momopayment" type="radio" class="input-radio" name="paymentType" value="MOMO" />
+													</div>
+													<label for="momopayment" class="radio__label">
+														<span class="radio__label__primary">Thanh toán trực tuyến (MOMO)</span>
+														<span class="radio__label__accessory">
+															<span class="radio__label__icon">
+																<i class="fa-regular fa-credit-card"></i>
+															</span>
+														</span>
+													</label>
+												</div>
+
+											</div>
+										</div>
+									</div>
+								</section>
+							</div>
+						</article>
+						<div class="field__input-btn-wrapper field__input-btn-wrapper--vertical hide-on-desktop">
+							<button type="submit" class="btn btn-checkout spinner">
+								<span class="spinner-label">ĐẶT HÀNG</span>
+							</button>
+
+							<a href="/cart" class="previous-link">
+								<i class="previous-link__arrow">❮</i>
+								<span class="previous-link__content">Quay về giỏ hàng</span>
+							</a>
+						</div>
+
+
+					</div>
+				</main>
+				<aside class="sidebar">
+					<div class="sidebar__header">
+						<h2 class="sidebar__title">Đơn hàng (@totalItem sản phẩm)</h2>
+					</div>
+					<div class="sidebar__content">
+						<div>
+							<div class="order-summary__sections">
+								@foreach (var item in Cart)
+								{
+									<div class="order-summary__section order-summary__section--product-list order-summary__section--is-scrollable order-summary--collapse-element">
+										<table class="product-table">
+											<caption class="visually-hidden">
+												Chi tiết đơn hàng
+											</caption>
+											<thead class="product-table__header">
+												<tr>
+													<th>
+														<span class="visually-hidden">Ảnh sản phẩm</span>
+													</th>
+													<th>
+														<span class="visually-hidden">Mô tả</span>
+													</th>
+													<th>
+														<span class="visually-hidden">Sổ lượng</span>
+													</th>
+													<th>
+														<span class="visually-hidden">Đơn giá</span>
+													</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr class="product">
+													<td class="product__image">
+														<div class="product-thumbnail">
+															<div class="product-thumbnail__wrapper">
+																<img src="@item._productImage" alt="" class="product-thumbnail__image" />
+															</div>
+															<span class="product-thumbnail__quantity">@item._quantity</span>
+														</div>
+													</td>
+													<th class="product__description">
+														<span class="product__description__name">
+															@item._productName
+														</span>
+
+														<span class="product__description__property">
+															@item._weight g
+														</span>
+													</th>
+													<td class="product__quantity visually-hidden">
+														<em>Số lượng:</em> @item._quantity
+													</td>
+													<td class="product__price">@string.Format("{0:#,0}", @item._price)vnđ</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								}
+								<div class="bonus-point order-summary__section order-summary__section--discount-code">
+									@bonuspoint điểm bonus
+								</div>
+								<div class="order-summary__section order-summary__section--total-lines order-summary--collapse-element">
+									<table class="total-line-table">
+										<caption class="visually-hidden">
+											Tổng giá trị
+										</caption>
+										<thead>
+											<tr>
+												<td><span class="visually-hidden">Mô tả</span></td>
+												<td><span class="visually-hidden">Giá tiền</span></td>
+											</tr>
+										</thead>
+										<tbody class="total-line-table__tbody">
+											<tr class="total-line total-line--subtotal">
+												<th class="total-line__name">Tạm tính</th>
+												<td class="total-line__price">@string.Format("{0:#,0}", totalPriceBeforeUseDiscount)vnđ</td>
+											</tr>
+
+											<tr class="total-line total-line--subtotal">
+												<th class="total-line__name">Giảm giá</th>
+												<td class="total-line__price">@string.Format("{0:#,0}", discountPrice)vnđ</td>
+											</tr>
+
+											<tr class="total-line total-line--shipping-fee">
+												<th class="total-line__name">Phí vận chuyển</th>
+
+												<td class="total-line__price">
+													20.000₫
+												</td>
+											</tr>
+										</tbody>
+										<tfoot class="total-line-table__footer">
+											<tr class="total-line payment-due">
+												<th class="total-line__name">
+													<span class="payment-due__label-total">
+														Tổng cộng
+													</span>
+												</th>
+												<td class="total-line__price">
+
+													<span class="payment-due__price">
+														@{
+															var resultTotalPriceCountShipperPrice = (double?)toltalPrice + 20000;
+														}
+														@string.Format("{0:#,0}", resultTotalPriceCountShipperPrice)vnđ
+
+													</span>
+												</td>
+											</tr>
+										</tfoot>
+									</table>
+								</div>
+								<div class="order-summary__nav field__input-btn-wrapper hide-on-mobile layout-flex--row-reverse">
+									<div class="btn btn-checkout spinner ajax-payment">
+										<span class="spinner-label">ĐẶT HÀNG</span>
+									</div>
+
+									<a asp-controller="ShoppingCart" asp-action="Index" class="previous-link">
+										<i class="previous-link__arrow">❮</i>
+										<span class="previous-link__content">Quay về giỏ hàng</span>
+									</a>
+								</div>
+
+							</div>
+						</div>
+					</div>
+
+			</div>
+		</form>
+
+</body>
+
+</html>
+<script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+
+	var loader = document.getElementById("preloader");
+	window.addEventListener("load", function () {
+		loader.classList.add("disapear");
+	})
+
+	$(document).ready(function () {
+		var _address = $('input[name="location"]').val();
+		var _phone = $('input[name="userPhone"]').val();
+
+		var bonusPoint = $('input[name="bonuspoint"]').val();
+		var _pType = "COD";
+		//select options payment
+		$.each($('input[name="paymentType"]'), function (index, value) {
+			$(this).change(function () {
+				_pType = $(this).val();
+			})
+		});
+
+		$('.ajax-payment').click(function (e) {
+			var _note = $("#noteOrder").val();
+			Swal.fire({
+				title: 'Bạn nhận được ' + bonusPoint + ' điểm. ',
+				text: 'Vui lòng xác nhận đơn hàng',
+				imageUrl: 'https://firebasestorage.googleapis.com/v0/b/bmosfile.appspot.com/o/Notify%2FShopping-Cart-Day-1.jpg?alt=media&token=a823f31d-40fa-4cb1-a49b-0d079e656331',
+				imageWidth: 400,
+				imageHeight: 200,
+				showCancelButton: true,
+				confirmButtonText: 'Xác nhận',
+				denyButtonText: `Không! Cảm ơn.`,
+			}).then((result) => {
+				/* Read more about isConfirmed, isDenied below */
+				if (result.isConfirmed) {
+
+					Swal.fire({
+						title: 'Cảm ơn bạn đã mua sản phẩm',
+						text: 'Click OK để xác nhận đơn hàng',
+						imageUrl: 'https://firebasestorage.googleapis.com/v0/b/bmosfile.appspot.com/o/Notify%2F601396d8de58e668a9664592_Cart%20abandonment%20Flagship.png?alt=media&token=4784f51e-9ea3-4be0-94c8-232bf512945d',
+						imageWidth: 400,
+						imageHeight: 200,
+						imageAlt: 'Custom image',
+						confirmButtonText: '<a href="https://mail.google.com/mail" style="color:white;text-decoration:none;">OK</a>',
+					})
+
+					$.ajax({
+						url: "/ShoppingCart/Payment",
+						data: {
+							address: _address,
+							phone: _phone,
+							note: _note,
+							pType: _pType,
+							point: bonusPoint
+						},
+						type: "POST",
+						success: function (data) {
+						},
+					});
+				}
+			});
+		});
+	});
+</script>

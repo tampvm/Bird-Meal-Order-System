@@ -1,0 +1,64 @@
+﻿@model BMOS.Models.RefundsInfoModel
+
+@{
+    Layout = "_ManagePage";
+    ViewData["Title"] = "Details";
+}
+
+<h1>Chi tiết trả hàng</h1>
+
+<div>
+    
+    <hr />
+    <dl class="row" style="padding:0px 10px;">
+        <dt class="col-sm-2">
+            Tên người dùng
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.UserName)
+        </dd>     
+        <dt class = "col-sm-2">
+            Mã đơn hàng
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.OrderId)
+        </dd>
+        <dt class="col-sm-2">
+            Nội dung hoàn trả
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt class = "col-sm-2">
+            Thời gian
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Date)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.IsConfirm)
+        </dt>
+        <dd class="col-sm-10">
+            @{
+                if ((Model.IsConfirm) == true)
+                {
+                    <p style="color:green; border-radius: 25px; background-color: lightgreen; inline-size: 50%;text-align:center;">Đã phê duyệt </p>
+
+                }
+                else
+                {
+                    <p style="color:black; border-radius: 25px; background-color: orangered; inline-size: 50%;text-align:center; ">Chưa phê duyệt </p>
+                }
+            }
+        </dd>
+        <dt class="col-sm-12">
+            Thông tin sản phẩm trong đơn hàng:
+        </dt>
+        <dd>
+            @await Html.PartialAsync("Orderdetails")
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>

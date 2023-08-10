@@ -69,6 +69,8 @@ namespace BMOS.Controllers
 									  productName = _prod.Name,
 									  productPrice = _prod.Price,
 									  productQuantity = 1,
+									  sold = _prod.SoldQuantity,
+									  quantity = _prod.Quantity,
 									  description = _prod.Description,
 									  image = _img.Url
 								  };
@@ -102,6 +104,15 @@ namespace BMOS.Controllers
 						if (item.productQuantity == 0)
 						{
 							routingDetailsList.Remove(item);
+						}
+					} else if (status.Equals("input"))
+					{
+						if(productQuantity <= 0)
+						{
+							item.productQuantity = 1;
+						}	else if (productQuantity >= item.getAvailableProduct())
+						{
+							item.productQuantity = (int)item.getAvailableProduct();
 						}
 					}
 				}

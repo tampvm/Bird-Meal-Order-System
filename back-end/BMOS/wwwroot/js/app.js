@@ -49,22 +49,49 @@ $(document).ready(function () {
 });
 
 var loader = document.getElementById("preloader");
-    window.addEventListener("load", function () {
+var inputNumber = document.getElementById("number");
+window.addEventListener("load", function () {
     loader.classList.add("disapear");
-    })
+});
+
+var limitProudct = parseInt($('input[name="limitQuantity"]').val());
+
+
+inputNumber.addEventListener("input", function () {
+    var inputValue = parseInt(inputNumber.value);
+    if (inputValue <= 0) {
+        inputNumber.value = 1;
+    } else if (inputValue > limitProudct) {
+
+        inputNumber.value = limitProudct;
+    }
+});
+
+
+
+
+
 function increaseValue() {
     var value = parseInt(document.getElementById('number').value, 10);
-    value = isNaN(value) ? 0 : value;
+    value = isNaN(value) ? 1 : value;
     value++;
-    document.getElementById('number').value = value;
+    if (value >= limitProudct) {
+        document.getElementById('number').value = limitProudct;
+    } else {
+        document.getElementById('number').value = value;
+    }
 }
 
 function decreaseValue() {
     var value = parseInt(document.getElementById('number').value, 10);
-    value = isNaN(value) ? 0 : value;
+    value = isNaN(value) ? 1 : value;
     value < 1 ? value = 1 : '';
     value--;
-    document.getElementById('number').value = value;
+    if (value <= 1) {
+        document.getElementById('number').value = 1;
+    } else {
+        document.getElementById('number').value = value;
+    }
 }
 
 

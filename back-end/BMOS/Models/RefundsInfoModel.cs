@@ -9,5 +9,6 @@
         public string? Description { get; set;}
         public DateTime?  Date { get; set; }
         public bool? IsConfirm { get; set; }
+        public string urlImage { get; set; }
     }
 }

@@ -29,9 +29,33 @@
 					@string.Format("{0:#,0}", item.productPrice)vnđ
 				</span>
 			</div>
-			
+			<div class="col-12 routing-item__product-desc--title">
+				<span>Đã bán:</span>
+				<span style="color: red">
+					@string.Format("{0:#,0}", item.sold)
+				</span>
+			</div>
+			<div class="col-12 routing-item__product-desc--title">
+				<span>Sản phẩm có sẵn:</span>
+				<input>
+				<span style="color: red">
+					@string.Format("{0:#,0}", item.getAvailableProduct())
+				</span>
+			</div>
+			<div class="col-12 routing-item__product-desc--title" style="display: -webkit-box;
+		-webkit-box-orient: vertical;
+		-webkit-line-clamp:  4;
+		overflow: hidden;
+width: 60%;">
+				<span>Mô tả:</span>
+				<span class="js-product-desc" style="color: var(--text-color);">
+					<input type="hidden" value="@item.description" name="product-desc" />
+
+				</span>
+			</div>
+
 			<div class="edit-quantity-button">
-				<span>Quantity:</span>
+				<span>Số lượng:</span>
 				<div class="col-md-3 col-lg-3 col-xl-2 d-flex">
 					<button type="submit" data-id="@item.productId" class="btn btn-link px-2 decrease-prodQuantity-btn"
 							onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
@@ -48,52 +72,79 @@
 		</div>
 	</div>
 }
-	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-	<script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
 
-		$(document).ready(function () {
+	$(document).ready(function () {
+
+		var desc = $('.js-product-desc');
+		var descValue = $('input[name="product-desc"]').val();
+		var inputNumber = document.querySelectorAll('input[name="cartItemQuantity"]');
+
+		console.log(inputNumber);
+		desc.html(descValue);
+
 
 		var totalPrice = $('input[name="totalPrice"]').val();
-		$('.routing-info__price-text').html()
-
-			$('.decrease-prodQuantity-btn').click(function (e) {
+		for (let input of inputNumber) {
+			input.addEventListener("change", function () {
+				var quantity = parseInt($(this).val());
 				var _id = $(this).data("id");
 				$.ajax({
 					url: "/Routing/EditRoutingDetail",
 					data: {
 						id: _id,
-						status: "decrease",
-						productQuantity: 1,
+						status: "input",
+						productQuantity: quantity,
 					},
 					type: "GET",
 					success: function (data) {
-						console.log(data)
 						$(".routing-list__item").html(data);
 					},
-					error: function () {
-						console.log("failt")
-					}
 				});
 			});
-			$('.increase-prodQuantity-btn').click(function (e) {
-				var _id = $(this).data("id");
-				$.ajax({
-					url: "/Routing/EditRoutingDetail",
-					data: {
-						id: _id,
-						status: "increase",
-						productQuantity: 1,
-					},
-					type: "GET",
-					success: function (data) {
-						console.log(data)
-						$(".routing-list__item").html(data)
-					},
-					error: function () {
-						console.log("failt")
-					}
-				});
+		}
+
+		$('.routing-info__price-text').html()
+
+		$('.decrease-prodQuantity-btn').click(function (e) {
+			var _id = $(this).data("id");
+			$.ajax({
+				url: "/Routing/EditRoutingDetail",
+				data: {
+					id: _id,
+					status: "decrease",
+					productQuantity: 1,
+				},
+				type: "GET",
+				success: function (data) {
+					console.log(data)
+					$(".routing-list__item").html(data);
+				},
+				error: function () {
+					console.log("failt")
+				}
 			});
 		});
+		$('.increase-prodQuantity-btn').click(function (e) {
+			var _id = $(this).data("id");
+			$.ajax({
+				url: "/Routing/EditRoutingDetail",
+				data: {
+					id: _id,
+					status: "increase",
+					productQuantity: 1,
+				},
+				type: "GET",
+				success: function (data) {
+					console.log(data)
+					$(".routing-list__item").html(data)
+				},
+				error: function () {
+					console.log("failt")
+				}
+			});
+		});
+	});
 
-	</script>
+</script>

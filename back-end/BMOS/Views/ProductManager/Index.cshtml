@@ -6,14 +6,80 @@
 @{
 	Layout = "_ManagePage";
 	ViewData["Title"] = "Index";
+	var erorPrice = ViewData["errorProductPrice"];
+	var errorQuantity = ViewData["errorProductQuantity"];
+	var errorWeight = ViewData["errorProductWeight"];
 }
 
 <h1 style="margin-bottom:2rem">Danh Sách Sản Phẩm</h1>
 
-<p>
-	<button type="button" class="btn btn-primary" onclick="location.href='@Url.Action("Create", "ProductManager")'">Tạo Sản Phẩm Mới</button>
+	<a style="text-decoration:none;" data-bs-toggle="modal" data-bs-target="#blogadd">
+		<button type="button" class="btn btn-primary">Thêm sản phẩm mới</button>
+	</a>
+	<div class="modal fade" id="blogadd" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-xl modal-fullscreen-xl-down">
+			<div class="modal-content" style="background-color:white;">
+				<div class="modal-header">
+					<h1 class="modal-title fs-5" id="exampleModalLabel">Thêm sản phẩm mới</h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<form method="post" asp-action="Create" enctype="multipart/form-data">
+					<div class="modal-body">
+						<input name="ProductId" type="hidden" class="form-control" value="@Guid.NewGuid().ToString()" />
+						<input type="hidden" value="@DateTime.Now" name="Date" class="form-control" />
+						<input type="hidden" value="True" name="Status" class="form-control" />
+						<div class="form-group">
+							<label class="control-label">Tên sản phẩm</label>
+							<input name="Name" class="form-control" required />
+						</div>
+						<div class="form-group">
+							<label class="control-label">Số lượng</label>
+							<input name="Quantity" class="form-control" required />
+						</div>
+						<div class="form-group">
+							<label class="control-label">Giá Tiền(vnd)</label>
+							<input name="Price" class="form-control" required />
+						</div>
+						<div class="form-group">
+							<label for="recipient-name">Mô tả sản phẩm</label>
+							<textarea id="Description" name="Description" class="form-control" style="font-size:2rem;" required></textarea>
+						</div>
+						<div class="form-group">
+							<label class="control-label">Cân nặng(g)</label>
+							<input name="Weight" class="form-control" required />
+						</div>
+						<div class="form-group">
+							<label name="Type" class="control-label">Loại</label>
+							<select name="Type" class="form-control">
+								<option value="1">Thức ăn khô</option>
+								<option value="2">Thức ăn tổng hợp</option>
+								<option value="3">Thức ăn hạt</option>
+								<option value="4">Thức ăn tự nhiên</option>
+							</select>
+
+						</div>
+						<div class="form-group">
+							<label name="Status" class="control-label">Trạng thái</label>
+							<select name="Status" class="form-control">
+								<option value="true">Còn hàng</option>
+								<option value="false">Hết hàng</option>
+							</select>
+
+						</div>
+						<div class="form-group">
+							<span>Image</span>
+							<input type="file" name="files" class="form-control" accept="image/*" required multiple />
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+						<button type="submit" class="btn btn-primary">Thêm mới</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
 	<button type="button" class="btn btn-warning" onclick="location.href='@Url.Action("Index", "ProductManager")'">Xóa Tìm Kiếm</button>
-</p>
 <table class="table">
 	<thead>
 		<tr>
@@ -70,12 +136,165 @@
 					@Html.DisplayFor(modelItem => item.Weight)g
 				</td>
 				<td>
-					@*	<button type="button" class="btn btn-primary" onclick="location.href='@Url.Action("Edit", new { id = item.ProductId })'">Chỉnh sữa</button>
-				<button type="button" class="btn btn-info" onclick="location.href='@Url.Action("Details", new { id = item.ProductId })'">Chi Tiết</button>
-				<button type="button" class="btn btn-danger" onclick="{ location.href='@Url.Action("Delete", new { id = item.ProductId })' }">Xóa</button>*@
-					<a type="button" class="btn btn-primary" asp-action="Edit" asp-route-id="@item.ProductId">Chỉnh sữa</a>
-					<a type="button" class="btn btn-info" asp-action="Details" asp-route-id="@item.ProductId">Chi Tiết</a>
-					<a type="button" class="btn btn-danger" asp-action="Delete" asp-route-id="@item.ProductId">Xóa</a>
+
+					@*					<a type="button" class="btn btn-primary" asp-action="Edit" asp-route-id="@item.ProductId">Chỉnh sữa</a>*@
+					<a style="text-decoration:none;" asp-route-id="@item.ProductId" data-bs-toggle="modal" data-bs-target="#fbedit-@item.ProductId">
+						<button type="button" class="btn btn-primary">Chỉnh sửa</button>
+					</a>
+					<div class="modal" tabindex="-1" id="fbedit-@item.ProductId">
+						<div class="modal-dialog modal-xl modal-fullscreen-xl-down">
+							<div class="modal-content ">
+								<div class="modal-header">
+									<h5 class="modal-title fw-bold" style="font-size:3rem;">Chỉnh sửa sản phẩm</h5>
+									<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="close"></button>
+								</div>
+								<form method="post" asp-action="Edit" asp-route-id="@item.ProductId">
+									<div class="info" style="margin:1rem;">
+										<input type="hidden" name="ProductId" value="@item.ProductId" asp-for="@item.ProductId" />
+										<div class="form-group">
+											<label class="control-label">Tên</label>
+											<input name="Name" value="@item.Name" class="form-control" />
+										</div>
+										<div class="form-group">
+											<label class="control-label">Số Lượng</label>
+											@if (errorQuantity != null)
+											{
+												<span style="color: red;">@errorQuantity</span>
+											}
+											<input name="Quantity" value="@item.Quantity" class="form-control" />
+										</div>
+										<div class="form-group">
+											<label class="control-label">Giá Tiền(vnd)</label>
+											@if (erorPrice != null)
+											{
+												<span style="color: red;">@erorPrice</span>
+											}
+											<input name="Price" value="@item.Price" class="form-control" />
+										</div>
+										<input type="hidden" name="IsLoved" value="@item.IsLoved" class="form-control" />
+										<input type="hidden" name="SoldQuantity" value="@item.SoldQuantity" class="form-control" />
+										<div class="form-group">
+											<label class="control-label">Thông Tin</label>
+											<textarea id="Description-@item.ProductId" name="Description" class="font-control ckeditor-field">@Html.Raw(item.Description)</textarea>
+										</div>
+										<div class="form-group">
+											<label class="control-label">Cân nặng(g)</label>
+											@if (errorWeight != null)
+											{
+												<span style="color: red;">@errorWeight</span>
+											}
+											<input name="Weight" value="@item.Weight" class="form-control" />
+										</div>
+										<div class="form-group">
+											<label class="control-label">Loại</label>
+											<select name="Type" id="Type" value="@item.Type" class="form-control">
+												<option value="1">Thức ăn khô</option>
+												<option value="2">Thức ăn tổng hợp</option>
+												<option value="3">Thức ăn hạt</option>
+												<option value="4">Thức ăn tự nhiên</option>
+											</select>
+										</div>
+										<div class="form-group">
+											<label class="control-label">Trạng thái</label>
+											<select name="Status" value="@item.Status" class="form-control">
+												<option value="true">Còn hàng</option>
+												<option value="false">Hết hàng</option>
+											</select>
+										</div>
+										
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+										<input type="submit" value="Lưu" class="btn btn-primary" />
+									</div>
+								</form>
+							</div>
+						</div>
+
+					</div>
+					<a style="text-decoration:none;" asp-route-id="@item.ProductId" data-bs-toggle="modal" data-bs-target="#fbdetail-@item.ProductId">
+						<button type="button" class="btn btn-info">Chi tiết</button>
+					</a>
+
+					<div class="modal" tabindex="-1" id="fbdetail-@item.ProductId">
+						<div class="modal-dialog modal-xl modal-fullscreen-xl-down">
+							<div class="modal-content ">
+								<div class="modal-header">
+									<h5 class="modal-title fw-bold" style="font-size:3rem;">Chi tiết sản phẩm</h5>
+									<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="close"></button>
+								</div>
+
+								<div class="info" style="text-align:center;">
+									<div class="form-group">
+										<b>Hình ảnh :</b> <img src="@item.UrlImage" width="200px" height="200px" />
+									</div>
+									<div class="form-group">
+										<b>Tên :</b> @item.Name
+									</div>
+									<div class="form-group">
+										<b>Số lượng :</b> @item.Quantity
+									</div>
+									<div class="form-group">
+										<b>Đã bán :</b> @item.SoldQuantity
+									</div>
+									<div class="form-group">
+										<b>Thông tin :</b> @Html.Raw(item.Description)
+									</div>
+									<div class="form-group">
+										<b>Cân nặng :</b> @item.Weight g
+									</div>
+
+									<div class="form-group">
+										<b>Trạng thái :</b> <div style="margin:0px 25rem;">
+											@{
+												if ((item.Status) == true)
+												{
+													<p style="color:green; border-radius: 25px; background-color: lightgreen; ">Còn Hàng </p>
+
+												}
+												else
+												{
+													<p style="color:black; border-radius: 25px; background-color: orangered; ">Hết Hàng </p>
+												}
+											}
+										</div>
+									</div>
+									<div class="form-group">
+										<b>Giá tiền :</b> @string.Format("{0:#,0}", item.Price)vnđ
+									</div>
+
+								</div>
+								<div class="modal-footer">
+									<button type="submit" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+									<form method="post" asp-action="Delete" asp-controller="ProductManager" asp-route-id="@item.ProductId">
+
+										<input type="submit" value="Delete" class="btn btn-danger" />
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+					<a type="button" class="btn btn-danger" asp-route-id="@item.ProductId" data-bs-toggle="modal" data-bs-target="#exampleModal">Xóa</a>
+					<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h1 class="modal-title fs-5" id="exampleModalLabel">XÓA</h1>
+									<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+								</div>
+								<div class="modal-body">
+									Bạn có chắn chắc muốn xóa sản phẩm này không?
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+									<form method="post" asp-action="Delete" asp-route-id="@item.ProductId">
+
+										<input type="submit" value="Xóa" class="btn btn-danger" />
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
 				</td>
 			</tr>
 		}
@@ -96,3 +315,17 @@
 	})
 
 </div>
+@section Scripts {
+	<script src="~/ckeditor/ckeditor.js"></script>
+	<script>
+		CKEDITOR.replace('Description');
+	</script>
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+			var ckeditorFields = document.getElementsByClassName('ckeditor-field');
+			for (var i = 0; i < ckeditorFields.length; i++) {
+				CKEDITOR.replace(ckeditorFields[i].id);
+			}
+		});
+	</script>
+    }

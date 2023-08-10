@@ -1,4 +1,5 @@
-﻿using BMOS.Models;
+﻿using BMOS.Helpers;
+using BMOS.Models;
 using BMOS.Models.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -15,18 +16,30 @@ namespace BMOS.Controllers
 		}
 		public IActionResult Index()
 		{
-			DateTime startdate = DateTime.Today.AddYears(-1);
+            var user = HttpContext.Session.Get<TblUser>("userManager");
+            if (user != null)
+            {
+                if (user.UserRoleId == 2)
+                {
+                    return View("ErrorPage");
+                }
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            DateTime startdate = DateTime.Today.AddYears(-1);
 			DateTime enddate = DateTime.Today;
 			var listorder = _context.TblOrders.Where(x => x.Date >= startdate && x.Date <= enddate).ToList();
-			var listrefund = _context.TblRefunds.Where(x => x.IsConfirm == true).ToList();
+			var listrefund = _context.TblOrders.Where(x => x.Status == 7).ToList();
 			var listdetail = _context.TblOrderDetails.ToList();
 
 
-			var totalprice = listorder.Where(x => x.IsConfirm == true).Sum(t => t.TotalPrice);
+			var totalprice = listorder.Where(x => x.Status == 8).Sum(t => t.TotalPrice);
 			ViewBag.TotalPrice = totalprice;
-			var totalorder = listorder.Count(x => x.IsConfirm == true);
+			var totalorder = listorder.Count(x => x.Status == 8);
 			ViewBag.Totalorder = totalorder;
-			var totalrefund = listrefund.Count(x => x.IsConfirm == true);
+			var totalrefund = listrefund.Count();
 			ViewBag.Totalrefund = totalrefund;
 			var chartdb = listorder.Where(x => x.IsConfirm == true).GroupBy(a => a.Date.Value.Month).Select(k => new LineChart()
 			{
@@ -43,13 +56,16 @@ namespace BMOS.Controllers
 
 			var top3pro = from top in toppro
 						  join top3 in _context.TblProducts on top.id equals top3.ProductId
-						  select new top3final()
+                          from image in _context.TblImages.ToList()
+                          where top.id.Equals(image.RelationId)
+                          select new top3final()
 						  {
 							  id = top.id,
 							  name = top3.Name,
-							  price = top.price,
-							  quantity = top.quantity,							 
-						  };
+							  price = top3.Price,
+							  quantity = top3.SoldQuantity,
+                              UrlImage = image.Url,
+                          };
 
 			top3pro = top3pro.OrderByDescending(x=>x.price).Take(3).ToList();
 

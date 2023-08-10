@@ -6,5 +6,8 @@
         public string? name;
         public int? quantity;
         public double? price;
+        public string? UrlImage { get; set; }
+
+
     }
 }

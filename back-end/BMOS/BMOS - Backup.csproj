@@ -57,6 +57,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Areas\" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="Views\Account\ChangePassword.cshtml" />
     <None Include="Views\Account\ForgotPassword.cshtml" />
     <None Include="Views\Account\Login.cshtml" />

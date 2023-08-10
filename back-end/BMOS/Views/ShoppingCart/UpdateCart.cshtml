@@ -74,15 +74,15 @@ else
 										</div>
 										<div class="col-xl-2 d-flex">
 											<button data-id="@item._productId" class="btn btn-link px-2 decrease-prodQuantity-btn"
-													onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
+													onclick="decreaseValue()">
 												<i class="fas fa-minus"></i>
 											</button>
 
-											<input data-id="@item._productId" input type="number" value="@item._quantity" name="cartItemQuantity"
+											<input data-id="@item._productId" input value="@item._quantity" name="cartItemQuantity"
 												   class="form-control form-control-sm product-quantity-form" />
 
 											<button data-id="@item._productId" class="btn btn-link px-2 increase-prodQuantity-btn"
-													onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
+													onclick="increaseValue">
 												<i class="fas fa-plus"></i>
 											</button>
 										</div>
@@ -204,7 +204,7 @@ else
 								</div>
 
 								<a asp-controller="ShoppingCart" asp-action="Checkout">
-									<button style="font-weight: bold" type="button" class="btn btn-warning btn-block btn-lg"
+									<button style="font-weight: bold" type="button" class="btn btn-warning checkout-btn btn-block btn-lg"
 											data-mdb-ripple-color="dark">
 										Thanh Toán
 									</button>

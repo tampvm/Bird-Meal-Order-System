@@ -215,6 +215,48 @@
                 
     }
     
+    @if (ViewBag.ReSend != null)
+    {
+        <style>
+            .alert {
+                width: 40%;
+                margin: 0px auto;
+                padding: 20px;
+                background-color: #d4e9d8;
+                color: black;
+                text-align: center;
+            }
+
+            .closebtn {
+                margin-left: 15px;
+                color: black;
+                font-weight: bold;
+                float: right;
+                font-size: 1.4rem;
+                line-height: 20px;
+                cursor: pointer;
+                transition: 0.3s;
+            }
+
+            .link {
+                color: black;
+                font-weight: bold;
+                font-size: 1.4rem;
+                line-height: 20px;
+                cursor: pointer;
+                text-decoration: none;
+            }
+
+            .closebtn:hover {
+                color: white;
+            }
+        </style>
+
+        <div class="alert success">
+            <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+            <span>@ViewBag.ReSend <a href="https://mail.google.com/mail" class="link">Email</a> để kích hoạt tài khoản.</span>
+        </div>
+    }
 
     <div id="wrapper">
         <div class="emotion-div">
@@ -238,6 +280,20 @@
                         else if (ViewBag.EmailConfirm != null)
                         {
                             <span class="notice_text">@ViewBag.EmailConfirm</span>
+                        }
+                        else if (ViewBag.InvalidCode != null)
+                        {
+                            <span class="notice_text">@ViewBag.InvalidCode <a href="~/Account/ReSendEmail"><i class="fa-solid fa-arrows-rotate"></i></a> @ViewBag.InvalidCode1</span>
+                        }
+                        else if (ViewBag.IsConfirmed != null)
+                        {
+                            <span class="notice_text">@ViewBag.IsConfirmed</span>
+                        }
+                        else if (ViewBag.InvalidCode2 != null)
+                        {
+                            <div class="notice">
+                                <span class="notice_text">@ViewBag.InvalidCode2</span>
+                            </div>
                         }
                     </div>
 

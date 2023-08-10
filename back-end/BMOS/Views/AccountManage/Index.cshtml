@@ -3,132 +3,329 @@
 @using X.PagedList.Mvc.Core;
 @using X.PagedList.Web.Common;
 @{
-    Layout = "_ManagePage";
-    ViewData["Title"] = "Account Manage";
+	Layout = "_ManagePage";
+	ViewData["Title"] = "Account Manage";
+	var errorUserName = ViewData["ErrorUser"];
 }
 
 
 <h1>Quản lý tài khoản</h1>
 <br></br>
-<a style="text-decoration:none;color:darkorange" asp-controller="AccountManage" asp-action="Index">
-    <button type="button" class="btn btn-primary">Tạo Sản Phẩm Mới</button>
+@*<a style="text-decoration:none;color:darkorange" asp-controller="AccountManage" asp-action="Create">
+	<button type="button" class="btn btn-primary">Tạo tài khoản nhân viên</button>
+</a>*@
+<a style="text-decoration:none;" data-bs-toggle="modal" data-bs-target="#add">
+	<button type="button" class="btn btn-primary">Tạo tài khoản mới</button>
 </a>
+<div class="modal" tabindex="-1" id="add">
+	<div class="modal-dialog modal-xl modal-fullscreen-xl-down">
+		<div class="modal-content" style="background-color:white;">
+			<div class="modal-header">
+				<h5 class="modal-title fw-bold" style="font-size:3rem;">Chỉnh sửa sản phẩm</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="close"></button>
+			</div>
+			<form method="post" asp-action="Create">
+				<div class="info" style="margin:1rem;">
+					<div class="form-group">
+						<label class="control-label">Username</label>
+						@if (errorUserName != null)
+						{
+							<span style="color: red;">@errorUserName</span>
+						}
+						<input name="Username" class="form-control" required />
+					</div>
+					<div class="form-group">
+						<label class="control-label">Password</label>
+						<input name="Password" class="form-control" required />
+					</div>
+					<div class="form-group">
+						<label class="control-label">First name</label>
+						<input name="Firstname" class="form-control" required />
+					</div>
+					<div class="form-group">
+						<label class="control-label">Last name</label>
+						<input name="Lastname" class="form-control" required />
+					</div>
+					<div class="form-group">
+						<label class="control-label">Số điện thoại</label>
+						<input name="Numberphone" onkeypress='return event.charCode >= 48 && event.charCode <= 57' class="form-control" required />
+					</div>
+
+					<div class="form-group">
+						<label class="control-label">Địa chỉ</label>
+						<input name="Address" class="form-control" required />
+					</div>
+					<input type="hidden" name="Status" value="true" />
+					<input type="hidden" name="IsConfirm" value="true" />
+					<div class="form-group">
+						<input type="hidden" name="UserRoleId" value="2" class="form-control"/>
+					</div>
+
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+					<input type="submit" value="Thêm mới" class="btn btn-primary" />
+				</div>
+			</form>
+		</div>
+	</div>
+
+</div>
 <a style="text-decoration:none;color:darkorange" asp-controller="AccountManage" asp-action="Index">
-    <button type="button" class="btn btn-warning">Làm mới</button>
+	<button type="button" class="btn btn-warning">Làm mới</button>
 </a>
 
 <table class="table">
-    <thead>
-        <tr>
-            <th>Mã khách hàng</th>
-           
-            <th><a style="text-decoration:none; color:darkorange" asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]" asp-route-searchString="@ViewData["SearchParameter"]">Tài khoản</a></th>
-            <th>Xác nhận</th>
-            <th>Họ</th>
-            <th>Tên</th>
-            <th>Số điện thoại</th>
-            
-            <th><a style="text-decoration:none; color:darkorange" asp-action="Index" asp-route-sortOrder="@ViewData["PriceSortParm"]" asp-route-searchString="@ViewData["SearchParameter"]">Thời gian hoạt động gần nhất</a></th>
-            
-            <th>Trạng thái</th>
-            <th>Chức vụ</th>
-            <th class="col-2">Hành động</th>
+	<thead>
+		<tr>
+			<th><a style="text-decoration:none; color:darkorange" asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]" asp-route-searchString="@ViewData["SearchParameter"]">Tài khoản</a></th>
+			<th>Họ</th>
+			<th>Tên</th>
+			<th><a style="text-decoration:none; color:darkorange" asp-action="Index" asp-route-sortOrder="@ViewData["PriceSortParm"]" asp-route-searchString="@ViewData["SearchParameter"]">Thời gian hoạt động gần nhất</a></th>
+			<th>Trạng thái</th>
+			<th>Chức vụ</th>
+			<th class="col-2">Hành động</th>
 
 
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.UserId)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Username)
-                </td>
-                
-                <td>
-                    @{
-                        if ((item.IsConfirm) == true)
-                        {
-                            <p style="color:green; border-radius: 25px; background-color: lightgreen; inline-size: 100%;text-align:center;">Đã xác nhận </p>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in Model)
+		{
+			@if (item.UserRoleId != 1)
+			{
+				<tr>
+					<td>
+						@Html.DisplayFor(modelItem => item.Username)
+					</td>
 
-                        }
-                        else
-                        {
-                            <p style="color:black; border-radius: 25px; background-color: orangered; inline-size: 100%;text-align:center; ">Chưa xác nhận </p>
-                        }
-                    }
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Firstname)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Lastname)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Numberphone)
-                </td>
-                
-                <td>
-                    @Html.DisplayFor(modelItem => item.LastActivitty)
-                </td>
-                
-                <td>
-                    @{
-                        if ((item.Status) == true)
-                        {
-                            <p style="color:green; border-radius: 25px; background-color: lightgreen; inline-size: 100%;text-align:center; ">Hoạt động </p>
+					<td>
+						@Html.DisplayFor(modelItem => item.Firstname)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.Lastname)
+					</td>
 
-                        }
-                        else
-                        {
-                            <p style="color:black; border-radius: 25px; background-color: orangered; inline-size: 100%;text-align:center; ">Không hoạt động </p>
-                        }
-                    }
-                </td>
-                <td>
-                    @{
-                        if ((item.UserRoleId) == 1)
-                        {
-                            <p style="color:darkblue; border-radius: 25px; background-color: cornflowerblue; inline-size: 100%;text-align:center;">Quản lý </p>
-                        }
-                        else if ((item.UserRoleId) == 2)
-                        {
-                            <p style="color:black; border-radius: 25px; background-color: hotpink; inline-size: 100%;text-align:center;">Staff </p>
-                        }
-                        else if ((item.UserRoleId) == 3)
-                        {
-                            <p style="color:black; border-radius: 25px; background-color: blanchedalmond; inline-size: 100%;text-align:center;">Khách hàng </p>
-                        }
-                        else
-                        {
-                            <p style="color:black; border-radius: 25px; background-color: orangered; inline-size: 100%;text-align:center;">Không có chức vụ </p>
-                        }
-                    }
-                <td>
-                    <a style="text-decoration:none;" asp-action="Edit" asp-route-id="@item.UserId">
-                        <button type="button" class="btn btn-primary">Chỉnh sửa</button>
-                    </a>
-                    <a style="text-decoration:none;" asp-action="Details" asp-route-id="@item.UserId">
-                        <button type="button" class="btn btn-info">Chi Tiết</button>
-                    </a>
-                    
+					<td>
+						@Html.DisplayFor(modelItem => item.LastActivitty)
+					</td>
 
-                </td>
-            </tr>
-        }
-    </tbody>
+					<td>
+						@{
+							if ((item.Status) == true)
+							{
+								<p style="color:green; border-radius: 25px; background-color: lightgreen; inline-size: 100%;text-align:center; ">Hoạt động </p>
+
+							}
+							else
+							{
+								<p style="color:black; border-radius: 25px; background-color: orangered; inline-size: 100%;text-align:center; ">Không hoạt động </p>
+							}
+						}
+					</td>
+					<td>
+						@{
+							if ((item.UserRoleId) == 2)
+							{
+								<p style="color:black; border-radius: 25px; background-color: hotpink; inline-size: 100%;text-align:center;">Staff </p>
+							}
+							else if ((item.UserRoleId) == 3)
+							{
+								<p style="color:black; border-radius: 25px; background-color: blanchedalmond; inline-size: 100%;text-align:center;">Khách hàng </p>
+							}
+							else
+							{
+								<p style="color:black; border-radius: 25px; background-color: orangered; inline-size: 100%;text-align:center;">Không có chức vụ </p>
+							}
+						}
+					<td>
+						<a style="text-decoration:none;" asp-route-id="@item.UserId" data-bs-toggle="modal" data-bs-target="#fbedit-@item.UserId">
+							<button type="button" class="btn btn-primary">Chỉnh sửa</button>
+						</a>
+						<div class="modal" tabindex="-1" id="fbedit-@item.UserId">
+							<div class="modal-dialog modal-xl modal-fullscreen-xl-down">
+								<div class="modal-content ">
+									<div class="modal-header">
+										<h5 class="modal-title fw-bold" style="font-size:3rem;">Chỉnh sửa sản phẩm</h5>
+										<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="close"></button>
+									</div>
+									<form method="post" asp-action="Edit" asp-route-id="@item.UserId">
+										<div class="info" style="margin:1rem;">
+											<input type="hidden" name="UserId" value="@item.UserId" />
+											<input type="hidden" name="IsConfirm" asp-for="@item.IsConfirm" />
+											<input type="hidden" name="DateCreate" value="@item.DateCreate"  />
+											<input type="hidden" name="LastActivitty" value="@item.LastActivitty"  />
+											<input type="hidden" name="Point" value="@item.Point"  />
+											<div class="form-group">
+												<label class="control-label">Username</label>
+												<input name="Username" value="@item.Username" class="form-control" readonly />
+											</div>
+											<div class="form-group">
+												<label class="control-label">Password</label>
+												<input name="Password" value="@item.Password" type="password" class="form-control" readonly />
+											</div>
+											<div class="form-group">
+												<label class="control-label">First name</label>
+												<input name="Firstname" value="@item.Firstname" class="form-control" readonly />
+											</div>
+											<div class="form-group">
+												<label class="control-label">Last name</label>
+												<input name="Lastname" value="@item.Lastname" class="form-control" readonly />
+											</div>
+											<div class="form-group">
+												<label class="control-label">Số điện thoại</label>
+												<input name="Numberphone" value="@item.Numberphone" class="form-control" readonly />
+											</div>
+
+											<div class="form-group">
+												<label class="control-label">Địa chỉ</label>
+												<input name="Address" value="@item.Address" class="form-control" readonly />
+											</div>
+
+											<div class="form-group">
+												<label class="control-label">Trạng thái</label>
+												<select name="Status" id="Status" value="@item.Status" class="form-control">
+													<option selected="@(item.Status == false)" value="False">Ngừng hoạt động</option>
+													<option selected="@(item.Status == true)" value="True">Hoạt động</option>
+												</select>
+											</div>
+											<div class="form-group">
+												<label class="control-label">Vai trò</label>
+												<input name="UserRoleId" value="@item.UserRoleId" class="form-control" readonly />
+											</div>
+
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+											<input type="submit" value="Lưu" class="btn btn-primary" />
+										</div>
+									</form>
+								</div>
+							</div>
+
+						</div>
+						<a style="text-decoration:none;" asp-route-id="@item.UserId" data-bs-toggle="modal" data-bs-target="#accdetail-@item.UserId">
+							<button type="button" class="btn btn-info">Chi Tiết</button>
+						</a>
+						<div class="modal" tabindex="-1" id="accdetail-@item.UserId">
+							<div class="modal-dialog modal-xl modal-fullscreen-xl-down">
+								<div class="modal-content ">
+									<div class="modal-header">
+										<h5 class="modal-title fw-bold" style="font-size:3rem;">Chi tiết tài khoản</h5>
+										<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="close"></button>
+									</div>
+
+									<div class="info">
+										<dl class="row" style="margin-left:300px;">
+											<dt class="col-sm-3">
+												Username
+											</dt>
+											<dd class="col-sm-9">
+													@item.Username
+											</dd>
+											<dt class="col-sm-3">
+												Họ
+											</dt>
+											<dd class="col-sm-9">
+													@item.Firstname
+											</dd>
+											<dt class="col-sm-3">
+												Tên
+											</dt>
+											<dd class="col-sm-9">
+													@item.Lastname
+											</dd>
+											<dt class="col-sm-3">
+												Số điện thoại
+											</dt>
+											<dd class="col-sm-9">
+													@item.Numberphone
+											</dd>
+											<dt class="col-sm-3">
+												Địa chỉ
+											</dt>
+											<dd class="col-sm-9">
+													@item.Address
+											</dd>
+											<dt class="col-sm-3">
+												Ngày tạo
+											</dt>
+											<dd class="col-sm-9">
+													@item.DateCreate
+											</dd>
+											<dt class="col-sm-3">
+												Hoạt động gần nhất
+											</dt>
+											<dd class="col-sm-9">
+													@item.LastActivitty
+											</dd>
+											<dt class="col-sm-3">
+												Số điểm
+											</dt>
+											<dd class="col-sm-9">
+													@item.Point
+											</dd>
+											<dt class="col-sm-3">
+												Trạng thái
+											</dt>
+											<dd class="col-sm-9">
+													@{
+														if ((item.Status) == true)
+														{
+														<p style="color:green; border-radius: 25px; background-color: lightgreen; inline-size: 50%;text-align:center; ">Hoạt động </p>
+
+														}
+														else
+														{
+														<p style="color:black; border-radius: 25px; background-color: orangered; inline-size: 50%;text-align:center; ">Không hoạt động </p>
+														}
+													}
+											</dd>
+											<dt class="col-sm-3">
+												Vai trò
+											</dt>
+											<dd class="col-sm-9">
+													@{
+														if ((item.UserRoleId) == 1)
+														{
+														<p style="color:darkblue; border-radius: 25px; background-color: cornflowerblue; inline-size: 50%;text-align:center;">Quản lý </p>
+														}
+														else if ((item.UserRoleId) == 2)
+														{
+														<p style="color:black; border-radius: 25px; background-color: hotpink; inline-size: 50%;text-align:center;">Staff </p>
+														}
+														else if ((item.UserRoleId) == 3)
+														{
+														<p style="color:black; border-radius: 25px; background-color: blanchedalmond; inline-size: 50%;text-align:center;">Khách hàng </p>
+														}
+														else
+														{
+														<p style="color:black; border-radius: 25px; background-color: orangered; inline-size: 50%;text-align:center;">Không có chức vụ </p>
+														}
+													}
+											</dd>
+										</dl>
+									</div>
+
+								</div>
+							</div>
+						</div>
+
+					</td>
+				</tr>
+			}
+
+		}
+	</tbody>
 </table>
 <div style="font-size:2rem; margin-bottom:2rem; margin-left:1rem;">
-    Trang @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) trên @Model.PageCount
+	Trang @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) trên @Model.PageCount
 </div>
 <div style="font-size:1rem; margin-bottom:2rem; margin-left:1rem;">
-    @Html.PagedListPager(Model, page => Url.Action("Index",
-    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }),
-    new PagedListRenderOptions {
-    LiElementClasses = new string[] { "page-item" },
-    PageClasses = new string[] { "page-link" }
-    })
+	@Html.PagedListPager(Model, page => Url.Action("Index",
+	new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }),
+	new PagedListRenderOptions {
+	LiElementClasses = new string[] { "page-item" },
+	PageClasses = new string[] { "page-link" }
+	})
 </div>

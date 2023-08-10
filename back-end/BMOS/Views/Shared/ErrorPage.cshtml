@@ -1,0 +1,62 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>No Permission Error</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-top: 0;
+        }
+
+        p {
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        img {
+            height: 300px;
+            width: 100%;
+        }
+            a:hover {
+                text-decoration: underline;
+            }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>No Permission Error</h1>
+        <p>Sorry, you do not have permission to access this page.</p>
+        <p>Please contact the site administrator if you believe this is an error.</p>
+	    <img src="~/images/the-bouncer-at-403-page.png"/>
+        <p><a asp-action="Index" asp-controller="Dashboard">Return to the Dashboard Page</a></p>
+        <p><a asp-action="Index" asp-controller="ProductManager">Return to the ProductManager Page</a></p>
+        <p><a asp-action="Index" asp-controller="Delivery">Return to the Delivery Page</a></p>
+    </div>
+</body>
+</html>

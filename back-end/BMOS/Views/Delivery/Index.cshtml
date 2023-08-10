@@ -1,0 +1,231 @@
+﻿@model X.PagedList.IPagedList<BMOS.Models.OrderInfo>
+@using X.PagedList.Mvc;
+@using X.PagedList.Mvc.Core;
+@using X.PagedList.Web.Common;
+
+@*@model IEnumerable<BMOS.Models.OrderInfo>;*@
+@{
+	ViewData["Title"] = "Index";
+	Layout = "~/Views/Shared/_ManagePage.cshtml";
+	var successOrder = ViewData["orderSuccess"];
+	var deliveryOrder = ViewData["orderDelivery"];
+	var deliveredOrder = ViewData["orderDelivered"];
+	var refundOrder = ViewData["orderRefund"];
+	var refundOrdered = ViewData["orderRefunded"];
+	var failedOrder = ViewData["orderFailed"];
+	
+}
+
+<h1>Quản lý đơn hàng</h1>
+<a style="text-decoration:none;color:darkorange" asp-controller="Delivery" asp-action="Index">
+	<button type="button" class="btn btn-warning">Làm mới</button>
+</a>
+
+<div class="content__filter">
+	<ul class="content__fitler-list" style="list-style-type: none;display:flex;">
+		<span>Sắp xếp:</span>
+		<li>
+			<a style="text-decoration:none;" asp-action="Index" asp-route-sortOrder="@ViewData["Sortsucces"]">Đơn hàng thành công |</a>
+		</li>
+		<li>
+			<a style="text-decoration:none;" asp-action="Index" asp-route-sortOrder="@ViewData["Sortfail"]">Đơn hàng thất bại |</a>
+		</li>
+		<li class="content__filter-item">
+			<a style="text-decoration:none;" asp-action="Index" asp-route-sortOrder="@ViewData["Sortchuagiao"]">Đơn hàng chưa giao |</a>
+		</li>
+		<li class="content__filter-item">
+			<a style="text-decoration:none;" asp-action="Index" asp-route-sortOrder="@ViewData["Sortdagiao"]">Đơn hàng đã giao |</a>
+		</li>
+		<li class="content__filter-item">
+			<a style="text-decoration:none;" asp-action="Index" asp-route-sortOrder="@ViewData["Sortrefund"]">Đơn hàng hoàn trả |</a>
+		</li>
+		<li class="content__filter-item">
+			<a style="text-decoration:none;" asp-action="Index" asp-route-sortOrder="@ViewData["Sortrefundsc"]">Đơn hàng hoàn trả thành công</a>
+		</li>
+	</ul>
+</div>
+
+<table class="table">
+	<thead>
+		<tr>
+			<th>
+				Mã đơn hàng
+			</th>
+			<th>
+				Tên tài khoản
+			</th>
+			<th>
+				Trạng thái đơn hàng
+			</th>
+			<th>
+				Tổng tiền
+			</th>
+			<th>
+				Thời gian
+			</th>
+			<th>
+				Hành động
+			</th>
+
+			<th>
+				Tình trạng
+			</th>
+
+			<th>
+				Nhận hàng
+			</th>
+
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in Model)
+		{
+			<tr>
+				<td>
+					@Html.DisplayFor(modelItem => item.orderID)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.UserName)
+				</td>
+				<td>
+					@{
+						if ((item.Status) == 2)
+						{
+							<p style="color:green; border-radius: 25px; background-color: lightgreen; inline-size: 100%;text-align:center;">Đơn hàng đã giao </p>
+						}
+						else if ((item.Status) == 1)
+						{
+							<p style="color:black; border-radius: 25px; background-color:yellow; inline-size: 100%;text-align:center; ">Đơn hàng đang vận chuyển </p>
+						}
+						else if ((item.Status) == 3)
+						{
+							<p style="color:black; border-radius: 25px; background-color: red; inline-size: 100%;text-align:center; ">Đơn hàng thất bại </p>
+						}
+						else if ((item.Status) == 6)
+						{
+							<p style="color:black; border-radius: 25px; background-color: lightgreen; inline-size: 100%;text-align:center; ">Đơn hoàn trả đang xử lí</p>
+						}
+						else if ((item.Status) == 7)
+						{
+							<p style="color:black; border-radius: 25px; background-color: pink; inline-size: 100%;text-align:center; ">Đã hoàn trả đơn hàng</p>
+						}
+						else if ((item.Status) == 8 || (item.Status) == 5)
+						{
+							<p style="color:black; border-radius: 25px; background-color: deepskyblue; inline-size: 100%;text-align:center; ">Hoàn thành</p>
+						}
+					}
+				</td>
+				<td>
+					@string.Format("{0:#,0}", item.total)vnd
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.date)
+				</td>
+				<td>
+					<a asp-action="Details" asp-route-id="@item.orderID">
+						<button type="button" class="btn btn-info">Chi Tiết</button>
+					</a>
+				</td>
+				<td>
+					@if ((item.Status) == 8 || (item.Status) == 5 || (item.Status) == 7)
+					{
+						<button type="button" class="btn btn-success" style="width: 100%" disabled>Hoàn thành</button>
+					}
+					else
+					{
+						@if ((item.Status) != 6)
+						{
+							@if ((item.Status) != 3)
+							{
+								<a asp-action="ConfirmDeliveryStatus" asp-route-orderId="@item.orderID" asp-route-status="success">
+									<button type="button" class="btn btn-success">Đã giao hàng</button>
+								</a>
+							}
+							@if ((item.Status) != 2)
+							{
+								<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#form-@item.orderID">Thất bại</button>
+								<div class="modal" tabindex="-1" id="form-@item.orderID">
+									<div class="modal-dialog modal-xl modal-fullscreen-xl-down" style="margin-top:10rem;">
+										<div class="modal-content">
+											<div class="modal-header">
+												<h5 class="modal-title fw-bold" style="font-size:1.8rem;">Lí do giao hàng thất bại</h5>
+												<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="close"></button>
+											</div>
+											<input type="hidden" class="form-control" name="userid" value="" required />
+											<div class="form-group" style="padding:0px 5rem;">
+												<label for="recipient-name" class="col-form-label fw-bold" style="font-size:1.8rem;">Mã đơn hàng</label>
+												<input type="text" class="form-control" style="font-size:2rem;" value="@item.orderID" readonly />
+											</div>
+
+											<div class="form-group" style="padding:0px 5rem;">
+												<label for="recipient-name" class="col-form-label fw-bold" style="font-size:1.8rem;">Lí do đơn hàng thất bại</label>
+												<input name="note-@item.orderID" class="form-control" style="font-size:2rem;" value="@item.Note" required />
+											</div>
+
+											<div class="modal-footer">
+												<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+												<button data-orderid="@item.orderID" class="btn btn-primary ajax-submit-form-status-delivery">Lưu</button>
+											</div>
+										</div>
+									</div>
+								</div>
+							}
+						}
+					}
+				</td>
+
+				<td>
+					@if ((item.Status) == 6)
+					{
+						<a asp-action="ConfirmDeliveryStatus" asp-route-orderId="@item.orderID" asp-route-status="refund">
+							<button type="button" class="btn btn-success">Hoàn trả</button>
+						</a>
+					}
+				</td>
+			</tr>
+		}
+	</tbody>
+</table>
+<div style="font-size:0.8rem; margin-bottom:1rem; margin-left:1rem;">
+	Trang @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) trên @Model.PageCount
+</div>
+
+<div style="font-size:0.5rem; margin-bottom:2rem; margin-left:0.5rem;">
+	@Html.PagedListPager(Model, page => Url.Action("Index",
+	new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }),
+	new PagedListRenderOptions {
+	LiElementClasses = new string[] { "page-item" },
+	PageClasses = new string[] { "page-link" }
+	})
+
+</div>
+<br />
+<br />
+
+</div>
+
+<script>
+	$(document).ready(function () {
+		var submitBtn = $('.ajax-submit-form-status-delivery');
+		var _status = "failed";
+
+		submitBtn.click(function () {
+			var _orderId = $(this).data("orderid");
+			var descrip = $('input[name="note-' + _orderId + '"]').val();
+			console.log(descrip);
+			console.log(_orderId);
+			console.log(_status);
+			$.ajax({
+				url: "/Delivery/ConfirmDeliveryStatus",
+				data: {
+					orderId: _orderId,
+					status: _status,
+					note: descrip,
+				},
+				success: function (data) {
+					window.location.replace('/Delivery/Index');
+				}
+			});
+		});
+	});
+</script>

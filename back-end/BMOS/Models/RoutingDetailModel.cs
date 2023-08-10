@@ -1,4 +1,5 @@
-﻿using System.Transactions;
+﻿using BMOS.Models.Entities;
+using System.Transactions;
 
 namespace BMOS.Models
 {
@@ -10,12 +11,20 @@ namespace BMOS.Models
         public double? productPrice { get; set; }
         public string? image { get; set; }
 
+        public int? sold { get; set; }   
+        public int? quantity { get; set; }
+        
         public int productQuantity { get; set; } = 1;
 
         public double? getTotalProductPrice()
         {
             return this.productQuantity * this.productPrice;
         }
+
+        public int? getAvailableProduct()
+        {   
+            return this.quantity - this.sold;
+        } 
 	}
 
  

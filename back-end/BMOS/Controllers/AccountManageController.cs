@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BMOS.Models.Entities;
 using X.PagedList;
+using BMOS.Helpers;
+using Syncfusion.EJ2.Linq;
 
 namespace BMOS.Controllers
 {
@@ -22,6 +24,19 @@ namespace BMOS.Controllers
 		// GET: UsersManage
 		public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? page)
 		{
+
+            var user = HttpContext.Session.Get<TblUser>("userManager");
+            if (user != null)
+            {
+                if (user.UserRoleId == 2 || user.UserRoleId == 4)
+                {
+                    return View("ErrorPage");
+                }
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
             ViewData["SearchParameter"] = searchString;
             ViewBag.CurrentSort = sortOrder;
             ViewData["NameSortParm"] = sortOrder == "name" ? "name_desc" : "name";
@@ -109,8 +124,16 @@ namespace BMOS.Controllers
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> Create([Bind("UserId,Username,Password,IsConfirm,Firstname,Lastname,Numberphone,Address,DateCreate,LastActivitty,Point,Status,UserRoleId")] TblUser tblUser)
 		{
+
 			if (ModelState.IsValid)
 			{
+				var userDuplicate = _context.TblUsers.Where(u => u.Username.Equals(tblUser.Username)).FirstOrDefault();
+				if(userDuplicate != null)
+				{
+					ViewData["ErrorUser"] = "Tài khoản này đã tồn tại vui lòng thử lại";
+					return View(tblUser);
+
+				}
 				_context.Add(tblUser);
 				await _context.SaveChangesAsync();
 				return RedirectToAction(nameof(Index));
@@ -119,20 +142,20 @@ namespace BMOS.Controllers
 		}
 
 		// GET: UsersManage/Edit/5
-		public async Task<IActionResult> Edit(int? id)
-		{
-			if (id == null || _context.TblUsers == null)
-			{
-				return NotFound();
-			}
+		//public async Task<IActionResult> Edit(int? id)
+		//{
+		//	if (id == null || _context.TblUsers == null)
+		//	{
+		//		return NotFound();
+		//	}
 
-			var tblUser = await _context.TblUsers.FindAsync(id);
-			if (tblUser == null)
-			{
-				return NotFound();
-			}
-			return View(tblUser);
-		}
+		//	var tblUser = await _context.TblUsers.FindAsync(id);
+		//	if (tblUser == null)
+		//	{
+		//		return NotFound();
+		//	}
+		//	return View(tblUser);
+		//}
 
 		// POST: UsersManage/Edit/5
 		// To protect from overposting attacks, enable the specific properties you want to bind to.
@@ -145,28 +168,12 @@ namespace BMOS.Controllers
 			{
 				return NotFound();
 			}
-
-			if (ModelState.IsValid)
-			{
-				try
-				{
-					_context.Update(tblUser);
-					await _context.SaveChangesAsync();
-				}
-				catch (DbUpdateConcurrencyException)
-				{
-					if (!TblUserExists(tblUser.UserId))
-					{
-						return NotFound();
-					}
-					else
-					{
-						throw;
-					}
-				}
-				return RedirectToAction(nameof(Index));
+			else {
+				_context.Update(tblUser);
+				await _context.SaveChangesAsync();
+				
 			}
-			return View(tblUser);
+			return RedirectToAction("Index");
 		}
 
 

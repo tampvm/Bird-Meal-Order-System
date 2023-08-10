@@ -5,9 +5,41 @@
     ViewData["Title"] = "Index";
 }
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+<a style="text-decoration:none;" data-bs-toggle="modal" data-bs-target="#add">
+	<button type="button" class="btn btn-primary">Tạo Voucher</button>
+</a>
+<div class="modal" tabindex="-1" id="add">
+	<div class="modal-dialog modal-xl modal-fullscreen-xl-down">
+		<div class="modal-content" style="background-color:white;">
+			<div class="modal-header">
+				<h5 class="modal-title fw-bold" style="font-size:3rem;">Chỉnh sửa sản phẩm</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="close"></button>
+			</div>
+			<form method="post" asp-action="Create">
+				<div class="info" style="margin:1rem;">
+                    <div class="form-group">
+                        <label class="control-label">VoucherCode</label>
+						<input name="VoucherCode" class="form-control" required />
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Value</label>
+                        <input name="Value" class="form-control" required />
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Quantity</label>
+                        <input name="Quantity" class="form-control" required />
+                    </div>
+
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+					<input type="submit" value="Thêm mới" class="btn btn-primary" />
+				</div>
+			</form>
+		</div>
+	</div>
+
+</div>
 <table class="table">
     <thead>
         <tr>
@@ -16,16 +48,16 @@
                 @Html.DisplayNameFor(model => model.VoucherCode)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Value)
+                Giá trị
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Quantity)
+                Số lượng
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Used)
+                Số lần đã sử dụng
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Status)
+                Trạng thái
             </th>
             <th></th>
         </tr>
@@ -47,13 +79,91 @@
                     @Html.DisplayFor(modelItem => item.Used)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Status)
+					@{
+						if ((item.Status) == true)
+						{
+							<p style="color:green; border-radius: 25px; background-color: lightgreen; inline-size: 100%;text-align:center; ">Hoạt động </p>
+
+						}
+						else
+						{
+							<p style="color:black; border-radius: 25px; background-color: orangered; inline-size: 100%;text-align:center; ">Không hoạt động </p>
+						}
+					}
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.VoucherId">Edit</a>
-                    <a asp-action="Delete" asp-route-id="@item.VoucherId">Delete</a>
+					<a style="text-decoration:none;" asp-route-id="@item.VoucherId" data-bs-toggle="modal" data-bs-target="#fbedit-@item.VoucherId">
+						<button type="button" class="btn btn-primary">Chỉnh sửa</button>
+					</a>
+					<div class="modal" tabindex="-1" id="fbedit-@item.VoucherId">
+						<div class="modal-dialog modal-xl modal-fullscreen-xl-down">
+							<div class="modal-content ">
+								<div class="modal-header">
+									<h5 class="modal-title fw-bold" style="font-size:3rem;">Chỉnh sửa sản phẩm</h5>
+									<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="close"></button>
+								</div>
+								<form method="post" asp-action="Edit" asp-route-id="@item.VoucherId">
+									<div class="info" style="margin:1rem;">
+										<input type="hidden" name="VoucherId" value="@item.VoucherId" />
+										<div class="form-group">
+											<label class="control-label">VoucherCode</label>
+											<input name="VoucherCode" value="@item.VoucherCode" class="form-control"  />
+										</div>
+										<div class="form-group">
+											<label class="control-label">Giá trị</label>
+											<input name="Value" value="@item.Value" class="form-control"  />
+										</div>
+										<div class="form-group">
+											<label class="control-label">Số lương</label>
+											<input name="Quantity" value="@item.Quantity" class="form-control" />
+										</div>
+										<div class="form-group">
+											<label class="control-label">Số lần đã sử dụng</label>
+											<input name="Used" value="@item.Used" class="form-control" readonly />
+										</div>
+										<div class="form-group">
+											<label class="control-label">Trạng thái</label>
+											<select name="Status" id="Status" value="@item.Status" class="form-control">
+												<option selected="@(item.Status == false)" value="False">Ngừng hoạt động</option>
+												<option selected="@(item.Status == true)" value="True">Hoạt động</option>
+											</select>
+										</div>
+
+
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+										<input type="submit" value="Lưu" class="btn btn-primary" />
+									</div>
+								</form>
+							</div>
+						</div>
+
+					</div>
+					<a type="button" class="btn btn-danger" asp-route-id="@item.VoucherId" data-bs-toggle="modal" data-bs-target="#exampleModal">Xóa</a>
+					<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h1 class="modal-title fs-5" id="exampleModalLabel">XÓA</h1>
+									<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+								</div>
+								<div class="modal-body">
+									Bạn có chắn chắc muốn xóa sản phẩm này không?
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+									<form method="post" asp-action="Delete" asp-route-id="@item.VoucherId">
+
+										<input type="submit" value="Xóa" class="btn btn-danger" />
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
                 </td>
             </tr>
         }
     </tbody>
 </table>
+

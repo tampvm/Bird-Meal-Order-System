@@ -20,6 +20,4 @@ public partial class TblAddress
     public bool? IsDefault { get; set; } = false;
 
     public virtual TblUser? User { get; set; }
-
-
 }

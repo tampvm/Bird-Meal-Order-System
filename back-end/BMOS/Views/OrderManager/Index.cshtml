@@ -48,19 +48,43 @@
                 </td>
                 <td>
                     @{
-                        if ((item.IsConfirm) == true)
+                        if (item.Status == 0)
                         {
-                            <p style="color:green; border-radius: 25px; background-color: lightgreen; inline-size: 100%;text-align:center;">Đơn hàng đã giao </p>
-
+                            <p style="color:green; border-radius: 25px; background-color: red; inline-size: 100%;text-align:center;">Đơn hàng chưa xác nhận</p>
                         }
-                        else
+                         else if (item.Status == 1)
                         {
-                            <p style="color:black; border-radius: 25px; background-color: orangered; inline-size: 100%;text-align:center; ">Đơn hàng chưa giao </p>
+                            <p style="color:green; border-radius: 25px; background-color: lightyellow; inline-size: 100%;text-align:center;">Đơn hàng đang vận chuyển</p>
+                        }
+                        else if (item.Status == 2)
+                        {
+                            <p style="color:black; border-radius: 25px; background-color: green; inline-size: 100%;text-align:center; ">Đơn hàng đã giao</p>
+                        }
+                        else if (item.Status == 3)
+                        {
+                            <p style="color:black; border-radius: 25px; background-color: red; inline-size: 100%;text-align:center; ">Đơn hàng bị hủy</p>
+                        }
+                        else if (item.Status == 4)
+                        {
+                            <p style="color:black; border-radius: 25px; background-color: yellow; inline-size: 100%;text-align:center; ">Yêu cầu hoàn trả</p>
+                        }
+                        else if (item.Status == 6)
+                        {
+                            <p style="color:black; border-radius: 25px; background-color: palevioletred; inline-size: 100%;text-align:center; ">Đơn hoàn trả</p>
+                        }
+                        else if (item.Status == 7)
+                        {
+                            <p style="color:black; border-radius: 25px; background-color: mediumpurple; inline-size: 100%;text-align:center; ">Đã hoàn trả hàng</p>
+                        }
+                        else if (item.Status == 8 || item.Status == 5)
+                        {
+                            <p style="color:black; border-radius: 25px; background-color: deepskyblue; inline-size: 100%;text-align:center; ">Hoàn thành</p>
                         }
                     }
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.total)vnd
+                    @string.Format("{0:#,0}", item.total)vnd
+
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.date)
@@ -69,7 +93,63 @@
                     <a asp-action="Details" asp-route-id="@item.orderID">
                         <button type="button" class="btn btn-info" >Chi Tiết</button>
                     </a>
-                    
+                    @*<a style="text-decoration:none;" asp-action="Details" asp-route-id="@item.orderID" data-bs-toggle="modal" data-bs-target="#fbdetail-@item.orderID">
+                        <button type="button" class="btn btn-info">Chi tiết</button>
+                    </a>
+
+                    <div class="modal" tabindex="-1" id="fbdetail-@item.orderID">
+                        <div class="modal-dialog modal-xl modal-fullscreen-xl-down">
+                            <div class="modal-content ">
+                                <div class="modal-header">
+                                    <h5 class="modal-title fw-bold" style="font-size:3rem;">Chi tiết sản phẩm</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="close"></button>
+                                </div>
+
+                                <div class="info" style="text-align:center;">
+                                    <div class="form-group">
+                                        
+                                        <b>Mã đơn hàng :</b> @item.orderID
+                                    <div class="form-group">
+                                            <b>Tên tài khoản :</b> @item.UserName
+                                    </div>
+                                    <div class="form-group">
+                                            <b>Trạng thái đơn hàng :</b> <div style="margin:0px 25rem;">
+                                                @{
+                                                    if ((item.IsConfirm) == true)
+                                                    {
+                                                        <p style="color:green; border-radius: 25px; background-color: lightgreen;">Đơn hàng đã giao </p>
+
+                                                    }
+                                                    else
+                                                    {
+                                                        <p style="color:black; border-radius: 25px; background-color: orangered;">Đơn hàng chưa giao </p>
+                                                    }
+                                                }
+                                            </div>
+                                    </div>
+                                    <div class="form-group">
+                                            <b>Số lượng :</b> @item.Quantity
+                                    </div>
+                                    <div class="form-group">
+                                            <b>Thông tin chi tiêt sản phẩm :</b> <div>
+                                                @await Html.PartialAsync("Orderdetails")
+                                            </div>
+                                    </div>
+                                    <div class="form-group">
+                                            <b>Tổng tiền :</b> @string.Format("{0:#,0}", item.total)vnđ
+                                    </div>
+
+                                    <div class="form-group">
+                                            <b>Thời gian :</b> @item.date
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>*@
                     
                 </td>
             </tr>
@@ -79,7 +159,7 @@
 <br />
 <br />
 <div style="font-size:2rem; margin-bottom:2rem; margin-left:1rem;">
-    Trang @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) tren @Model.PageCount
+    Trang @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) trên @Model.PageCount
 </div>
 
 <div style="font-size:1rem; margin-bottom:2rem; margin-left:1rem;">

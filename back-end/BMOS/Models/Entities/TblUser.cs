@@ -5,19 +5,19 @@ namespace BMOS.Models.Entities;
 
 public partial class TblUser
 {
-	public int UserId { get; set; }
+    public int UserId { get; set; }
 
-	public string? Username { get; set; }
+    public string? Username { get; set; }
 
-	public string? Password { get; set; }
+    public string? Password { get; set; }
 
 	public bool? IsConfirm { get; set; } = false;
 
-	public string? Firstname { get; set; }
+    public string? Firstname { get; set; }
 
-	public string? Lastname { get; set; }
+    public string? Lastname { get; set; }
 
-	public string? Numberphone { get; set; }
+    public string? Numberphone { get; set; }
 
 	public string? Address { get; set; } = null;
 
@@ -31,7 +31,7 @@ public partial class TblUser
 
 	public int? UserRoleId { get; set; } = 3;
 
-	public virtual ICollection<TblAddress> TblAddresses { get; set; } = new List<TblAddress>();
+    public virtual ICollection<TblAddress> TblAddresses { get; set; } = new List<TblAddress>();
 
     public virtual ICollection<TblFavouriteList> TblFavouriteLists { get; set; } = new List<TblFavouriteList>();
 

@@ -46,7 +46,7 @@
             <td >
                 <div style="display:-webkit-box;-webkit-box-orient: vertical;
                             -webkit-line-clamp: 2;overflow:hidden;">
-                        @Html.DisplayFor(modelItem => item.Description)
+                        @Html.Raw(item.Description)
                 </div>
             </td>
             <td>
@@ -62,21 +62,71 @@
                         {
                             <p style="color:green; border-radius: 25px; background-color: lightgreen; inline-size: 100%;text-align:center;">Đã phê duyệt </p>
 
-                        }
-                        else
+                        }if((item.IsConfirm) == null)
                         {
-                            <p style="color:black; border-radius: 25px; background-color: orangered; inline-size: 100%;text-align:center; ">Chưa phê duyệt </p>
+                            <p style="color:white; border-radius: 25px; background-color: orange; inline-size: 100%;text-align:center;">Chờ xử lý</p>
+                        }
+                        if ((item.IsConfirm) == false)
+                        {
+                            <p style="color:black; border-radius: 25px; background-color: red; inline-size: 100%;text-align:center; ">Đã từ chối</p>
                         }
                     }
                 </td>
-            <td>
-                <a style="text-decoration:none;" asp-action="Edit" asp-route-id="@item.RefundId">
-                        <button type="button" class="btn btn-primary" >Chỉnh sửa</button>
-                </a> 
-                <a style="text-decoration:none;" asp-action="Details" asp-route-id="@item.RefundId">
+                <td>
+                    @if (item.IsConfirm == null)
+                    {
+                        <a style="text-decoration:none;" asp-route-id="@item.RefundId" data-bs-toggle="modal" data-bs-target="#blogedit-@item.RefundId">
+                        <button type="button" class="btn btn-primary">Chỉnh sửa</button>
+                    </a>
+                        <div class="modal fade" id="blogedit-@item.RefundId" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+						<div class="modal-dialog modal-xl modal-fullscreen-xl-down">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h1 class="modal-title fs-5" id="exampleModalLabel">Xác nhận hoàn trả </h1>
+									<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+								</div>
+                                    <form method="post" asp-action="Edit" asp-route-id="@item.RefundId">
+									<div class="modal-body">
+                                            <input name="RefundId" type="hidden" class="form-control" value="@item.RefundId" />
+										<input type="hidden" value="@item.Date" name="Date" class="form-control" />
+                                            <input name="UserId" type="hidden" class="form-control" value="@item.UserId" />
+										<div class="form-group">
+											<label class="control-label">Tên nguời dùng</label>
+											<input name="Name" value="@item.UserName" class="form-control" readonly />
+										</div>
+                                            <div class="form-group">
+                                                <label class="control-label">Mã đơn hàng</label>
+                                                <input name="OrderId" value="@item.OrderId" class="form-control" readonly />
+                                            </div>
+										<div class="form-group">
+											<label for="recipient-name" >Nội dung hoàn trả</label>
+                                                <textarea id="Description-@item.Description" name="Description" class="form-control ckeditor-field" style="font-size:2rem;" readonly>@Html.Raw(item.Description)</textarea>
+										</div>
+										<div class="form-group">
+											<label class="control-label">Trạng thái</label>
+                                                <select name="IsConfirm" id="IsConfirm" value="@item.IsConfirm" class="form-control">
+                                                    <option selected="@(item.IsConfirm == false)" value="False">Từ chối hoàn trả</option>
+                                                    <option selected="@(item.IsConfirm == true)" value="True">Xác nhận hoàn trả</option>
+											</select>
+										</div>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+										<button type="submit" class="btn btn-primary">Lưu</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+                    }
+                    else
+                    {
+                        
+                    }
+                    <a style="text-decoration:none;" asp-action="Details" asp-route-id="@item.RefundId">
                         <button type="button" class="btn btn-info" >Chi tiết</button>
                 </a> 
-
+                    
             </td>
         </tr>
 }
@@ -93,3 +143,14 @@
     PageClasses = new string[] { "page-link" }
     })
 </div>
+@section Scripts {
+    <script src="~/ckeditor/ckeditor.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var ckeditorFields = document.getElementsByClassName('ckeditor-field');
+            for (var i = 0; i < ckeditorFields.length; i++) {
+                CKEDITOR.replace(ckeditorFields[i].id);
+            }
+        });
+    </script>
+    }

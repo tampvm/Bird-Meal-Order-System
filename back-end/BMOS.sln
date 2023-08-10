@@ -5,10 +5,6 @@ VisualStudioVersion = 17.6.33723.286
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BMOS", "BMOS\BMOS.csproj", "{591ABEFA-34FB-4EBD-9BD6-6694927A84D6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BMOSTest", "CartTest\BMOSTest.csproj", "{F3F93604-BCA4-4D43-AC79-E3C106BDFF05}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpecFlowBMOS", "SpecFlowBMOS\SpecFlowBMOS.csproj", "{8A6E59FA-73AB-47C5-B1BB-CF37F9C2701D}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,14 +15,6 @@ Global
 		{591ABEFA-34FB-4EBD-9BD6-6694927A84D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{591ABEFA-34FB-4EBD-9BD6-6694927A84D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{591ABEFA-34FB-4EBD-9BD6-6694927A84D6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F3F93604-BCA4-4D43-AC79-E3C106BDFF05}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F3F93604-BCA4-4D43-AC79-E3C106BDFF05}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F3F93604-BCA4-4D43-AC79-E3C106BDFF05}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F3F93604-BCA4-4D43-AC79-E3C106BDFF05}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8A6E59FA-73AB-47C5-B1BB-CF37F9C2701D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8A6E59FA-73AB-47C5-B1BB-CF37F9C2701D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8A6E59FA-73AB-47C5-B1BB-CF37F9C2701D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8A6E59FA-73AB-47C5-B1BB-CF37F9C2701D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

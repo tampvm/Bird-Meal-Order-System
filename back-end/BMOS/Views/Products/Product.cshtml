@@ -3,9 +3,9 @@
 @{
 	Layout = "_HeaderFooter";
 	ViewData["Title"] = "Index";
-	var averageStart = ViewData["AverageStartFeedback"] as double?;
+	var averageStart = ViewData["AverageStartFeedback"] as decimal?;
 	var feedbackQuantity = ViewData["FeedbackQuantity"];
-	var id = ViewBag.ID;
+	var id = ViewBag.BuyStatus;
 
 }
 
@@ -68,15 +68,6 @@
 							<div class="info-product">Đã bán: @Model.SoldQuantity</div>
 						</div>
 						
-						@*<div class="product-detail__content--title product-detail--status">
-						<span>Trạng thái:</span>
-						@if((bool)Model.Status) {
-						<div class="product-detail--status_value">Còn hàng</div>
-						} else
-						{
-						<div class="product-detail--status_value">Hết hàng</div>
-						}
-						</div>*@
 						<div class="product-detail__content--title product-detail--price">
 							<span>Giá:</span>
 							<div class="product-detail--price_value">
@@ -92,6 +83,7 @@
 						<form>
 							<div class="product-detail__content--title product-detail--status product-info">
 								<div class="info-product">Sản phầm tồn kho: @Model.SoldQuantity</i></div>
+								<input type="hidden" name="limitQuantity" value="@Model.SoldQuantity"/>
 							</div>
 							<div class="product-detail__content edit-quantity-button">
 								<span>Số lượng:</span>
@@ -145,41 +137,14 @@
 			<div class="col-12 product-detail__description--title">
 				Thông tin sản phẩm
 			</div>
-			<div class="col-12 product-detail__description--content">
-				@*@Model.Description*@
-				<div class="product-detail__description--content-partition">
-					<span>Thành phần</span>
-					<span>
-						Trứng gà, đậu xanh, đậu tương, đậu đỏ, ngũ cốc, gạo lút, muỗi nước, kỳ tử, phấn hoa,
-						mật ong, đường đào, Vitamin, khoáng tổng hợp.
-						HƯỚNG DẦN SỬ DỤNG
-					</span>
-				</div>
-				<div class="product-detail__description--content-partition">
-					<span>Thành phần</span>
-					<span>
-						Trứng gà, đậu xanh, đậu tương, đậu đỏ, ngũ cốc, gạo lút, muỗi nước, kỳ tử, phấn hoa,
-						mật ong, đường đào, Vitamin, khoáng tổng hợp.
-						HƯỚNG DẦN SỬ DỤNG
-					</span>
-				</div>
-				<div class="product-detail__description--content-partition">
-					<span>Thành phần</span>
-					<span>
-						Hàm lượng đạm cao hơn + đường + muối + chất xơ + canxi + khoáng chất + vitamin tổng
-						hợp cao dùng cho chim đã thay xong lông, giúp chim hót tốt, căng lửa ổn định. CÁCH
-						CHUYỂN CÁM Trộn cám đang dùng cùng cám mới ăn 2, 3 ngày rồi cho ăn thẳng. CÔNG DỤNG Là
-						thức ăn hoàn chỉnh có đầy đủ các chất dinh dưỡng. Thức ăn tạo cho chim khỏe mạnh, lông
-						mỏ bóng mượt, hót hay. BẢO QUẢN Để nơi khô ráo thoáng mát, tránh ánh nắng mặt trời. Buộc
-						kín túi sau khi sử dụng. KLT: 200g Hạn dùng: 1 năm kể từ ngày SX
-					</span>
-				</div>
+			<div class="col-12 product-detail__description--content description-product">
+				<input type="hidden" name="prodDesc" value="@Model.Description" />
 			</div>
 		</div>
 
 
 		<div class="row g-0 feedback">
-			@if (id != null)
+			@if (id)
 			{
 
 				<form asp-controller="Products" asp-action="Comment">
@@ -204,7 +169,7 @@
 
 
 						<div class="col-11 user_feedback_input">
-							<input type="text" name="textcontent" placeholder="Ý kiến của bạn về sản phẩm">
+							<input type="text" name="textcontent" placeholder="Ý kiến của bạn về sản phẩm" required>
 							<input type="hidden" name="id" value="@Model.ProductId">
 						</div>
 						<button type="submit" class="btn btn-outline-warning" style="margin-top: 10px; font-size: 1.8rem;">Gửi phản hồi</button>
@@ -216,7 +181,7 @@
 			}
 			else
 			{
-				<div class="col-12 product-detail__description--title">Bạn cần đăng nhập để có thể phản hồi sản phẩm</div>
+				<div style="margin: 15px 0" class="col-12 product-detail__description--title">Bạn cần đăng nhập và mua sản phẩm này để có thể phản hồi</div>
 			}
 
 
@@ -229,19 +194,28 @@
 @section scripts {
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 	<script>
+	
 
-		$(".ratingstar").hover(function () {
-			$(".ratingstar").addClass("fa-regular").removeClass("fa-solid");
-			$(this).addClass("fa-solid").removeClass("fa-regular");
-			$(this).prevAll(".ratingstar").addClass("fa-solid").removeClass("fa-regular");
-		});
 
-		$(".ratingstar").click(function () {
-			var starValue = $(this).attr("data-value");
-			$("#rating").val(starValue);
-		});
 
 		$(document).ready(function () {
+			var desc = $('input[name="prodDesc"]').val();
+			$('.description-product').html(desc);
+
+
+			// ratting
+			$(".ratingstar").hover(function () {
+				$(".ratingstar").addClass("fa-regular").removeClass("fa-solid");
+				$(this).addClass("fa-solid").removeClass("fa-regular");
+				$(this).prevAll(".ratingstar").addClass("fa-solid").removeClass("fa-regular");
+			});
+
+			$(".ratingstar").click(function () {
+				var starValue = $(this).attr("data-value");
+				$("#rating").val(starValue);
+			});
+
+
 			$('.ajax-add-to-cart').click(function (e) {
 				var _id = $(this).data("id");
 				e.preventDefault();

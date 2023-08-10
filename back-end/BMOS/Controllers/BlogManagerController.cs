@@ -1,4 +1,5 @@
-﻿using BMOS.Models;
+﻿using BMOS.Helpers;
+using BMOS.Models;
 using BMOS.Models.Entities;
 using BMOS.Models.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -19,7 +20,19 @@ namespace Demo.Controllers
 		}
 		public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? page)
 		{
-			ViewData["SearchParameter"] = searchString;
+            var user = HttpContext.Session.Get<TblUser>("userManager");
+            if (user != null)
+            {
+                if (user.UserRoleId == 1 || user.UserRoleId == 4)
+                {
+                    return View("ErrorPage");
+                }
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            ViewData["SearchParameter"] = searchString;
 			ViewBag.CurrentSort = sortOrder;
 			ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name" : "";
 			ViewData["NameDescSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
@@ -47,6 +60,7 @@ namespace Demo.Controllers
 										   blogDescription = blog.Description,
 										   blogImage = image.Url,
 										   Date = blog.Date,
+										   Status = blog.Status,
 									   };
 			if (!String.IsNullOrEmpty(searchString))
 			{
@@ -87,11 +101,35 @@ namespace Demo.Controllers
 		}
 		public IActionResult Create()
 		{
-			return View();
+            var user = HttpContext.Session.Get<TblUser>("userManager");
+            if (user != null)
+            {
+                if (user.UserRoleId == 1)
+                {
+                    return View("ErrorPage");
+                }
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            return View();
 		}
 		public async Task<IActionResult> Details(string? id)
 		{
-			if (id == null || _context.TblBlogs == null)
+            var user = HttpContext.Session.Get<TblUser>("userManager");
+            if (user != null)
+            {
+                if (user.UserRoleId == 1)
+                {
+                    return View("ErrorPage");
+                }
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            if (id == null || _context.TblBlogs == null)
 			{
 				return NotFound();
 			}
@@ -106,9 +144,21 @@ namespace Demo.Controllers
 			return View(tblBlog);
 		}
 		[HttpPost]
-		public async Task<IActionResult> Create([Bind("BlogId, Name, Description, Date, Status")] TblBlog tblBlog, List<IFormFile> files)
+		public async Task<IActionResult> Create([Bind("BlogId, Name, Description, Date, Status,files")] TblBlog tblBlog, List<IFormFile> files)
 		{
-			string url = "";
+            var user = HttpContext.Session.Get<TblUser>("userManager");
+            if (user != null)
+            {
+                if (user.UserRoleId == 1)
+                {
+                    return View("ErrorPage");
+                }
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            string url = "";
 			if (ModelState.IsValid)
 			{
 				url = await FirebaseService.UploadImage(files, "blogs");
@@ -129,7 +179,19 @@ namespace Demo.Controllers
 		}
 		public async Task<IActionResult> Edit(string id)
 		{
-			if (id == null || _context.TblBlogs == null)
+            var user = HttpContext.Session.Get<TblUser>("userManager");
+            if (user != null)
+            {
+                if (user.UserRoleId == 1)
+                {
+                    return View("ErrorPage");
+                }
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            if (id == null || _context.TblBlogs == null)
 			{
 				return NotFound();
 			}
@@ -178,7 +240,19 @@ namespace Demo.Controllers
 		}
 		public async Task<IActionResult> Delete(string id)
 		{
-			if (id == null || _context.TblBlogs == null)
+            var user = HttpContext.Session.Get<TblUser>("userManager");
+            if (user != null)
+            {
+                if (user.UserRoleId == 1)
+                {
+                    return View("ErrorPage");
+                }
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            if (id == null || _context.TblBlogs == null)
 			{
 				return NotFound();
 			}

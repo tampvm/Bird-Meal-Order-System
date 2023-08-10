@@ -11,6 +11,7 @@ using System.Diagnostics.Metrics;
 using System.Collections;
 using BMOS.Models.Services;
 using System.Security.Policy;
+using BMOS.Helpers;
 
 namespace BMOS.Controllers
 {
@@ -27,6 +28,18 @@ namespace BMOS.Controllers
         // GET: RoutingManager
         public async Task<IActionResult> Index()
         {
+            var user = HttpContext.Session.Get<TblUser>("userManager");
+            if (user != null)
+            {
+                if (user.UserRoleId == 1 || user.UserRoleId == 4)
+                {
+                    return View("ErrorPage");
+                }
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
             return _context.TblRoutings != null ?
                         View(await _context.TblRoutings.ToListAsync()) :
                         Problem("Entity set 'BmosContext.TblRoutings'  is null.");
@@ -35,6 +48,18 @@ namespace BMOS.Controllers
         // GET: RoutingManager/Details/5
         public async Task<IActionResult> Details(string id)
         {
+            var user = HttpContext.Session.Get<TblUser>("userManager");
+            if (user != null)
+            {
+                if (user.UserRoleId == 1)
+                {
+                    return View("ErrorPage");
+                }
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
             if (id == null || _context.TblRoutings == null)
             {
                 return NotFound();
@@ -51,6 +76,18 @@ namespace BMOS.Controllers
         // GET: RoutingManager/Create
         public async Task<IActionResult> Create()
         {
+            var user = HttpContext.Session.Get<TblUser>("userManager");
+            if (user != null)
+            {
+                if (user.UserRoleId == 1)
+                {
+                    return View("ErrorPage");
+                }
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
             var productData = await _context.TblProducts.ToListAsync();
             var model = new TblRouting();
             model.listProduct = new List<SelectListItem>();
@@ -65,9 +102,7 @@ namespace BMOS.Controllers
             return View(model);
         }
 
-        // POST: RoutingManager/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(TblRouting model, List<IFormFile> files)
@@ -180,44 +215,7 @@ namespace BMOS.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-		//    public async Task<IActionResult> Edit(string id, TblRouting model, List<IFormFile> files)
-		//    {
-
-		//        var routing = await _context.TblRoutings.FindAsync(id);
-
-
-		//        if (routing == null)
-		//        {
-		//            return NotFound();
-		//        }
-
-
-		//        _context.TblProductInRoutings.RemoveRange(_context.TblProductInRoutings.Where(rp => rp.RoutingId == id));
-
-
-		//        var productList = model.listProductId;
-
-
-		//        foreach (var productId in productList)
-		//        {
-		//            routing.TblProductInRoutings.Add(new TblProductInRoutings
-		//{
-		//	Id = 0,
-		//	RoutingId = id,
-		//                ProductId = productId,
-
-		//            });;
-		//        }
-
-
-		//        _context.TblRoutings.Update(routing);
-		//        await _context.SaveChangesAsync();
-
-
-		//        return RedirectToAction(nameof(Index));
-		//    }
-
-		// GET: RoutingManager/Delete/5
+	
 		public async Task<IActionResult> Delete(string id)
 		{
 			if (id == null || _context.TblRoutings == null)

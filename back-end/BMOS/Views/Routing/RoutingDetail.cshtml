@@ -30,7 +30,7 @@
 						@foreach (var item in Model)
 						{
 							@*var _priceProduct = item.getTotalProductPrice();
-							totalPrice += _priceProduct;*@
+						totalPrice += _priceProduct;*@
 							string url = item.image;
 							string[] delemeter = new string[] { "datnt" };
 							string[] image = url.Split(delemeter, StringSplitOptions.None);
@@ -49,10 +49,34 @@
 											@string.Format("{0:#,0}", item.productPrice)vnđ
 										</span>
 									</div>
+									<div class="col-12 routing-item__product-desc--title">
+										<span>Đã bán:</span>
+										<span style="color: red">
+											@string.Format("{0:#,0}", item.sold)
+										</span>
+									</div>
+									<div class="col-12 routing-item__product-desc--title">
+										<span>Sản phẩm có sẵn:</span>
+										<input>
+										<span style="color: red">
+											@string.Format("{0:#,0}", item.getAvailableProduct())
+										</span>
+									</div>
+									<div class="col-12 routing-item__product-desc--title" style="display: -webkit-box;
+		-webkit-box-orient: vertical;
+		-webkit-line-clamp: 4;
+		overflow: hidden;
+width: 60%">
+										<span>Mô tả:</span>
+										<span class="js-product-desc" style="color: var(--text-color);">
+											<input type="hidden" value="@item.description" name="product-desc" />
+
+										</span>
+									</div>
 									<div class="edit-quantity-button">
-										<span>Quantity:</span>
+										<span>Số lượng:</span>
 										<div class="col-md-3 col-lg-3 col-xl-2 d-flex">
-											<button type="submit"   data-id="@item.productId" class="btn btn-link px-2 decrease-prodQuantity-btn"
+											<button type="submit" data-id="@item.productId" class="btn btn-link px-2 decrease-prodQuantity-btn"
 													onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
 												<i class="fas fa-minus"></i>
 											</button>
@@ -81,27 +105,21 @@
 						<span>Giá:</span>
 						<span class="routing-info__price-text">
 							@string.Format("{0:#,0}", totalPrice)vnđ
-							</span>
+						</span>
 					</div>
 
-					<div class="col-12 view-routing-process">
-						<button type="button" class="btn btn-primary view-routing-process--button">
-							View routing
-							process
-						</button>
-					</div>
 
 
 					<div class="col-12 routing-button add-to-cart--button" style="margin-top: 10px;">
 						<a asp-controller="ShoppingCart" asp-action="AddProductInRoutingToCart">
-						<button type="button" class="btn btn-primary button-action button-action--add-cart">
-							<i class="fa-solid fa-cart-shopping"></i>
-							Thêm vào giỏ hàng
-						</button>
+							<button type="button" class="btn btn-primary button-action button-action--add-cart">
+								<i class="fa-solid fa-cart-shopping"></i>
+								Thêm vào giỏ hàng
+							</button>
 						</a>
 						<i class="fa-solid fa-heart heart-icon" style="color: #d32a17;"></i>
 					</div>
-					
+
 
 					<div class="col-12 recommend-list">
 						<span class="recommend-list__text" style="font-size: 2rem">Danh sách blog</span>
@@ -158,14 +176,43 @@
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 	<script>
 		$(document).ready(function () {
+			var desc = $('.js-product-desc');
+			var descValue = $('input[name="product-desc"]').val();
+			var inputNumber = document.querySelectorAll('input[name="cartItemQuantity"]');
+			console.log(inputNumber);
+
+
+			desc.html(descValue);
+
+
 
 			var totalPrice = $('input[name="totalPrice"]').val();
-			console.log("page firest: ", totalPrice);
+			var inputQuantity = $('input[name="cartItemQuantity"]');
+
+			for (let input of inputNumber) {
+				input.addEventListener("change", function () {
+				var quantity = parseInt($(this).val());
+				var _id = $(this).data("id");
+				$.ajax({
+					url: "/Routing/EditRoutingDetail",
+					data: {
+						id: _id,
+						status: "input",
+						productQuantity: quantity,
+					},
+					type: "GET",
+					success: function (data) {
+						$(".routing-list__item").html(data);
+					},
+				});
+			});
+			}
+
 
 			$('.routing-info__price-text').html(totalPrice);
 
 			$('.decrease-prodQuantity-btn').click(function (e) {
-				var _id = $(this).data("id");	
+				var _id = $(this).data("id");
 				$.ajax({
 					url: "/Routing/EditRoutingDetail",
 					data: {

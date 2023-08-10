@@ -4,131 +4,170 @@
 @using X.PagedList.Web.Common;
 
 @{
-    ViewData["Title"] = "UserHistoryOrder";
-    Layout = "_Layout";
-    var id = ViewBag.ID;
+	ViewData["Title"] = "UserHistoryOrder";
+	Layout = "_Layout";
+	var id = ViewBag.ID;
 }
 
-    <div class="container">
-        <div class="content">
-            <div class="row userprofile">
-                <div class="col-12 userprofile_title">Trang chủ/ Chỉnh sửa người dùng</div>
-            </div>
-            <div class="row userinfo">
-                <div class="col-7 userprofile_info">
-                    <div class="row userprofile_info_wel">
-                        <div class="col-6">
-                            <div class="userprofile_info_wel_history" style="background-color: #e38a41;">
-                                <img src="~/images/history.png" alt="" srcset="">
-                                <a href="~/Account/UserHistoryOrder" style="text-decoration: none; color: black;"><h3 style="font-weight: bold; margin-top: 10px;">Lịch sử đơn hàng</h3></a>
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <div class="userprofile_info_wel_welcome">
-                                <img src="~/images/user-icon.png" alt="" srcset="">
-                                <h3 style="font-weight: bold; margin-top: 10px;">Xin chào, <Span>@ViewBag.Fullname</Span></h3>
-                            </div>
-                        </div>
-                    </div>
+<div class="container">
+	<div class="content">
+		<div class="row userprofile">
+			<div class="col-12 userprofile_title">Trang chủ/ Chỉnh sửa người dùng</div>
+		</div>
+		<div class="row userinfo">
+			<div class="col-7 userprofile_info">
+				<div class="row userprofile_info_wel">
+					<div class="col-6">
+						<div class="userprofile_info_wel_history" style="background-color: #e38a41;">
+							<img src="~/images/history.png" alt="" srcset="">
+							<a href="~/Account/UserHistoryOrder" style="text-decoration: none; color: black;"><h3 style="font-weight: bold; margin-top: 10px;">Lịch sử đơn hàng</h3></a>
+						</div>
+					</div>
+					<div class="col-6">
+						<div class="userprofile_info_wel_welcome">
+							<img src="~/images/user-icon.png" alt="" srcset="">
+							<h3 style="font-weight: bold; margin-top: 10px;">Xin chào, <Span>@ViewBag.Fullname</Span></h3>
+						</div>
+					</div>
+				</div>
 
 
-                    <div class="row">
-                        <div class="col-12 user_history">
+				<div class="row">
+					<div class="col-12 user_history">
 
-                            @foreach (var item in Model)
-                            {
-                                <form action="~/Account/OrderDetail" method="post" class="user_history_details" style="background: none;">
-                                    <div class="col-8 user_history_details_tt">
-                                        <div style="display: flex; justify-content: space-between; align-items:center;">
-                                            <h4><b>Mã đơn hàng: </b>@Html.DisplayFor(modelItem => item.OrderId)<br></h4>
-                                            <input type="hidden" value="@Html.DisplayFor(modelItem => item.OrderId)" name="orderid" required>
-                                            <h4><b>Ngày: </b>@Html.DisplayFor(modelItem => item.Date)<br></h4>
-                                        </div>
-                                        <div style="display: flex;">
-                                            @if (item.IsConfirm == true)
-                                            {
-                                                <h4><b>Trạng thái: </b></h4><h4 style="color: forestgreen;">Đã nhận hàng</h4>
-                                            }
-                                            else
-                                            {
-                                                <h4><b>Trạng thái: </b></h4><h4 style="color: red;">Chưa nhận hàng</h4>
-                                            }
-                                        </div>
-                                    </div>
-                                    <div class="col-4 user_history_details_price">
-                                        <div>
-                                            <h4><b>Tổng tiền: </b>@Html.DisplayFor(modelItem => item.TotalPrice) VND</h4>
-                                        </div>
-                                        
-                                        <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 5px;">
-                                            <button type="submit" class="submit" style="display: flex; justify-content: center; align-items: center; width: 30%;
+						@foreach (var item in Model)
+						{
+							<form action="~/Account/OrderDetail" method="post" class="user_history_details" style="background: none;">
+								<div class="col-8 user_history_details_tt">
+									<div style="display: flex; justify-content: space-between; align-items:center;">
+										<h4><b>Mã đơn hàng: </b>@Html.DisplayFor(modelItem => item.OrderId)<br></h4>
+										<input type="hidden" value="@Html.DisplayFor(modelItem => item.OrderId)" name="orderid" required>
+										<h4><b>Ngày: </b>@item.Date<br></h4>
+									</div>
+									<div style="display: flex;">
+										@if (item.Status == 2)
+										{
+											<h4><b>Trạng thái: </b></h4>
+
+											<h4 style="color: forestgreen;">Đã nhận hàng</h4>
+										}
+										else if (item.Status == 1)
+										{
+											<h4><b>Trạng thái: </b></h4>
+
+											<h4 style="color: cornflowerblue;">Đang trong quá trình vận chuyển</h4>
+										}
+										else if (item.Status == 0)
+										{
+											<h4><b>Trạng thái: </b></h4>
+
+											<h4 style="color: red;">Chưa xác nhận đơn hàng</h4>
+										}
+										else if (item.Status == 4)
+										{
+											<h4><b>Trạng thái: </b></h4>
+
+											<h4 style="color: pink;">Yêu cầu hoàn trả đơn hàng</h4>
+										}
+										else if (item.Status == 5)
+										{
+											<h4><b>Trạng thái: </b></h4>
+
+											<h4 style="color: red;">Đơn hàng bị từ chối hoàn trả</h4>
+										}
+										else if (item.Status == 6)
+										{
+											<h4><b>Trạng thái: </b></h4>
+											<h4 style="color: blue;">Đơn hàng đang trong quá trình hoàn trả</h4>
+										}
+										else if (item.Status == 7)
+										{
+											<h4><b>Trạng thái: </b></h4>
+											<h4 style="color: forestgreen;">Hoàn trả đơn hàng thành công</h4>
+										}
+										else if (item.Status == 8)
+										{
+											<h4><b>Trạng thái: </b></h4>
+											<h4 style="color: forestgreen;">Đơn hàng hoàn thành</h4>
+										}
+									</div> 
+								</div>
+								<div class="col-4 user_history_details_price">
+									<div>
+										<h4><b>Tổng tiền: </b>@Html.DisplayFor(modelItem => item.TotalPrice) VND</h4>
+									</div>
+
+									<div style="display: flex; align-items: center; justify-content: center; margin-bottom: 5px;">
+										<button type="submit" class="submit" style="display: flex; justify-content: center; align-items: center; width: 30%;
     height: 4rem;
     border-radius: 10px;
     border: none;
     background-color: orange;
     font-weight: bold;
     font-size: 2rem;">
-                                                Chi tiết
-                                            </button>
-                                            
-                                        </div>
-                                    </div>
-
-                                </form>
-
-                            }
-
-                            
+											Chi tiết
+										</button>
 
 
-                            <br />
-                            <br />
-                            <div style="font-size:1.5rem; margin-bottom:0.5rem; margin-left:1rem;">
-                                Trang @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) trên @Model.PageCount
-                            </div>
+									</div>
+								</div>
 
-                            <div style="font-size:2rem; margin-bottom:2rem; margin-left:1rem;">
-                                @Html.PagedListPager(Model, page => Url.Action("UserHistoryOrder",
-                            new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }),
-                            new PagedListRenderOptions {
-                            LiElementClasses = new string[] { "page-item" },
-                            PageClasses = new string[] { "page-link" }
-                            })
+							</form>
 
-                            </div>
-                        </div>
-                    </div>
+						}
 
 
 
-                </div>
+
+						<br />
+						<br />
+						<div style="font-size:1.5rem; margin-bottom:0.5rem; margin-left:1rem;">
+							Trang @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) trên @Model.PageCount
+						</div>
+
+						<div style="font-size:2rem; margin-bottom:2rem; margin-left:1rem;">
+							@Html.PagedListPager(Model, page => Url.Action("UserHistoryOrder",
+							new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }),
+							new PagedListRenderOptions {
+							LiElementClasses = new string[] { "page-item" },
+							PageClasses = new string[] { "page-link" }
+							})
+
+						</div>
+					</div>
+				</div>
 
 
-                <div class="col-5">
-                    <div class="userprofile_bar">
-                        <div class="userprofile_bar_profile">
-                            <img src="~/images/user-icon.png" alt="" srcset="">
-                            <a href="~/Account/UserProfile" target="">Hồ sơ</a>
-                        </div>
-                        <div class="userprofile_bar_profile">
-                            <img src="~/images/locationmanege.png" alt="" srcset="">
-                            <a href="~/Account/UserLocation" target="">Cài đặt địa chỉ</a>
-                        </div>
-                        <div class="userprofile_bar_profile">
-                            <img src="~/images/reset-password.png" alt="" srcset="">
-                            <a href="~/Account/UserChangePassword" target="">Đổi mật khẩu</a>
-                        </div>
-                        <div class="userprofile_bar_profile">
-                            <img src="~/images/logout.png" alt="" srcset="">
-                            <a href="~/Account/Refund" target="">Hoàn trả sản phẩm</a>
-                        </div>
-                        <div class="userprofile_bar_profile">
-                            <img src="~/images/logout.png" alt="" srcset="">
-                            <a href="~/Account/Logout" target="">Đăng xuất</a>
-                        </div>
-                        
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+
+			</div>
+
+
+			<div class="col-5">
+				<div class="userprofile_bar">
+					<div class="userprofile_bar_profile">
+						<img src="~/images/user-icon.png" alt="" srcset="">
+						<a href="~/Account/UserProfile" target="">Hồ sơ</a>
+					</div>
+					<div class="userprofile_bar_profile">
+						<img src="~/images/locationmanege.png" alt="" srcset="">
+						<a href="~/Account/UserLocation" target="">Cài đặt địa chỉ</a>
+					</div>
+					<div class="userprofile_bar_profile">
+						<img src="~/images/reset-password.png" alt="" srcset="">
+						<a href="~/Account/UserChangePassword" target="">Đổi mật khẩu</a>
+					</div>
+					<div class="userprofile_bar_profile">
+						<img src="~/images/logout.png" alt="" srcset="">
+						<a href="~/Account/Refund" target="">Hoàn trả sản phẩm</a>
+					</div>
+					<div class="userprofile_bar_profile">
+						<img src="~/images/logout.png" alt="" srcset="">
+						<a href="~/Account/Logout" target="">Đăng xuất</a>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+

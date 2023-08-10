@@ -61,9 +61,9 @@
                     }
                 </td>
                 <td>
-                    <button type="button" class="btn btn-primary" onclick="location.href='@Url.Action("Edit", new { id = item.RoutingId })'">Chỉnh sữa</button>
-                    <button type="button" class="btn btn-info" onclick="location.href='@Url.Action("Details", new { id = item.RoutingId })'">Chi Tiết</button>
-                    <button type="button" class="btn btn-danger" onclick="{ location.href='@Url.Action("Delete", new { id = item.RoutingId })' }">Xóa</button>
+                    <a type="button" class="btn btn-primary" asp-action="Edit" asp-route-id="@item.RoutingId">Chỉnh sữa</a>
+                    <a type="button" class="btn btn-info" asp-action="Details" asp-route-id="@item.RoutingId">Chi Tiết</a>
+                    <a type="button" class="btn btn-danger" asp-action="Delete" asp-route-id="@item.RoutingId">Xóa</a>
                 </td>
             </tr>
         }

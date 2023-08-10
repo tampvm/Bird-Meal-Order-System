@@ -43,7 +43,7 @@
                             <div class="refundinfo" style="font-size:2rem;">
                                 @foreach (var item in Model.OrderByDescending(x => x.date))
                                 {
-                                    <div class="col-11 userprofile_info_wel_locationinfo" style="border:2px solid black; border-radius:1rem;margin:2rem;">
+                                    <div class="col-12 userprofile_info_wel_locationinfo" style="border:2px solid black; border-radius:1rem;margin:2rem 0px;">
                                         <h3 style="padding-top:10px; font-weight:normal; " ><b style="font-weight:bold;">Mã đơn hàng: </b> @item.orderId</h3>
 
                                         @{
@@ -51,12 +51,17 @@
                                             {
                                                 <h3 style="color:green; font-weight:normal;"><b style=" color:black; font-weight:bold;">Trạng thái: </b> Đơn hoàn trả đã được xác nhận</h3>
                                             }
-                                            else
+                                            if (item.status == false)
                                             {
-                                                <h3 style="color:red; font-weight:normal;"><b style="color:black;font-weight:bold;">Trạng thái: </b>Đơn hoàn trả không được xác nhận</h3>
+                                                <h3 style="color:red; font-weight:normal;"><b style="color:black;font-weight:bold;">Trạng thái: </b>Đơn hoàn trả đã bị từ chối</h3>
+                                            }   
+                                            if (item.status == null)
+                                            {
+                                                <h3 style="color:orange; font-weight:normal;"><b style="color:black;font-weight:bold;">Trạng thái: </b>Đơn hoàn trả đang chờ xử lý</h3>
                                             }
                                         }
-                                        <h3 style="padding-bottom:10px;font-weight:normal;"><b style="font-weight:bold;">Lý do hoàn trả: </b> @item.content</h3>
+                                        <h3 style="padding-bottom:10px;font-weight:normal;"><b style="font-weight:bold;">Lý do hoàn trả: </b> @Html.Raw(item.content)</h3>
+
                                     </div>
                                 }
                             </div>
@@ -81,7 +86,7 @@
                         <a href="~/Account/UserChangePassword" target="">Đổi mật khẩu</a>
                     </div>
                     <div class="userprofile_bar_profile">
-                        <img src="~/images/logout.png" alt="" srcset="">
+                        <img src="~/images/refundicon.jpg" alt="" srcset="">
                         <a href="~/Account/Refund" target="" style="color: #e38a41; font-weight: bold;">Hoàn trả sản phẩm</a>
                     </div>
                     <div class="userprofile_bar_profile">

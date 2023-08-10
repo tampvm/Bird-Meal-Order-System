@@ -10,12 +10,13 @@ namespace BMOS.Models
 
         public int Quantity { get; set; }
 
-        public string? date { get; set; }
+        public DateTime? date { get; set; }
 
         public double? total { get; set; }
         public bool? IsConfirm { get; set; }
 
         public List<TblProduct>? proname { get; set; }
-
+        public int? Status { get; set; }
+        public string Note { get; set; }
     }
 }

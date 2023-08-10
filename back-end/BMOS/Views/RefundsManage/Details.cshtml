@@ -27,7 +27,7 @@
             Nội dung hoàn trả
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Description)
+            @Html.Raw(Model.Description)
         </dd>
         <dt class = "col-sm-2">
             Thời gian
@@ -42,12 +42,16 @@
             @{
                 if ((Model.IsConfirm) == true)
                 {
-                    <p style="color:green; border-radius: 25px; background-color: lightgreen; inline-size: 50%;text-align:center;">Đã phê duyệt </p>
+                    <p style="color:green; border-radius: 25px; background-color: lightgreen; inline-size: 100%;text-align:center;">Đã phê duyệt </p>
 
                 }
-                else
+                if ((Model.IsConfirm) == null)
                 {
-                    <p style="color:black; border-radius: 25px; background-color: orangered; inline-size: 50%;text-align:center; ">Chưa phê duyệt </p>
+                    <p style="color:white; border-radius: 25px; background-color: orange; inline-size: 100%;text-align:center;">Chờ xử lý</p>
+                }
+                if ((Model.IsConfirm) == false)
+                {
+                    <p style="color:black; border-radius: 25px; background-color: red; inline-size: 100%;text-align:center; ">Đã từ chối</p>
                 }
             }
         </dd>
@@ -57,8 +61,16 @@
         <dd>
             @await Html.PartialAsync("Orderdetails")
         </dd>
+        <dt class="col-sm-12">
+            Ảnh phản hồi :
+        </dt>
+        <dd>
+			<img width="200px" height="200px" src="@Model.urlImage" />
+        </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a style="text-decoration:none;color:darkorange" asp-action="Index">
+        <button type="button" class="btn btn-warning">Trở lại</button>
+    </a>
 </div>

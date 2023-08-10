@@ -86,11 +86,11 @@
 													</label>
 													@if (@address != null)
 													{
-														<input type="text" name="location" class="field__input" value="@address.Address" />
+														<input type="text" name="location" class="field__input" value="@address.Address" required />
 													}
 													else
 													{
-														<input type="text" name="location" class="field__input" value="" />
+														<input type="text" name="location" class="field__input" value="" required />
 													}
 													<div class="field__input-phone-region-wrapper">
 														<select class="field__input select-phone-region select2-hidden-accessible" tabindex="-1"
@@ -120,7 +120,7 @@
 													<label for="email" class="field__label">
 														Email
 													</label>
-													<input name="userEmail" type="email" class="field__input" value="@Model.Username" />
+													<input name="userEmail" type="email" class="field__input" value="@Model.Username" required />
 												</div>
 											</div>
 
@@ -419,9 +419,7 @@
 									</table>
 								</div>
 								<div class="order-summary__nav field__input-btn-wrapper hide-on-mobile layout-flex--row-reverse">
-									<div class="btn btn-checkout spinner ajax-payment">
-										<span class="spinner-label">ĐẶT HÀNG</span>
-									</div>
+									<button type="submit" class="btn btn-checkout spinner ajax-payment spinner-label">ĐẶT HÀNG</button>
 
 									<a asp-controller="ShoppingCart" asp-action="Index" class="previous-link">
 										<i class="previous-link__arrow">❮</i>
@@ -429,7 +427,7 @@
 									</a>
 								</div>
 
-							</div>
+							</div>	
 						</div>
 					</div>
 
@@ -450,8 +448,6 @@
 	})
 
 	$(document).ready(function () {
-		var _address = $('input[name="location"]').val();
-		var _phone = $('input[name="userPhone"]').val();
 
 		var bonusPoint = $('input[name="bonuspoint"]').val();
 		var _pType = "COD";
@@ -463,45 +459,47 @@
 		});
 
 		$('.ajax-payment').click(function (e) {
+			var _address = $('input[name="location"]').val();
+			var _phone = $('input[name="userPhone"]').val();
+			e.preventDefault();
 			var _note = $("#noteOrder").val();
-			Swal.fire({
-				title: 'Bạn nhận được ' + bonusPoint + ' điểm. ',
-				text: 'Vui lòng xác nhận đơn hàng',
-				imageUrl: 'https://firebasestorage.googleapis.com/v0/b/bmosfile.appspot.com/o/Notify%2FShopping-Cart-Day-1.jpg?alt=media&token=a823f31d-40fa-4cb1-a49b-0d079e656331',
-				imageWidth: 400,
-				imageHeight: 200,
-				showCancelButton: true,
-				confirmButtonText: 'Xác nhận',
-				denyButtonText: `Không! Cảm ơn.`,
-			}).then((result) => {
-				/* Read more about isConfirmed, isDenied below */
-				if (result.isConfirmed) {
-
-					Swal.fire({
-						title: 'Cảm ơn bạn đã mua sản phẩm',
-						text: 'Click OK để xác nhận đơn hàng',
-						imageUrl: 'https://firebasestorage.googleapis.com/v0/b/bmosfile.appspot.com/o/Notify%2F601396d8de58e668a9664592_Cart%20abandonment%20Flagship.png?alt=media&token=4784f51e-9ea3-4be0-94c8-232bf512945d',
-						imageWidth: 400,
-						imageHeight: 200,
-						imageAlt: 'Custom image',
-						confirmButtonText: '<a href="https://mail.google.com/mail" style="color:white;text-decoration:none;">OK</a>',
-					})
-
-					$.ajax({
-						url: "/ShoppingCart/Payment",
-						data: {
-							address: _address,
-							phone: _phone,
-							note: _note,
-							pType: _pType,
-							point: bonusPoint
-						},
-						type: "POST",
-						success: function (data) {
-						},
-					});
-				}
-			});
+			console.log(_address);
+			if (_address.length > 1 && _phone.length > 1) {
+				Swal.fire({
+					title: 'Cảm ơn bạn đã mua sản phẩm',
+					text: 'Vui lòng xác nhận đơn hàng',
+					imageUrl: 'https://firebasestorage.googleapis.com/v0/b/bmosfile.appspot.com/o/Notify%2FShopping-Cart-Day-1.jpg?alt=media&token=a823f31d-40fa-4cb1-a49b-0d079e656331',
+					imageWidth: 400,
+					imageHeight: 200,
+					showCancelButton: true,
+					confirmButtonText: '<a href="https://mail.google.com/mail" style="color:white;text-decoration:none;">Xác nhận</a>',
+					denyButtonText: 'Đóng',
+				}).then((result) => {
+					/* Read more about isConfirmed, isDenied below */
+					if (result.isConfirmed) {
+						$.ajax({
+							url: "/ShoppingCart/Payment",
+							data: {
+								address: _address,
+								phone: _phone,
+								note: _note,
+								pType: _pType,
+								point: bonusPoint
+							},
+							type: "POST",
+							success: function (data) {
+							},
+						});
+					}
+				});
+			} 
+			else {
+				Swal.fire({
+					icon: 'error',
+					title: 'Oops...',
+					text: 'Bạn vui lòng nhập đầy đủ thông tin giao hàng!',
+				})
+			}
 		});
 	});
 </script>

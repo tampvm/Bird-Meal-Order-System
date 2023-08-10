@@ -23,7 +23,7 @@
 else
 {
 	<body>
-		<div class="cart-wrapper">
+		<div class="cart-wrapper" style="font-size:1.4rem;">
 			<div class="row d-flex justify-content-center align-items-center">
 				<div class="col-12" style="padding: 0 100px">
 					<div class="card card-registration card-registration-2" style="border-radius: 15px;">
@@ -71,15 +71,15 @@ else
 												</div>
 												<div class="col-xl-2 d-flex">
 													<button data-id="@item._productId" class="btn btn-link px-2 decrease-prodQuantity-btn"
-															onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
+															onclick="decreaseValue()">
 														<i class="fas fa-minus"></i>
 													</button>
 
-													<input data-id="@item._productId" input type="number" value="@item._quantity" name="cartItemQuantity"
-														   class="form-control form-control-sm product-quantity-form" />
+													<input data-id="@item._productId" input  type="number" value="@item._quantity" name="cartItemQuantity"
+														   class="form-control form-control-sm product-quantity-form" style="width: 80px;font-size: 1.4rem;" />
 
 													<button data-id="@item._productId" class="btn btn-link px-2 increase-prodQuantity-btn"
-															onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
+															onclick="increaseValue">
 														<i class="fas fa-plus"></i>
 													</button>
 												</div>
@@ -142,11 +142,11 @@ else
 											<div class="form-outline discount-type-option">
 												<label class="form-label" for="form3Examplea2">Bạn có muốn giảm giá bằng:</label>
 												<div class="discount-type-wrapper">
-													<button type="button" class="btn btn-success usepoint-btn"
+													<button type="button" class="btn btn-success usepoint-btn" style="width: 100px;font-size: 1.4rem;"
 															data-mdb-ripple-color="blue">
 														Điểm tích lũy
 													</button>
-													<button type="button" class="btn btn-info usecode-btn"
+													<button type="button" class="btn btn-info usecode-btn" style="width: 100px;font-size: 1.4rem;"
 															data-mdb-ripple-color="green">
 														Code
 													</button>

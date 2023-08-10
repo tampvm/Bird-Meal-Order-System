@@ -52,7 +52,7 @@
 				</style>
 
 				<div class="row">
-					<div class="col-12 user_history" style="padding: 3% 5%;">
+					<div class="col-12 user_history" style="padding: 3% 5%; padding-bottom:10rem;">
 						<div class="order-detail-header" style="background-color: rgba(197, 123, 38, 0.822); display: flex; border-top: 1px solid
                             black; border-left: 1px solid black; border-right: 1px solid black; height: 15%; justify-content:left; align-items:center;">
 							<h2 style="font-weight: bold; font-size: 2.5rem;  padding-left: 3%;">Chi tết đơn hàng</h2>
@@ -135,47 +135,52 @@
 										</span>
 									</div>
 								</div>
+								
 							</div>
-
-
+							
+							
 						</div>
 
-						<div class="body-footer" style=" display:flex; align-items:center; justify-content: space-between; margin: 2% 0 5%;">
+							
+						<div  style="display:flex; margin-top:1rem;">
 							<a href="~/Account/UserHistoryOrder" class="btn-back">Trở lại</a>
 
 
 							@{
-								DateTime date = DateTime.Today.AddDays(-2);
+								DateTime date = DateTime.Today.AddDays(-5);
 							}
-							@if (@ViewBag.Date >= date)
+							@if (@ViewBag.Date >= date && @ViewBag.status != null)
 							{
-								<button class="btn-back" asp-action="AddRefund" asp-controller="Account" data-bs-toggle="modal" data-bs-target="#refund">
+								<button style="margin-left:410px"  class="btn-back" asp-action="AddRefund" asp-controller="Account" data-bs-toggle="modal" data-bs-target="#refund">
 									Hoàn trả
 								</button>
 								<div class="modal" tabindex="-1" id="refund">
-									<div class="modal-dialog modal-xl modal-dialog-centered" style="margin-top:10rem;">
+									<div class="modal-dialog modal-xl modal-fullscreen-xl-down" style="margin-top:10rem;">
 										<div class="modal-content">
 											<div class="modal-header">
 												<h5 class="modal-title fw-bold" style="font-size:3rem;">Hoàn trả</h5>
 												<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="close"></button>
 											</div>
-											@*<form method="post" asp-action="addrefund" asp-controller="account">*@
-											<input type="hidden" class="form-control" name="userid" value="" required />
-											<div class="form-group" style="padding:0px 5rem;">
-												<label for="recipient-name" class="col-form-label fw-bold" style="font-size:3rem;">Mã đơn hàng</label>
-												<input type="text" class="form-control" style="font-size:2rem;" value="@ViewBag.OrderID" name="orderid" readonly />
-											</div>
-											<input type="hidden" class="form-control" name="userid" value="@id" required />
-											<div class="form-group" style="padding:0px 5rem;">
-												<label for="recipient-name" class="col-form-label fw-bold" style="font-size:3rem;">Lý do hoàn trả</label>
-												<textarea id="note" class="form-control" style="font-size:2rem;" required></textarea>
-											</div>
-
-											<div class="modal-footer">
-												<button type="submit" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-												<button type="submit" class="btn btn-primary ajax-submit-form-refund">Gửi đơn</button>
-											</div>
-											@*</form>*@
+											<form method="post" asp-action="addrefund" asp-controller="account" enctype="multipart/form-data">
+												<input type="hidden" class="form-control" name="userid" value="" required />
+												<div class="form-group" style="padding:0px 5rem;">
+													<label for="recipient-name" class="col-form-label fw-bold" style="font-size:3rem;">Mã đơn hàng</label>
+													<input type="text" class="form-control" style="font-size:2rem;" value="@ViewBag.OrderID" name="orderid" readonly />
+												</div>
+												<input type="hidden" class="form-control" name="userid" value="@id" required />
+												<div class="form-group" style="padding:0px 5rem;">
+													<label for="recipient-name" class="col-form-label fw-bold" style="font-size:3rem;">Lý do hoàn trả</label>
+													<textarea id="note" name="note" class="form-control ckeditor-field" style="font-size:2rem;" required></textarea>
+												</div>
+												<div class="form-group" style="padding:0px 5rem;">
+													<span style="font-size:3rem;">Ảnh phản hồi :</span>
+													<input style="font-size:2rem;" type="file" name="files" class="form-control" accept="image/*" required multiple />
+												</div>
+												<div class="modal-footer">
+													<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+													<button type="submit" class="btn btn-primary ajax-submit-form-refund">Gửi đơn</button>
+												</div>
+											</form>
 										</div>
 									</div>
 								</div>
@@ -184,14 +189,10 @@
 							{
 
 							}
-
 						</div>
+						
+					
 					</div>
-
-
-
-
-
 
 
 
@@ -255,8 +256,7 @@
 							text: 'Bạn đã có đơn hàng này trong hệ thống!',
 						});
 					} else {
-
-						Swal.fire({
+							Swal.fire({
 							title: 'Cảm ơn bạn đã phản hồi, chúng tôi sẽ xem xét trường hợp của bạn!',
 							imageUrl: 'https://firebasestorage.googleapis.com/v0/b/bmosfile.appspot.com/o/Notify%2Fproduct-refund-australia-726x412.png?alt=media&token=baac39f4-7d7c-4b72-88de-d015880b8e43',
 							imageWidth: 400,
@@ -273,3 +273,14 @@
 		});
 	});
 </script>
+@section Scripts {
+	<script src="~/ckeditor/ckeditor.js"></script>
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+			var ckeditorFields = document.getElementsByClassName('ckeditor-field');
+			for (var i = 0; i < ckeditorFields.length; i++) {
+				CKEDITOR.replace(ckeditorFields[i].id);
+			}
+		});
+	</script>
+}

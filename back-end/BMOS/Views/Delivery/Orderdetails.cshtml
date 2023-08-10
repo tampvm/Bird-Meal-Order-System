@@ -1,0 +1,30 @@
+﻿@{
+	var Orderdetalislist = ViewData["OrderDetails"] as List<BMOS.Models.OrderdetailsInfo>;
+	int count = 1;
+}
+<table class="table" style="margin-top:-50px;">
+	<thead>
+		<tr>
+			<th scope="col">#</th>
+			<th scope="col">Ảnh sản phẩm</th>
+			<th scope="col">Tên sản phẩm</th>
+			<th scope="col">Số lượng</th>
+			<th scope="col">Thành tiền</th>
+		</tr>
+	</thead>
+	<tbody>
+
+		@foreach (var item in Orderdetalislist)
+		{
+			<tr>
+				<th scope="row">@(count++)</th>
+				<td>
+					<img src="@item.urlImage" style="width: 100px; height: 100px" />
+				</td>
+				<td>@item.namepro</td>
+				<td>@item.quantity</td>
+				<td>@string.Format("{0:#,0}", item.price)vnđ</td>
+			</tr>
+		}
+	</tbody>
+</table>

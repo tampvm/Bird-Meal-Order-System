@@ -1,0 +1,132 @@
+﻿@model X.PagedList.IPagedList<BMOS.Models.ProductInfoModel>
+@using X.PagedList.Mvc;
+@using X.PagedList.Mvc.Core;
+@using X.PagedList.Web.Common;
+
+@{
+    ViewData["Title"] = "ProductList";
+    Layout = "_HeaderFooter";
+}
+
+<div class="container">
+    <div class="row content">
+        <div class="serprofile">
+            <div class="col-12 userprofile_title" style="margin: 2rem 0px; font-size: 2rem;">Trang chủ/ Danh sách yêu thích</div>
+        </div>
+        <div class="favorite">
+            <div class="col-8 favorite_list" style="margin-right: 0.5rem;">
+                <h1 style="padding: 1rem 0px 0px 1rem; font-size: 1.5rem;"><b>Chọn tất cả</b></h1>
+                @foreach (var item in Model)
+                {
+                    <hr style="margin: 0px 1rem; margin-top: 1rem;">
+
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12 col-lg-3 col-xl-3 mb-4 mb-lg-0">
+                                <div class="img_favorite">
+                                    <input class="form-check-input" type="checkbox" style="margin-right: 1rem;">
+                                    <img src="@item.UrlImage" style="width: 12rem;" />
+
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-6 col-xl-6">
+                                <h3 style="font-size: 1.5rem;"><b style="font-weight:bold;">Sản phẩm:</b> @item.Name</h3>
+                                <h3 style="font-size: 1.5rem; margin-top: 1rem;"><b style="font-weight:bold;">Giá</b>: @string.Format("{0:#,0}", item.Price)đ</h3>
+                                <h3 style="font-size: 1.5rem; margin-top: 1rem;"><b style="font-weight:bold;">Thông tin sản phẩm</b></h3>
+                                <p class="mb-4 mb-md-0">
+                                    @Html.Raw(item.Description)
+                                </p>
+                            </div>
+                            <div class="col-md-6 col-lg-3 col-xl-3 border-sm-start-none border-start">
+                                <div class="countttt">
+                                    <h1>Quantity</h1>
+                                    <div class="counbt qty">
+                                        <span class="minus bg-dark">-</span>
+                                        <input type="number" class="count" name="qty" value="1">
+                                        <span class="plus bg-dark">+</span>
+                                    </div>
+                                </div>
+                                <div class="d-flex flex-column mt-4">
+                                    <button class="btn btn-primary" type="button">Thêm vào giỏ hàng</button>
+                                    <a class="btn btn-outline-primary mt-2" type="submit" asp-route-id="@item.ProductId" asp-action="RemoveLoved" asp-controller="Products">
+                                        Xóa
+                                    </a>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                }
+                <br />
+                <br />
+                <div style="font-size:2rem; margin-bottom:2rem; margin-left:1rem;">
+                    Trang @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) tren @Model.PageCount
+                </div>
+
+                <div style="font-size:2rem; margin-bottom:2rem; margin-left:1rem;">
+                    @Html.PagedListPager(Model, page => Url.Action("FavoriteList",
+                    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }),
+                    new PagedListRenderOptions {
+                    LiElementClasses = new string[] { "page-item" },
+                    PageClasses = new string[] { "page-link" }
+                    })
+
+                </div>
+
+            </div>
+            <div class="container col-4 favorite_list_edit" style="margin-left: 0.5rem;">
+                <div class="col-8 favorite_remove">Xóa</div>
+                <div class="col-8 favorite_add">Thêm tất cả vào giỏ hàng</div>
+
+
+                <div class="col-12 recommend-list">
+                    <span class="recommend-list__text" style="font-size: 2rem">Danh sách blog</span>
+                    <div class="row g-0 recommend-list__item">
+                        <div class="col-4 recommend-product__img">
+                            <img style="width: 100px; height: 100px;" src="https://firebasestorage.googleapis.com/v0/b/bmosfile.appspot.com/o/blogs%2Ferth6-1609917791358588351922.jpg?alt=media&token=09a64fb5-4986-4311-a735-6e75a48f6885datnt" alt="" srcset="">
+                        </div>
+
+                        <div class="col-8 recommend-product__desc">
+                            <div class="recommend-product__name">
+                                Phát hiện chấn động ở mặt tối Mặt Trăng: Cấu trúc y hệt ở Trái Đất
+                            </div>
+                            <div class="recommend-product__price">(NLĐO) - Ở phía xa của Mặt Trăng, nơi chúng ta không thể nhìn thấy từ Trái Đất, một cấu trúc đường kính 50 km có thể lật ngược toàn bộ những gì chúng ta nghĩ về thiên thể này.</div>
+
+                        </div>
+
+                    </div>
+                    <div class="row g-0 recommend-list__item">
+                        <div class="col-4 recommend-product__img">
+                            <img style="width: 100px; height: 100px;" src="https://firebasestorage.googleapis.com/v0/b/bmosfile.appspot.com/o/blogs%2Fyen-mao.jpg?alt=media&token=d2745a62-76f6-4c17-b6e1-e1b7f145ba7ddatnt" alt="" srcset="">
+                        </div>
+
+                        <div class="col-8 recommend-product__desc">
+                            <div class="recommend-product__name">
+                                Không ít loài chim đang tồn tại trên danh nghĩa trong một vùng "mập mờ" của lĩnh vực bảo tồn: chúng biến mất trong một thời gian dài, nhưng không gì chứng minh rằng chúng đã tuyệt chủng.
+                            </div>
+                            <div class="recommend-product__price">Trong niềm hy vọng âm ỉ và sự gấp rút để cứu lấy những cá thể cuối cùng, cuộc tìm kiếm những loài chim "bị mất" bắt đầu.</div>
+
+                        </div>
+
+                    </div>
+                    <div class="row g-0 recommend-list__item">
+                        <div class="col-4 recommend-product__img">
+                            <img style="width: 100px; height: 100px;" src="https://firebasestorage.googleapis.com/v0/b/bmosfile.appspot.com/o/blogs%2FAptenodytes_forsteri_-Snow_Hill_Island%2C_Antarctica_-adults_and_juvenile-8.jpg?alt=media&token=e16dfca1-367c-4008-b8a9-bbd845dfd998datnt" alt="" srcset="">
+                        </div>
+
+                        <div class="col-8 recommend-product__desc">
+                            <div class="recommend-product__name">
+                                Hai “quái vật chim cánh cụt” to gấp đôi con người xuất hiện ở châu Úc
+                            </div>
+                            <div class="recommend-product__price">(NLĐO) - "Trở về" từ thế giới 60 triệu năm trước, hai loài "quái vật" mang hình dáng chim cánh cụt hiện ra với 6 cá thể khác nhau, con lớn nhất ước tính nặng tới 160 kg khi còn sống.</div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>

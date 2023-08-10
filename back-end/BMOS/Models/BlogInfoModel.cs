@@ -12,5 +12,6 @@ namespace BMOS.Models
         public string? blogImage { get; set; }
         public DateTime? Date { get; set; } 
 
+        public bool? Status { get; set; }
     }
 }

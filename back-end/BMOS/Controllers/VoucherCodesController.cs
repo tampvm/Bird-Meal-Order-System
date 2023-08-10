@@ -1,7 +1,9 @@
-﻿using BMOS.Models.Entities;
+﻿using BMOS.Helpers;
+using BMOS.Models.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using OpenQA.Selenium.DevTools.V112.Emulation;
 
 namespace BMOS.Controllers
 {
@@ -16,6 +18,18 @@ namespace BMOS.Controllers
         }
         public ActionResult VoucherManager()
         {
+            var user = HttpContext.Session.Get<TblUser>("userManager");
+            if (user != null)
+            {
+                if (user.UserRoleId == 1 || user.UserRoleId == 4)
+                {
+                    return View("ErrorPage");
+                }
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
             return View(_context.TblVoucherCodes.ToList());
         }
 
@@ -24,7 +38,18 @@ namespace BMOS.Controllers
         // GET: VoucherCodesController/Create
         public ActionResult Create()
         {
-
+            var user = HttpContext.Session.Get<TblUser>("userManager");
+            if (user != null)
+            {
+                if (user.UserRoleId == 1)
+                {
+                    return View("ErrorPage");
+                }
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
             return View();
         }
 
@@ -37,6 +62,17 @@ namespace BMOS.Controllers
             ModelState.Remove("Used");
             ModelState.Remove("Status");
             if (ModelState.IsValid) { 
+
+                 if (model.Value <= 10000 || model.Value >= 100000)
+				{
+					ViewData["errorCodeValue"] = "Code chỉ được phép giảm giá từ 10.000vnd đến 100.000vnđ";
+					return View(model);
+				
+			} else if(model.Quantity <= 0 || model.Quantity >= 100)
+                {
+                    ViewData["errorCodeQuantity"] = "Số lượng phải lớn hơn 0 và bé hơn 100 voucher";
+                    return View(model);
+                }
                 var voucherNum = _context.TblVoucherCodes.Count(x => x.VoucherCode != null);
                 voucherNum++;
                 var voucher = new TblVoucherCode
@@ -56,9 +92,21 @@ namespace BMOS.Controllers
           
         }
 
-        // GET: VoucherCodesController/Edit/5
+
         public async Task<IActionResult> Edit(string id)
         {
+            var user = HttpContext.Session.Get<TblUser>("userManager");
+            if (user != null)
+            {
+                if (user.UserRoleId == 1)
+                {
+                    return View("ErrorPage");
+                }
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
             if (id == null || _context.TblVoucherCodes == null)
             {
                 return NotFound();
@@ -83,7 +131,21 @@ namespace BMOS.Controllers
 
             if (ModelState.IsValid)
             {
-
+                if (tblVoucherCode.VoucherCode.Length != 10)
+                {
+                    ViewData["errorLengthCode"] = "Code chỉ được phép đúng 10 kí tự";
+                    return View(tblVoucherCode);
+                }
+                else if (tblVoucherCode.Value <= 10000 || tblVoucherCode.Value >= 100000)
+                {
+                    ViewData["errorCodeValue"] = "Code chỉ được phép giảm giá từ 10.000vnd đến 100.000vnđ";
+                    return View(tblVoucherCode);
+                }
+                else if (tblVoucherCode.Quantity <= 0 || tblVoucherCode.Quantity >= 100)
+                {
+                    ViewData["errorCodeQuantity"] = "Số lượng phải lớn hơn 0 và bé hơn 100 voucher";
+                    return View(tblVoucherCode);
+                }
                 _context.Update(tblVoucherCode);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(VoucherManager));
@@ -94,6 +156,18 @@ namespace BMOS.Controllers
         // GET: VoucherCodesController/Delete/5
         public async Task<ActionResult> Delete(string id)
         {
+            var user = HttpContext.Session.Get<TblUser>("userManager");
+            if (user != null)
+            {
+                if (user.UserRoleId == 1)
+                {
+                    return View("ErrorPage");
+                }
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
             if (id == null || _context.TblVoucherCodes == null)
             {
                 return NotFound();
